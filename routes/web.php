@@ -19,12 +19,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // 6 fitur utama
-    Route::get('/artikel', fn() => view('fitur.artikel.index'))->name('artikel.index');
-    Route::get('/deteksi', fn() => view('fitur.deteksi.index'))->name('deteksi.index');
-    Route::get('/tanya', fn() => view('fitur.tanya.index'))->name('tanya.index');
-    Route::get('/video', fn() => view('fitur.video.index'))->name('video.index');
-    Route::get('/infografis', fn() => view('fitur.infografis.index'))->name('infografis.index');
-    Route::get('/konsultasi/whatsapp', fn() => view('fitur.konsultasi.whatsapp'))->name('konsultasi.whatsapp');
+Route::get('/artikel', fn() => view('fitur.artikel'))->name('artikel.index');
+Route::get('/deteksi', fn() => view('fitur.deteksi'))->name('deteksi.index');
+Route::get('/tanya', fn() => view('fitur.tanya'))->name('tanya.index');
+Route::get('/video', fn() => view('fitur.video'))->name('video.index');
+Route::get('/infografis', fn() => view('fitur.infografis'))->name('infografis.index');
+Route::get('/konsultasi/whatsapp', fn() => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
+
 });
 require __DIR__.'/auth.php';
 
