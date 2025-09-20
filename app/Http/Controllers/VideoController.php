@@ -7,59 +7,35 @@ use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Video::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'judul' => 'required|string',
+            'url' => 'required|url',
+            'penulis_id' => 'required|exists:users,id',
+            'kategori' => 'nullable|string',
+            'views' => 'nullable|integer',
+        ]);
+        return $this->storeResource($request, Video::class);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Video $video)
+    public function show($id)
     {
-        //
+        return $this->getResource(Video::class, $id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Video $video)
+    public function update(Request $request, $id)
     {
-        //
+        return $this->updateResource($request, $id, Video::class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Video $video)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Video $video)
-    {
-        //
+        return $this->destroyResource($id, Video::class);
     }
 }

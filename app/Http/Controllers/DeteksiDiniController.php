@@ -7,59 +7,35 @@ use Illuminate\Http\Request;
 
 class DeteksiDiniController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(DeteksiDini::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'form_id' => 'required|integer',
+            'skor' => 'required|integer',
+            'hasil' => 'required|string',
+            'tanggal_deteksi' => 'required|date',
+        ]);
+        return $this->storeResource($request, DeteksiDini::class);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DeteksiDini $deteksiDini)
+    public function show($id)
     {
-        //
+        return $this->getResource(DeteksiDini::class, $id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DeteksiDini $deteksiDini)
+    public function update(Request $request, $id)
     {
-        //
+        return $this->updateResource($request, $id, DeteksiDini::class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DeteksiDini $deteksiDini)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DeteksiDini $deteksiDini)
-    {
-        //
+        return $this->destroyResource($id, DeteksiDini::class);
     }
 }

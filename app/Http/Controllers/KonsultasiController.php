@@ -7,59 +7,34 @@ use Illuminate\Http\Request;
 
 class KonsultasiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Konsultasi::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'gambar' => 'nullable|string',
+            'views' => 'nullable|integer',
+        ]);
+        return $this->storeResource($request, Konsultasi::class); // Memanggil storeResource dari Controller.php
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Konsultasi $konsultasi)
+    public function show($id)
     {
-        //
+        return $this->getResource(Konsultasi::class, $id); // Memanggil getResource dari Controller.php
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Konsultasi $konsultasi)
+    public function update(Request $request, $id)
     {
-        //
+        return $this->updateResource($request, $id, Konsultasi::class); // Memanggil updateResource dari Controller.php
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Konsultasi $konsultasi)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Konsultasi $konsultasi)
-    {
-        //
+        return $this->destroyResource($id, Konsultasi::class); // Memanggil destroyResource dari Controller.php
     }
 }
+ 

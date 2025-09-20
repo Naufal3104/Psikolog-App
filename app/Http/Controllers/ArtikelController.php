@@ -7,59 +7,37 @@ use Illuminate\Http\Request;
 
 class ArtikelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Artikel::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'judul' => 'required|string',
+            'slug' => 'required|unique:artikel',
+            'isi' => 'required|string',
+            'penulis_id' => 'required|exists:users,id',
+            'gambar' => 'nullable|string',
+            'keterangan_gambar' => 'nullable|string',
+            'views' => 'nullable|integer',
+        ]);
+        return $this->storeResource($request, Artikel::class);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Artikel $artikel)
+    public function show($id)
     {
-        //
+        return $this->getResource(Artikel::class, $id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Artikel $artikel)
+    public function update(Request $request, $id)
     {
-        //
+        return $this->updateResource($request, $id, Artikel::class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Artikel $artikel)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Artikel $artikel)
-    {
-        //
+        return $this->destroyResource($id, Artikel::class);
     }
 }

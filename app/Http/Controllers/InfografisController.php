@@ -7,59 +7,35 @@ use Illuminate\Http\Request;
 
 class InfografisController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Infografis::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'judul' => 'required|string',
+            'gambar_url' => 'required|string',
+            'kategori' => 'nullable|string',
+            'views' => 'nullable|integer',
+            'penulis_id' => 'required|exists:users,id',
+        ]);
+        return $this->storeResource($request, Infografis::class);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Infografis $infografis)
+    public function show($id)
     {
-        //
+        return $this->getResource(Infografis::class, $id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Infografis $infografis)
+    public function update(Request $request, $id)
     {
-        //
+        return $this->updateResource($request, $id, Infografis::class);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Infografis $infografis)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Infografis $infografis)
-    {
-        //
+        return $this->destroyResource($id, Infografis::class);
     }
 }
