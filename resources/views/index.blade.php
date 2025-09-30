@@ -44,10 +44,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         </label>
                     </div>
 
-                    <a href="signin.html"
+                    <a href="{{ route('login') }}"
                         :class="{ 'lk': page === 'home', 'ok': page === 'home' && stickyMenu }"
                         class="ek pk xl">Sign In</a>
-                    <a href="signup.html"
+                    <a href="{{ route('register') }}"
                         :class="{ 'nk': page === 'home', 'sh': page === 'home' && stickyMenu }"
                         class="lk gh dk rg tc wf xf _l gi hi">Sign Up</a>
                 </div>
@@ -173,47 +173,57 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             <div class="bb ze ki xn yq mb en">
                 <div class="wc qf pn xo ng">
                     <!-- Service Item -->
-                    <a href="">
-                        <div class="animate_top sg oi pi zq ml il am cn _m">
-                            <img class="ce ed" src="images/newspaper-svgrepo-com.svg" alt="Icon" />
-                            <h4 class="ek zj kk wm nb _b">Konsultasi Psikolog</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
-                        </div>
+                    <div class="animate_top sg oi pi zq ml il am cn _m" > 
+                    <a href="{{ route('konsultasi.whatsapp') }}">
+                        <img src="images/newspaper-svgrepo-com.svg" alt="Icon" />
+                        <h4 class="ek zj kk wm nb _b">Konsultasi Psikolog</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
                     </a>
+                    </div>
 
                     <!-- Service Item -->
-                    <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <img src="images/icon-05.svg" alt="Icon" />
+                    <div class="animate_top sg oi pi zq ml il am cn _m" > 
+                    <a href="{{ route('artikel.index') }}">
+                        <img src="images/icon-05.svg" alt="Icon"  />
                         <h4 class="ek zj kk wm nb _b">Artikel</h4>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                    </a>
                     </div>
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <img src="images/icon-06.svg" alt="Icon" />
-                        <h4 class="ek zj kk wm nb _b">Deteksi Dini</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        <a href="{{ route('deteksi.index') }}">
+                            <img src="images/icon-06.svg" alt="Icon" />
+                            <h4 class="ek zj kk wm nb _b">Deteksi Dini</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        </a>
                     </div>
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <img src="images/icon-07.svg" alt="Icon" />
-                        <h4 class="ek zj kk wm nb _b">Tanya Jawab</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        <a href="{{ route('tanya.index') }}">
+                            <img src="images/icon-07.svg" alt="Icon" />
+                            <h4 class="ek zj kk wm nb _b">Tanya Jawab</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        </a>
                     </div>
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <img src="images/icon-05.svg" alt="Icon" />
-                        <h4 class="ek zj kk wm nb _b">Video</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        <a href="{{ route('video.index') }}">
+                            <img src="images/icon-05.svg" alt="Icon" />
+                            <h4 class="ek zj kk wm nb _b">Video</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        </a>
                     </div>
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <img src="images/icon-06.svg" alt="Icon" />
-                        <h4 class="ek zj kk wm nb _b">Infografis</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        <a href="{{ route('infografis.index') }}">
+                            <img src="images/icon-06.svg" alt="Icon" />
+                            <h4 class="ek zj kk wm nb _b">Infografis</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor.</p>
+                        </a>
                     </div>
                 </div>
             </div>
