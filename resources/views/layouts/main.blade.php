@@ -5,21 +5,33 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Psikolog - RSUD Jombang</title>
+    
+    <title>@yield('title', 'Psikolog - RSUD Jombang')</title>
+    
     <link rel="icon" href="favicon.ico">
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="../assets/styles/style.css" />
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    
+    <style>
+        .icon-small {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            color: #1e40af; /* Warna ikon badge */
+        }
+    </style>
+    @stack('styles')
 </head>
 
-<body x-data="{ page: 'home', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+<body x-data="{ page: '@yield('page-slug', 'other')', 'darkMode': true, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }">
-    <!-- ===== Header Start ===== -->
+    
     <header class="g s r vd ya cj" :class="{ 'hh sm _k dj bl ll': stickyMenu }"
         @scroll.window="stickyMenu = (window.pageYOffset > 20) ? true : false">
         <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
             <div class="tc wf">
-                <a href="index.html" class="ek yj go kk wm xb font-extrabold" style="font-weight: 900 !important;">Psikolog</a>
+                <a href="{{ url('/') }}" class="ek yj go kk wm xb font-extrabold" style="font-weight: 900 !important;">Psikolog</a> 
             </div>
 
             <div class="sd qo f ho oo wf" :class="{ 'd hh rm sr td ud qg ug jc yh': navigationOpen }">
@@ -31,8 +43,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 class="pf vd yc uk h r za ab" />
                             <svg :class="{
                                 'wn': page === 'home' && !stickyMenu && darkMode,
-                                'xh': page === 'home' &&
-                                    stickyMenu
+                                'xh': page === 'home' && stickyMenu
                             }"
                                 class="th om" width="25" height="25" viewBox="0 0 25 25" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -44,79 +55,39 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         </label>
                     </div>
 
-                    <a href="{{ route('login') }}"
-                        :class="{ 'lk': page === 'home', 'ok': page === 'home' && stickyMenu }"
-                        class="ek pk xl">Masuk</a>
-                    <a href="{{ route('register') }}"
-                        :class="{ 'nk': page === 'home', 'sh': page === 'home' && stickyMenu }"
-                        class="lk gh dk rg tc wf xf _l gi hi">Daftar</a>
+                    <a href="{{ route('login') }}" class="ek pk xl"
+                        :class="{ 'lk': page === 'home', 'ok': page === 'home' && stickyMenu }">Masuk</a>
+                    <a href="{{ route('register') }}" class="lk gh dk rg tc wf xf _l gi hi"
+                        :class="{ 'nk': page === 'home', 'sh': page === 'home' && stickyMenu }">Daftar</a>
                 </div>
             </div>
         </div>
     </header>
-    <!-- ===== Header End ===== -->
-
-  <main>
-    <!-- ===== SignIn Form Start ===== -->
-    <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
-        
-      <div class="animate_top bb af i va sg hh sm vk xm yi _n jp hi ao kp">
-
-        <div class="rj">
-          <h2 class="ek ck kk wm xb">Masuk</h2>
-          </span>
-        </div>
-
-        <form class="sb" action="#!" method="#">
-          <div class="wb">
-            <label class="rc kk wm vb" for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="example@gmail.com"
-              class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
-          </div>
-
-          <div class="wb">
-            <label class="rc kk wm vb" for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="**************"
-              class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
-          </div>
-
-          <button class="vd rj ek rc rg gh lk ml il _l gi hi">
-            Masuk
-          </button>
-
-          <p class="sj hk xj rj ob">
-            Belum punya akun?
-            <a class="mk" href="signup.html"> Daftar </a>
-          </p>
-        </form>
-      </div>
-    </section>
-    <!-- ===== SignIn Form End ===== -->
-  </main>
-    <!-- ===== Footer Start ===== -->
-<footer>
-    <div class="bb ze ki xn 2xl:ud-px-0">
-        
-        <div class="bh ch pm tc uf sf yo wf xf ap cg fp bj flex justify-center py-8">
-            <div class="animate_top text-center">
-                <p class="xl dark:text-gray-400">&copy; 2025 Psikologi RSUD Jombang. All Rights Reserved.</p>
+    <main>
+        @yield('content')
+    </main>
+    
+    <footer>
+        <div class="bb ze ki xn 2xl:ud-px-0">
+            <div class="bh ch pm tc uf sf yo wf xf ap cg fp bj flex justify-center py-8">
+                <div class="animate_top text-center">
+                    <p class="xl dark:text-gray-400">&copy; 2025 Psikologi RSUD Jombang. All Rights Reserved.</p>
+                </div>
             </div>
         </div>
-        </div>
-</footer>
-    <!-- ===== Footer End ===== -->
-
-  <!-- ====== Back To Top Start ===== -->
-  <button class="xc wf xf ie ld vg sr gh tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
-    @scroll.window="scrollTop = (window.pageYOffset > 50) ? true : false" :class="{ 'uc' : scrollTop }">
-    <svg class="uh se qd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      <path
-        d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
-    </svg>
-  </button>
-
-  <!-- ====== Back To Top End ===== -->
-  <script defer src="bundle.js"></script>
+    </footer>
+    <button class="xc wf xf ie ld vg sr gh tr g sa ta _a" @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+        @scroll.window="scrollTop = (window.pageYOffset > 50) ? true : false" :class="{ 'uc': scrollTop }">
+        <svg class="uh se qd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+                d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+        </svg>
+    </button>
+    <script>
+        feather.replace();
+    </script>
+    <script defer src="bundle.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -7,8 +7,6 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::middleware('auth')->group(function () {
-
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -26,6 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/infografis', fn() => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn() => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
 
-});
+    // Fitur Sub-Menu di Deteksi Dini
+    Route::get('/deteksi/stress', fn() => view('fitur.deteksi-stress'))->name('deteksi.stress');
+    Route::get('/deteksi/kesejahteraan', fn() => view('fitur.deteksi-kesejahteraan'))->name('deteksi.kesejahteraan');
+    Route::get('/deteksi/belajar', fn() => view('fitur.deteksi-belajar'))->name('deteksi.belajar');
+    Route::get('/deteksi/pernikahan', fn() => view('fitur.deteksi-nikah'))->name('deteksi.nikah');
+    Route::get('/deteksi/putus-cinta', fn() => view('fitur.deteksi-putuscinta'))->name('deteksi.putuscinta');
+
+;
 require __DIR__.'/auth.php';
 
