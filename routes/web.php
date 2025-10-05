@@ -8,8 +8,8 @@ Route::get('/', function () {
 });
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    return view('dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
 
     //laravel breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

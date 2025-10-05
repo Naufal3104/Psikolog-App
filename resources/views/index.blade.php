@@ -19,7 +19,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         @scroll.window="stickyMenu = (window.pageYOffset > 20) ? true : false">
         <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
             <div class="tc wf">
-                <a href="index.html" class="ek yj go kk wm xb font-extrabold" style="font-weight: 900 !important;">Psikolog</a>
+                <a href="{{ url('/') }}" class="ek yj go kk wm xb font-extrabold" style="font-weight: 900 !important;">Psikolog</a>
             </div>
 
             <div class="sd qo f ho oo wf" :class="{ 'd hh rm sr td ud qg ug jc yh': navigationOpen }">
