@@ -4,12 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
-});
-
-    Route::get('/dashboard', function () {
-    return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    return view('index'); // resources/views/index.blade.php
+})->name('index'); 
 
     //laravel breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

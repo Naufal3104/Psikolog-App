@@ -14,14 +14,22 @@
 </head>
 
 <body
-    x-data="{ darkMode: true, scrollTop: false }"
-    x-init="
-        darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-        $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
-    "
-    x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
-    :class="{ 'b eh': darkMode }"
+  x-data="{
+      page: 'home',
+      darkMode: true,
+      stickyMenu: false,
+      navigationOpen: false,
+      scrollTop: false,
+      sidebarOpen: false   // <— penting
+  }"
+  x-init="
+      darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
+      $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
+  "
+  :class="{ 'b eh': darkMode === true }"
+  x-cloak
 >
+
     <x-layout.navbar />
 
     <main>
