@@ -18,7 +18,7 @@ class Artikel extends Model
         'keterangan_gambar',
         'views',
     ];
-
+    protected $table = 'artikel';
     // Relasi dengan model User (penulis)
     public function penulis()
     {

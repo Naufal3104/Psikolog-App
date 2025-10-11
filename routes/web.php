@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ArtikelController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,7 +18,8 @@ Route::get('/', function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // 6 fitur utama
-    Route::get('/artikel', fn() => view('fitur.artikel'))->name('artikel.index');
+    Route::get('/artikel', [ArtikelController::class, 'index']);
+    Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
     Route::get('/deteksi', fn() => view('fitur.deteksi'))->name('deteksi.index');
     Route::get('/tanya', fn() => view('fitur.tanya'))->name('tanya.index');
     Route::get('/video', fn() => view('fitur.video'))->name('video.index');
