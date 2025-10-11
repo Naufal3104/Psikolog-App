@@ -1112,6 +1112,7 @@ h1,  h2,  h3,  h4,  h5,  h6{
 .af{
   max-width: 34.375rem;
 }
+.
 .bf{
   flex-shrink: 0;
 }
@@ -1562,6 +1563,9 @@ h1,  h2,  h3,  h4,  h5,  h6{
 }
 .rj{
   text-align: center;
+}
+.justify{
+  text-align: justify;
 }
 .sj{
   font-family: Outfit, sans-serif;

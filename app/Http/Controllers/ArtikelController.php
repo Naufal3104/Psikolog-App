@@ -9,7 +9,9 @@ class ArtikelController extends Controller
 {
     public function index()
     {
-        return response()->json(Artikel::all());
+        return view('fitur.artikel', [
+            'artikel' => Artikel::with('penulis')->get()
+        ]);
     }
 
     public function store(Request $request)
@@ -28,7 +30,9 @@ class ArtikelController extends Controller
 
     public function show($id)
     {
-        return $this->getResource(Artikel::class, $id);
+        return view('fitur.isiartikel', [
+            'artikel' => Artikel::with('penulis')->findOrFail($id)
+        ]);
     }
 
     public function update(Request $request, $id)
