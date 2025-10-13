@@ -18,7 +18,7 @@ Route::get('/', function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // 6 fitur utama
-    Route::get('/artikel', [ArtikelController::class, 'index']);
+    Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
     Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
     Route::get('/deteksi', fn() => view('fitur.deteksi'))->name('deteksi.index');
     Route::get('/tanya', fn() => view('fitur.tanya'))->name('tanya.index');
