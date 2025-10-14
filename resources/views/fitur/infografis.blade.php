@@ -15,7 +15,7 @@
 </head>
 
 <body
-    x-data="{ darkMode: true, scrollTop: false }"
+    x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }"
     x-init="
         darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
         $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
