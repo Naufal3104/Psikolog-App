@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Deteksi Dini Psikologis - RSUD Jombang')
+@section('title', $kategori->nama_kategori)
 @section('page-slug', 'deteksi')
 
 @push('styles')
@@ -190,6 +190,14 @@
                 </div>
 
                 <div class="card-body-detection">
+                    <div class="form-group">
+                        <label for="nama" class="question-text">Nama</label>
+                        <input type="text" id="nama" name="nama" class="input-text" 
+                        @if (auth()->check()) 
+                            value="{{ auth()->user()->name }}"
+                        @endif
+                            placeholder="Masukkan nama anda" required>
+                    </div>
                     {{-- Lakukan perulangan untuk setiap pertanyaan yang ada di dalam $kategori --}}
                     @foreach ($kategori->pertanyaan as $pertanyaan)
                         <div class="form-group">
@@ -201,13 +209,9 @@
                             {{-- Lakukan perulangan untuk setiap pilihan jawaban dari pertanyaan saat ini --}}
                             @foreach ($pertanyaan->pilihan_jawaban as $pilihan)
                                 <label for="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}" class="radio-option">
-                                    <input 
-                                        type="radio" 
-                                        id="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}" 
-                                        name="jawaban[{{ $pertanyaan->id }}]" 
-                                        value="{{ $pilihan->id }}"
-                                        @if($loop->first) required @endif
-                                    >
+                                    <input type="radio" id="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}"
+                                        name="jawaban[{{ $pertanyaan->id }}]" value="{{ $pilihan->id }}"
+                                        @if ($loop->first) required @endif>
                                     <span class="radio-custom"></span>
                                     <span class="radio-label">{{ $pilihan->teks_jawaban }}</span>
                                 </label>
