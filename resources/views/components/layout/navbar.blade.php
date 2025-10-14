@@ -1,5 +1,5 @@
 <header class="g s r vd ya cj" 
-        :class="{ 'hh sm _k dj bl ll': stickyMenu }"
+        :class="{ 'hh sm _k dj bl ll': stickyMenu || page !== 'home' }"
         @scroll.window="stickyMenu = (window.pageYOffset > 20)">
     <div class="bb ze ki xn 2xl:ud-px-0 oo wf yf i">
         <!-- Brand -->

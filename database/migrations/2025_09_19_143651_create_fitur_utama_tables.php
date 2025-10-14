@@ -22,7 +22,7 @@ return new class extends Migration
 
         // Tabel artikel
         Schema::create('artikel', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 144)->primary();
             $table->string('judul');
             $table->string('slug')->unique();
             $table->text('isi');
@@ -59,6 +59,15 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('psikiater_id')->references('id')->on('users')->onDelete('set null');
+        });
+
+        Schema::create('balasan_tanya_jawab', function(Blueprint $table){
+            $table->id();
+            $table->bigInteger('tanya_jawab_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->string('isi_balasan');
+            $table->foreign('tanya_jawab_id')->references('id')->on('tanya_jawab')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         // Tabel video
