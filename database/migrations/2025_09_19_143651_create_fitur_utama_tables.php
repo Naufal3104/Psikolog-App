@@ -84,7 +84,7 @@ return new class extends Migration
         });
 
         Schema::create('kategori_deteksi', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 144)->primary();
             $table->string('nama_kategori');
             $table->text('deskripsi')->nullable();
             $table->timestamps();
@@ -92,7 +92,8 @@ return new class extends Migration
 
         Schema::create('pertanyaan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_deteksi_id')->constrained('kategori_deteksi')->onDelete('cascade');
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
             $table->text('teks_pertanyaan');
             $table->enum('tipe_jawaban', ['ya_tidak', 'rating_1_5']);
             $table->unsignedInteger('urutan')->default(0);
@@ -110,7 +111,8 @@ return new class extends Migration
         Schema::create('hasil_deteksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('kategori_deteksi_id')->constrained('kategori_deteksi')->onDelete('cascade');
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
             $table->decimal('total_skor', 8, 2); 
             $table->string('interpretasi_hasil');
             $table->timestamps();
@@ -126,7 +128,8 @@ return new class extends Migration
 
         Schema::create('interpretasi_skor', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_deteksi_id')->constrained('kategori_deteksi')->onDelete('cascade');
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
             $table->integer('skor_minimal');
             $table->integer('skor_maksimal');
             $table->string('teks_interpretasi');
