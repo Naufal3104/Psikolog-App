@@ -43,6 +43,20 @@ Route::get('/', function () {
     Route::get('/buat-tanya', fn() => view('fitur.buat-tanya'))->name('buat.tanya');
     Route::post('/tanya', fn(Request $request) => back()->with('success', 'Pertanyaan berhasil dikirim!'))->name('tanya.store');
 
+    // DUMMY TAMPILAN DASHBOARDDD
+Route::get('dashboard-dummy', function () {
+    return view('dashboard-dummy');
+});
+Route::get('buat-artikel', function () {
+    return view('buat-artikel');
+});
+Route::get('kelola-artikel', function () {
+    return view('kelola-artikel');
+});
+Route::get('edit-profile', function () {
+    return view('edit-profile');
+});
+
 ;
 require __DIR__.'/auth.php';
 
