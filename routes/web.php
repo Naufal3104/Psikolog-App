@@ -4,14 +4,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('index');
 })->name('home');
 
-    Route::get('/dashboard', function () {
-    return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard-dummy', function () {
+    return view('dashboard-dummy');
+})->middleware(['auth', 'role:admin'])->name('dashboard.dummy');
 
     //laravel breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
