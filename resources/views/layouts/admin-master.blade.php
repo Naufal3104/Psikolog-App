@@ -76,7 +76,14 @@ $active_menu = $active_menu ?? 'dashboard';
             </button>
             <div class="absolute right-0 mt-3 overflow-hidden bg-white rounded-lg shadow-xl dropdown-menu w-40" id="dropdownMenu" style="display: none;">
                 <a href="{{ url('/admin/profile/edit') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit Profile</a> 
-                <a href="{{ url('/logout') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Log Out</a>
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" 
+        class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+        Log Out
+    </button>
+</form>
+
             </div>
         </div>
     </header>
