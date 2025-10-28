@@ -57,6 +57,9 @@ Route::get('kelola-artikel', function () {
 Route::get('edit-profile', function () {
     return view('edit-profile');
 });
+Route::get('kelola-deteksi', function () {
+    return view('kelola-deteksi');
+});
 
 ;
 require __DIR__.'/auth.php';

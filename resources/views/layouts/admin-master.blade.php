@@ -1,10 +1,6 @@
 @php
-// Definisi Warna Kustom RSUD Jombang (Konsisten dengan Soft UI)
-$rsud_blue_dark = '#044f86'; // Biru Utama Baru
-$rsud_blue_light = '#346b9b'; // Biru Hover/Aktif
-$sidebar_bg = '#ffffff'; // Sidebar PUTIH
-
-// Variabel untuk menandai menu yang aktif (AKAN DIISI DARI VIEW ANAK)
+// Variabel PHP untuk warna sudah tidak diperlukan lagi untuk styling
+// Variabel ini masih valid untuk logika
 $active_menu = $active_menu ?? 'dashboard'; 
 @endphp
 
@@ -15,49 +11,11 @@ $active_menu = $active_menu ?? 'dashboard';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard Admin') | RSUD Jombang</title> 
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        // ... (Tailwind Config yang sama) ...
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'rsud-blue': '{{ $rsud_blue_dark }}',
-                        'rsud-blue-light': '{{ $rsud_blue_light }}',
-                        'sidebar-dark': '{{ $sidebar_bg }}',
-                    }
-                }
-            }
-        }
-    </script>
+    @vite('resources/css/app.css')
     
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <style>
-        /* CSS Kustom (Sama seperti sebelumnya) */
-        .sidebar { transition: width 0.3s ease; }
-        .sidebar-closed { width: 80px !important; }
-        .sidebar-closed .sidebar-menu a span, .sidebar-closed .sidebar-menu h3, .sidebar-closed h3 { 
-            opacity: 0; visibility: hidden; width: 0; white-space: nowrap; transition: opacity 0.1s, visibility 0.1s, width 0.1s;
-        }
-        .sidebar-closed .sidebar-menu a { justify-content: center; }
-        .sidebar-closed .sidebar-menu a svg { margin-right: 0 !important; }
-        .sidebar-menu a.active { 
-            background-color: {{ $rsud_blue_light }} !important; 
-            color: white !important;
-        }
-        .sidebar-menu a:not(.active) { 
-            color: {{ $rsud_blue_dark }} !important;
-        }
-        .sidebar-menu a:not(.active):hover {
-            background-color: #f3f4f6;
-            color: {{ $rsud_blue_dark }} !important;
-        }
-        .admin-card { @apply bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100; }
-        .admin-input { @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rsud-blue focus:border-rsud-blue transition duration-150; }
-    </style>
-</head>
+    </head>
 <body class="bg-gray-50">
 
     <header class="sticky top-0 z-10 flex items-center justify-between px-8 py-3 bg-white shadow-md border-b border-gray-100">
@@ -76,14 +34,13 @@ $active_menu = $active_menu ?? 'dashboard';
             </button>
             <div class="absolute right-0 mt-3 overflow-hidden bg-white rounded-lg shadow-xl dropdown-menu w-40" id="dropdownMenu" style="display: none;">
                 <a href="{{ url('/admin/profile/edit') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit Profile</a> 
-<form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit" 
-        class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-        Log Out
-    </button>
-</form>
-
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" 
+                        class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Log Out
+                    </button>
+                </form>
             </div>
         </div>
     </header>
@@ -94,24 +51,39 @@ $active_menu = $active_menu ?? 'dashboard';
             
             <div class="sidebar-menu">
                 {{-- 1. Dashboard --}}
-                <a href="{{ url('/dashboard-dummy') }}" class="flex items-center px-6 py-3 transition duration-150 ease-in-out text-rsud-blue hover:text-rsud-blue @if($active_menu == 'dashboard') active @endif">
+                <a href="{{ url('/dashboard-dummy') }}" class="flex items-center px-6 py-3 transition duration-150 ease-in-out @if($active_menu == 'dashboard') active @endif">
                     <i data-feather="home" class="w-5 h-5 mr-3"></i> <span>Dashboard</span>
                 </a>
 
                 <h3 class="px-6 pt-6 pb-2 text-xs font-semibold uppercase text-gray-500 transition-all duration-300">MANAJEMEN KONTEN</h3>
                 {{-- 2. Buat Artikel --}}
-                <a href="{{ url('/buat-artikel') }}" class="flex items-center px-6 py-3 text-rsud-blue hover:text-rsud-blue @if($active_menu == 'buat_artikel') active @endif">
+                <a href="{{ url('/buat-artikel') }}" class="flex items-center px-6 py-3 @if($active_menu == 'buat_artikel') active @endif">
                     <i data-feather="file-plus" class="w-5 h-5 mr-3"></i> <span>Buat Artikel</span>
                 </a>
                 {{-- 3. Kelola Artikel --}}
-                <a href="{{ url('/kelola-artikel') }}" class="flex items-center px-6 py-3 text-rsud-blue hover:text-rsud-blue @if($active_menu == 'kelola_artikel') active @endif">
+                <a href="{{ url('/kelola-artikel') }}" class="flex items-center px-6 py-3 @if($active_menu == 'kelola_artikel') active @endif">
                     <i data-feather="list" class="w-5 h-5 mr-3"></i> <span>Kelola Artikel</span>
+                </a>
+
+                <h3 class="px-6 pt-6 pb-2 text-xs font-semibold uppercase text-gray-500 transition-all duration-300">MANAJEMEN DETEKSI</h3>
+                {{-- 2. Buat Artikel --}}
+                <a href="{{ url('/kelola-deteksi') }}" class="flex items-center px-6 py-3 @if($active_menu == 'buat_artikel') active @endif">
+                    <i data-feather="file-plus" class="w-5 h-5 mr-3"></i> <span>Kelola Deteksi</span>
+                </a>
+                <a href="{{ url('/buat-artikel') }}" class="flex items-center px-6 py-3 @if($active_menu == 'buat_artikel') active @endif">
+                    <i data-feather="file-plus" class="w-5 h-5 mr-3"></i> <span>Interpretasi Skor</span>
+                </a>
+                <a href="{{ url('/buat-artikel') }}" class="flex items-center px-6 py-3 @if($active_menu == 'buat_artikel') active @endif">
+                    <i data-feather="list" class="w-5 h-5 mr-3"></i> <span>Hasil Deteksi</span>
                 </a>
 
                 <h3 class="px-6 pt-6 pb-2 text-xs font-semibold uppercase text-gray-500 transition-all duration-300">PENGATURAN</h3>
                 {{-- 4. Manajemen Admin --}}
-                <a href="{{ url('/edit-profile') }}" class="flex items-center px-6 py-3 text-rsud-blue hover:text-rsud-blue @if($active_menu == 'manajemen_admin') active @endif">
+                <a href="{{ url('/edit-profile') }}" class="flex items-center px-6 py-3 @if($active_menu == 'manajemen_admin') active @endif">
                     <i data-feather="users" class="w-5 h-5 mr-3"></i> <span>Manajemen Admin</span>
+                </a>
+                <a href="{{ url('/edit-profile') }}" class="flex items-center px-6 py-3 @if($active_menu == 'manajemen_admin') active @endif">
+                    <i data-feather="users" class="w-5 h-5 mr-3"></i> <span>Log Aktivitas</span>
                 </a>
             </div>
         </nav>
