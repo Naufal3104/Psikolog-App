@@ -18,7 +18,7 @@ class Pertanyaan extends Model
     ];
     protected $table = 'pertanyaan';
     public function kategori(){
-        return $this->belongsTo(KategoriDeteksi::class);
+        return $this->belongsTo(KategoriDeteksi::class, 'kategori_deteksi_id');
     }
     public function pilihan_jawaban(): HasMany
     {

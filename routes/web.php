@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\AdminDeteksi;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,9 +47,8 @@ Route::get('/dashboard-dummy', function () {
     Route::post('/tanya', fn(Request $request) => back()->with('success', 'Pertanyaan berhasil dikirim!'))->name('tanya.store');
 
     // DUMMY TAMPILAN DASHBOARDDD
-Route::get('dashboard-dummy', function () {
-    return view('dashboard-dummy');
-});
+Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
+
 Route::get('buat-artikel', function () {
     return view('buat-artikel');
 });
@@ -57,9 +58,7 @@ Route::get('kelola-artikel', function () {
 Route::get('edit-profile', function () {
     return view('edit-profile');
 });
-Route::get('kelola-deteksi', function () {
-    return view('kelola-deteksi');
-});
+Route::get('/kelola-deteksi', [AdminDeteksi::class, 'index'])->name('kelola-deteksi.index');
 
 ;
 require __DIR__.'/auth.php';
