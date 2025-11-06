@@ -39,14 +39,6 @@ Route::post('/artikel-admin', [ArtikelController::class, 'store'])->name('artike
     Route::get('/infografis', fn() => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn() => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
 
-    // Fitur Sub-Menu di Deteksi Dini
-    // Route::get('/deteksi/stress', fn() => view('fitur.deteksi.stress'))->name('deteksi.stress');
-    // Route::get('/deteksi/kesejahteraan', fn() => view('fitur.deteksi.kesejahteraan'))->name('deteksi.kesejahteraan');
-    // Route::get('/deteksi/belajar', fn() => view('fitur.deteksi.belajar'))->name('deteksi.belajar');
-    // Route::get('/deteksi/pernikahan', fn() => view('fitur.deteksi.nikah'))->name('deteksi.nikah');
-    // Route::get('/deteksi/putuscinta', fn() => view('fitur.deteksi.putuscinta'))->name('deteksi.putuscinta');
-    // Route::get('/deteksi/hasil', fn() => view('fitur.deteksi.hasil'))->name('deteksi.hasil');
-
     // Route POST untuk memproses hasil deteksi dini
     Route::post('/deteksi/process', fn(Request $request) => back()->with('success', 'Hasil deteksi berhasil diproses!'))->name('deteksi.process');
 
