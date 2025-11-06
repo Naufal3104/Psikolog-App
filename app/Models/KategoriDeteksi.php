@@ -24,4 +24,8 @@ class KategoriDeteksi extends Model
     {
         return $this->hasMany(Pertanyaan::class);
     }
+    public function interpretasiSkor(): HasMany
+    {
+        return $this->hasMany(InterpretasiSkor::class, 'kategori_deteksi_id');
+    }
 }

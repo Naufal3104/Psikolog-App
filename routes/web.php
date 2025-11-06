@@ -60,6 +60,21 @@ Route::get('edit-profile', function () {
 });
 Route::get('/kelola-deteksi', [AdminDeteksi::class, 'index'])->name('kelola-deteksi.index');
 
-;
+Route::get('/kelola-deteksi/create', [AdminDeteksi::class, 'create_question'])->name('kelola-deteksi.create');
+
+Route::post('/kelola-deteksi', [AdminDeteksi::class, 'store_question'])->name('kelola-deteksi.store');
+
+Route::get('/kelola-deteksi/{pertanyaan}/edit', [AdminDeteksi::class, 'edit_question'])->name('kelola-deteksi.edit');
+
+Route::put('/kelola-deteksi/{pertanyaan}', [AdminDeteksi::class, 'update_question'])->name('kelola-deteksi.update');
+
+Route::delete('/kelola-deteksi/{pertanyaan}', [AdminDeteksi::class, 'destroy_question'])->name('kelola-deteksi.destroy');
+
+Route::get('/kelola-skor', [AdminDeteksi::class, 'index_score'])->name('kelola-skor.index');
+
+Route::get('/kelola-skor/create', [AdminDeteksi::class, 'create_score'])->name('kelola-skor.create');
+
+Route::post('/kelola-skor', [AdminDeteksi::class, 'store_score'])->name('kelola-skor.store');
+
 require __DIR__.'/auth.php';
 

@@ -20,7 +20,7 @@ class Pertanyaan extends Model
     public function kategori(){
         return $this->belongsTo(KategoriDeteksi::class, 'kategori_deteksi_id');
     }
-    public function pilihan_jawaban(): HasMany
+    public function pilihanJawaban(): HasMany
     {
         return $this->hasMany(PilihanJawaban::class);
     }

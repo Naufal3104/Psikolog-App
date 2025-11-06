@@ -2,30 +2,230 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
+use App\Models\InterpretasiSkor;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminDeteksi extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = KategoriDeteksi::orderBy('nama_kategori')->get();
+        // 1. Ambil semua kategori untuk filter dropdown
+        $semuaKategori = KategoriDeteksi::orderBy('nama_kategori')->get();
 
-        // 2. Ambil semua pertanyaan, urutkan berdasarkan KATEGORI, lalu berdasarkan urutan
-        $pertanyaan = Pertanyaan::with('kategori') // Eager load relasi 'kategori'
-                            ->orderBy('kategori_deteksi_id')
-                            ->orderBy('urutan') // Asumsi Anda punya kolom 'urutan'
-                            ->get();
-        
-        // 3. Hitung total untuk judul
-        $totalPertanyaan = $pertanyaan->count();
+        // 2. Mulai query pertanyaan, jangan panggil ->get() dulu
+        $query = Pertanyaan::with('kategori')
+            ->orderBy('kategori_deteksi_id')
+            ->orderBy('urutan');
 
-        // 4. Kirim semua data ke view
+        // 3. Terapkan filter PENCARIAN (request 'search')
+        $query->when($request->query('search'), function ($q, $search) {
+            // Cari di kolom 'teks_pertanyaan'
+            $q->where('teks_pertanyaan', 'like', "%{$search}%");
+        });
+
+        // 4. Terapkan filter KATEGORI (request 'kategori')
+        $query->when($request->query('kategori'), function ($q, $kategoriId) {
+            $q->where('kategori_deteksi_id', $kategoriId);
+        });
+
+        // 5. Eksekusi query dengan PAGINATE (50 data per halaman)
+        //    ->withQueryString() akan membuat link pagination mengingat
+        //    filter 'search' dan 'kategori' Anda.
+        $semuaPertanyaan = $query->paginate(50)->withQueryString();
+
+        // 6. Ambil total data (dari hasil pagination)
+        $totalPertanyaan = $semuaPertanyaan->total();
+
+        // 7. Kirim semua data ke view
         return view('admin.kelola-deteksi', [
-            'semuaPertanyaan' => $pertanyaan,
-            'semuaKategori' => $kategori,
+            'semuaPertanyaan' => $semuaPertanyaan, // Ini sekarang adalah Paginator object
+            'semuaKategori' => $semuaKategori,
             'totalPertanyaan' => $totalPertanyaan,
         ]);
+    }
+
+
+    public function create_question()
+    {
+        // Ambil kategori untuk dropdown
+        $kategoriDeteksi = KategoriDeteksi::orderBy('nama_kategori')->get();
+
+        // 2. Siapkan PETA URUTAN (Urutan Tertinggi per Kategori)
+        // Ini akan mengambil data seperti: ['kategori_id_A' => 5, 'kategori_id_B' => 2]
+        $urutanMap = Pertanyaan::select('kategori_deteksi_id', DB::raw('MAX(urutan) as max_urutan'))
+            ->groupBy('kategori_deteksi_id')
+            ->get()
+            ->pluck('max_urutan', 'kategori_deteksi_id');
+
+        return view('admin.tambah-pertanyaan', [
+            'kategoriDeteksi' => $kategoriDeteksi,
+
+            // 3. Kirim PETA URUTAN sebagai JSON ke view
+            'urutanMapJson' => $urutanMap->toJson(),
+        ]);
+    }
+
+    public function store_question(Request $request)
+    {
+        // 1. Validasi data (sama seperti update)
+        $validatedData = $request->validate([
+            'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
+            'teks_pertanyaan' => 'required|string',
+            'tipe_jawaban' => 'required|in:ya_tidak,rating_1_5',
+            'urutan' => 'required|integer',
+            'pilihan' => 'required|array',
+            'pilihan.*.teks' => 'required|string',
+            'pilihan.*.bobot' => 'required|integer',
+        ]);
+
+        // 2. Buat data pertanyaan baru
+        $pertanyaan = Pertanyaan::create([
+            'kategori_deteksi_id' => $validatedData['kategori_deteksi_id'],
+            'teks_pertanyaan' => $validatedData['teks_pertanyaan'],
+            'tipe_jawaban' => $validatedData['tipe_jawaban'],
+            'urutan' => $validatedData['urutan'],
+        ]);
+
+        // 3. Buat pilihan jawaban yang terkait
+        //    Loop ini hanya akan memproses 'pilihan' yang dikirim (bukan yang 'disabled')
+        foreach ($validatedData['pilihan'] as $dataPilihan) {
+            $pertanyaan->pilihanJawaban()->create([
+                'teks_jawaban' => $dataPilihan['teks'],
+                'bobot_nilai' => $dataPilihan['bobot'],
+            ]);
+        }
+
+        // 4. Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('kelola-deteksi.index')->with('success', 'Pertanyaan baru berhasil ditambahkan!');
+    }
+
+    public function edit_question(Pertanyaan $pertanyaan)
+    {
+        // 1. Eager load pilihan jawaban yang terkait dengan pertanyaan ini
+        $pertanyaan->load('pilihanJawaban');
+
+        // 2. Ambil semua kategori untuk mengisi dropdown
+        $kategoriDeteksi = KategoriDeteksi::orderBy('nama_kategori')->get();
+
+        // 3. Kirim data ke view
+        return view('admin.edit-pertanyaan', [
+            'pertanyaan' => $pertanyaan,
+            'kategoriDeteksi' => $kategoriDeteksi,
+        ]);
+    }
+
+    public function update_question(Request $request, Pertanyaan $pertanyaan)
+    {
+        // 1. Validasi (Ini sudah benar)
+        $validatedData = $request->validate([
+            'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
+            'teks_pertanyaan' => 'required|string',
+            'tipe_jawaban' => 'required|in:ya_tidak,rating_1_5',
+            'urutan' => 'required|integer',
+            'pilihan' => 'required|array',
+            'pilihan.*.teks' => 'required|string',
+            'pilihan.*.bobot' => 'required|integer',
+        ]);
+
+        // 2. Update data pertanyaan (INI PERBAIKANNYA)
+        // Kita update pertanyaan HANYA dengan data miliknya.
+        $pertanyaan->update([
+            'kategori_deteksi_id' => $validatedData['kategori_deteksi_id'],
+            'teks_pertanyaan' => $validatedData['teks_pertanyaan'],
+            'tipe_jawaban' => $validatedData['tipe_jawaban'],
+            'urutan' => $validatedData['urutan'],
+        ]);
+
+        // 3. Hapus SEMUA pilihan jawaban lama
+        $pertanyaan->pilihanJawaban()->delete();
+
+        // 4. Buat ulang pilihan jawaban berdasarkan data form yang baru
+        foreach ($validatedData['pilihan'] as $dataPilihan) {
+            $pertanyaan->pilihanJawaban()->create([
+                'teks_jawaban' => $dataPilihan['teks'],
+                'bobot_nilai' => $dataPilihan['bobot'],
+            ]);
+        }
+
+        // 5. Redirect
+        return redirect()->route('kelola-deteksi.index')->with('success', 'Pertanyaan berhasil diperbarui!');
+    }
+
+    public function destroy_question(Pertanyaan $pertanyaan)
+    {
+        $pertanyaan->delete();
+
+        return redirect()->back()->with('success', 'Pertanyaan berhasil dihapus!');
+    }
+
+    public function index_score(Request $request)
+    {
+        // 1. Ambil semua kategori untuk filter dropdown
+        $semuaKategori = KategoriDeteksi::orderBy('nama_kategori')->get();
+
+        // 2. Mulai query, eager load relasi 'kategori'
+        //    Urutkan berdasarkan kategori, lalu skor minimal (agar logis)
+        $query = InterpretasiSkor::with('kategori')
+                                ->orderBy('kategori_deteksi_id')
+                                ->orderBy('skor_minimal');
+
+        // 3. Terapkan filter PENCARIAN (berdasarkan 'teks_interpretasi')
+        $query->when($request->query('search'), function ($q, $search) {
+            $q->where('teks_interpretasi', 'like', "%{$search}%");
+        });
+
+        // 4. Terapkan filter KATEGORI
+        $query->when($request->query('kategori'), function ($q, $kategoriId) {
+            $q->where('kategori_deteksi_id', $kategoriId);
+        });
+
+        // 5. Paginate (kita gunakan 25 per halaman, 50 terlalu banyak untuk data ini)
+        //    withQueryString() akan mengingat filter saat pindah halaman
+        $semuaSkor = $query->paginate(25)->withQueryString();
+        
+        // 6. Ambil total data (dari hasil pagination)
+        $totalSkor = $semuaSkor->total();
+
+        // 7. Kirim semua data ke view
+        return view('admin.kelola-skor', [
+            'semuaSkor' => $semuaSkor,
+            'semuaKategori' => $semuaKategori,
+            'totalSkor' => $totalSkor,
+        ]);
+    }
+
+    public function create_score()
+    {
+        // Ambil semua kategori untuk mengisi dropdown
+        $kategoriDeteksi = KategoriDeteksi::orderBy('nama_kategori')->get();
+
+        return view('admin.tambah-skor', [
+            'kategoriDeteksi' => $kategoriDeteksi,
+        ]);
+    }
+
+    /**
+     * Menyimpan interpretasi skor baru ke database.
+     */
+    public function store_score(Request $request)
+    {
+        // 1. Validasi data
+        $validatedData = $request->validate([
+            'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
+            'teks_interpretasi' => 'required|string|max:255',
+            'skor_minimal' => 'required|integer|min:0',
+            // 'gte' = greater than or equal to (skor maks harus >= skor min)
+            'skor_maksimal' => 'required|integer|gte:skor_minimal', 
+            'deskripsi_hasil' => 'nullable|string',
+        ]);
+
+        // 2. Buat data baru
+        InterpretasiSkor::create($validatedData);
+
+        // 3. Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('kelola-skor.index')->with('success', 'Interpretasi skor baru berhasil ditambahkan!');
     }
 }

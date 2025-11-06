@@ -51,7 +51,7 @@
                                     {{ __('Kelola Pertanyaan') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link>
+                                <x-dropdown-link :href="route('kelola-skor.index')">
                                     {{ __('Interpretasi Skor') }}
                                 </x-dropdown-link>
                             </x-slot>
