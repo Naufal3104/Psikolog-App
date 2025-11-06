@@ -13,9 +13,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel.*')">
-                        {{ __('Artikel') }}
+                    <x-nav-link :href="route('artikel.create')" :active="request()->routeIs('artikel-admin.*')">
+                    {{ __('Artikel') }}
                     </x-nav-link>
+
 
                     <div
                         class="inline-flex items-center px-1 pt-1 border-b-2 
@@ -117,7 +118,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel.*')">
+            <x-responsive-nav-link :href="route('artikel.create')" :active="request()->routeIs('artikel.*')">
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
 

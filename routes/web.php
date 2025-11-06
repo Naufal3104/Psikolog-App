@@ -16,6 +16,14 @@ Route::get('/dashboard-dummy', function () {
     return view('dashboard-dummy');
 })->middleware(['auth', 'role:admin'])->name('dashboard.dummy');
 
+// 1. Rute untuk MENAMPILKAN halaman form "Tambah Post"
+// Ini akan merespons ke: GET http://127.0.0.1:8000/artikel-admin
+Route::get('/artikel-admin', [ArtikelController::class, 'create'])->name('artikel.create');
+
+// 2. Rute untuk MENYIMPAN data saat tombol "Terbitkan" diklik
+// Ini akan merespons ke: POST http://127.0.0.1:8000/artikel-admin
+// Nama 'artikel.store' di sini SANGAT PENTING agar sesuai dengan form Anda
+Route::post('/artikel-admin', [ArtikelController::class, 'store'])->name('artikel.store');
     //laravel breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
