@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\KategoriController;
+// use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +28,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/artikel/{id}', [AdminController::class, 'show_artikel'])->name('artikel.show');
 
     // Fitur lain
-    Route::get('/deteksi', [KategoriController::class, 'index'])->name('deteksi.index');
-    Route::get('/deteksi/{kategori}', [KategoriController::class, 'show'])->name('deteksi.show');
+    Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
+    Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
+    Route::post('/deteksi/process', [DeteksiDiniController::class, 'process'])->name('deteksi.process');
     Route::get('/tanya', fn () => view('fitur.tanya'))->name('tanya.index');
     Route::get('/video', fn () => view('fitur.video'))->name('video.index');
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');

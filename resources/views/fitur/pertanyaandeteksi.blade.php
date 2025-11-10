@@ -178,8 +178,37 @@
 
     <div class="bb ze ki xn 2xl:ud-px-0">
         <section class="centered-content">
+            {{-- AWAL BLOK PESAN SUKSES & ERROR --}}
+<div class="mb-4">
+    {{-- Pesan Sukses (Hijau) --}}
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
+
+    {{-- Pesan Error (Merah) --}}
+    @if (session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+
+    {{-- Pesan Error Validasi (Jika ada) --}}
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+            <strong class="font-bold">Terjadi kesalahan!</strong>
+            <ul class="mt-2 list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+{{-- AKHIR BLOK PESAN SUKSES & ERROR --}}
             {{-- Form akan mengirim data ke rute 'deteksi.submit' --}}
-            <form action"" method="POST" class="detection-card">
+            <form action="{{ route('deteksi.process') }}" method="POST" class="detection-card">
                 @csrf
                 {{-- Input tersembunyi untuk mengirim ID kategori, penting untuk proses di backend --}}
                 <input type="hidden" name="kategori_id" value="{{ $kategori->id }}">
