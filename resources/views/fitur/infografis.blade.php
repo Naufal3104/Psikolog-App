@@ -23,6 +23,7 @@
     x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
     :class="{ 'b eh': darkMode }"
 >
+
     <x-layout.navbar />
     <main>
         <section class="i pg fh rm ki xn vq gj qp gr hj rp hr">
