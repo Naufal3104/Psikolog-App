@@ -81,7 +81,7 @@
 
 @section('content')
 
-    <div class="bb ze ki xn 2xl:ud-px-0">
+    <div class="bb ze ki xn 2xl:ud-px-0 jb">
         <section class="centered-content">
             <div class="consultation-card">
                 <div class="card-header">

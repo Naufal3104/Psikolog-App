@@ -22,7 +22,7 @@ return new class extends Migration
 
         // Tabel artikel
         Schema::create('artikel', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 144)->primary();
             $table->string('judul');
             $table->string('slug')->unique();
             $table->text('isi');
@@ -34,17 +34,6 @@ return new class extends Migration
             $table->foreign('penulis_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // Tabel deteksi_dini
-        Schema::create('deteksi_dini', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('form_id')->unsigned();
-            $table->integer('skor');
-            $table->string('hasil');
-            $table->timestamp('tanggal_deteksi');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
 
         // Tabel tanya_jawab
         Schema::create('tanya_jawab', function (Blueprint $table) {
@@ -59,6 +48,15 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('psikiater_id')->references('id')->on('users')->onDelete('set null');
+        });
+
+        Schema::create('balasan_tanya_jawab', function(Blueprint $table){
+            $table->id();
+            $table->bigInteger('tanya_jawab_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->string('isi_balasan');
+            $table->foreign('tanya_jawab_id')->references('id')->on('tanya_jawab')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         // Tabel video
@@ -84,6 +82,60 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('penulis_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        Schema::create('kategori_deteksi', function (Blueprint $table) {
+            $table->string('id', 144)->primary();
+            $table->string('nama_kategori');
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('pertanyaan', function (Blueprint $table) {
+            $table->id();
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
+            $table->text('teks_pertanyaan');
+            $table->enum('tipe_jawaban', ['ya_tidak', 'rating_1_5']);
+            $table->unsignedInteger('urutan')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('pilihan_jawaban', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('pertanyaan_id')->constrained('pertanyaan')->onDelete('cascade');
+            $table->string('teks_jawaban');
+            $table->integer('bobot_nilai');
+            $table->timestamps();
+        });
+
+        Schema::create('hasil_deteksi', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
+            $table->decimal('total_skor', 8, 2); 
+            $table->string('interpretasi_hasil');
+            $table->timestamps();
+        });
+
+        Schema::create('jawaban_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hasil_deteksi_id')->constrained('hasil_deteksi')->onDelete('cascade');
+            $table->foreignId('pertanyaan_id')->constrained('pertanyaan');
+            $table->foreignId('pilihan_jawaban_id')->constrained('pilihan_jawaban');
+            $table->timestamps();
+        });
+
+        Schema::create('interpretasi_skor', function (Blueprint $table) {
+            $table->id();
+            $table->string('kategori_deteksi_id', 144);
+            $table->foreign('kategori_deteksi_id')->references('id')->on('kategori_deteksi')->onDelete('cascade');            
+            $table->integer('skor_minimal');
+            $table->integer('skor_maksimal');
+            $table->string('teks_interpretasi');
+            $table->text('deskripsi_hasil')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -94,8 +146,13 @@ return new class extends Migration
         Schema::dropIfExists('infografis');
         Schema::dropIfExists('video');
         Schema::dropIfExists('tanya_jawab');
-        Schema::dropIfExists('deteksi_dini');
         Schema::dropIfExists('artikel');
         Schema::dropIfExists('konsultasi');
+        Schema::dropIfExists('interpretasi_skor');
+        Schema::dropIfExists('jawaban_user');
+        Schema::dropIfExists('hasil_deteksi');
+        Schema::dropIfExists('pilihan_jawaban');
+        Schema::dropIfExists('pertanyaan');
+        Schema::dropIfExists('kategori_deteksi');
     }
 };

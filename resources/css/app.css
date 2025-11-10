@@ -1,3 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ================================================================
+ TAMBAHKAN SEMUA KODE DI BAWAH INI
+================================================================
+*/
+@import './style.css';
+@layer components {
+    /* Kelas @apply Anda dari <style> dipindahkan ke sini */
+    .admin-card {
+        @apply bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100;
+    }
+
+    .admin-input {
+        /* Menggunakan warna 'rsud-blue' yang didaftarkan di config */
+        @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rsud-blue focus:border-rsud-blue transition duration-150;
+    }
+
+    /* Style sidebar Anda */
+    .sidebar { 
+        transition: width 0.3s ease; 
+    }
+    .sidebar-closed { 
+        width: 80px !important; 
+    }
+    .sidebar-closed .sidebar-menu a span, 
+    .sidebar-closed .sidebar-menu h3, 
+    .sidebar-closed h3 { 
+        opacity: 0; 
+        visibility: hidden; 
+        width: 0; 
+        white-space: nowrap; 
+        transition: opacity 0.1s, visibility 0.1s, width 0.1s;
+    }
+    .sidebar-closed .sidebar-menu a { 
+        @apply justify-center; 
+    }
+    .sidebar-closed .sidebar-menu a svg { 
+        margin-right: 0 !important; 
+    }
+
+    /* Mengganti variabel PHP {{ $... }} dengan fungsi theme() Tailwind.
+      Ini adalah cara yang benar untuk merujuk ke config Anda.
+    */
+    .sidebar-menu a.active { 
+        background-color: theme('colors.rsud-blue-light') !important; 
+        @apply text-white !important;
+    }
+    .sidebar-menu a:not(.active) { 
+        color: theme('colors.rsud-blue') !important;
+    }
+    .sidebar-menu a:not(.active):hover {
+        @apply bg-gray-100; /* bg-gray-100 adalah #f3f4f6 */
+        color: theme('colors.rsud-blue') !important;
+    }
+}

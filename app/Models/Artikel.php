@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Artikel extends Model
 {
-    use HasFactory;
+    use HasFactory,HasUlids;
+    
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'judul',
@@ -18,7 +24,7 @@ class Artikel extends Model
         'keterangan_gambar',
         'views',
     ];
-
+    protected $table = 'artikel';
     // Relasi dengan model User (penulis)
     public function penulis()
     {

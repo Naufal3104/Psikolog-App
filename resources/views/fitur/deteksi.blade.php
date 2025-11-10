@@ -89,7 +89,7 @@
 
 @section('content')
 
-    <div class="bb ze ki xn 2xl:ud-px-0">
+    <div class="bb ze ki xn 2xl:ud-px-0 jb">
         <section class="centered-content">
             <div class="detection-card">
                 
@@ -98,32 +98,12 @@
                 </div>
 
                 <div style="padding: 0;">
-                    
-                    <a href="{{ route('deteksi.stress') }}" class="menu-item-link">
-                        <span class="item-text">Kenali Tingkat Stress</span>
-                        <i data-feather="chevron-right" class="arrow-icon"></i>
-                    </a>
-
-                    <a href="{{ route('deteksi.kesejahteraan') }}" class="menu-item-link">
-                        <span class="item-text">Kesejahteraan Psikologis</span>
-                        <i data-feather="chevron-right" class="arrow-icon"></i>
-                    </a>
-                    
-                    <a href="{{ route('deteksi.belajar') }}" class="menu-item-link">
-                        <span class="item-text">Gejala Kesukaran Belajar</span>
-                        <i data-feather="chevron-right" class="arrow-icon"></i>
-                    </a>
-
-                    <a href="{{ route('deteksi.nikah') }}" class="menu-item-link">
-                        <span class="item-text">Kesiapan Pernikahan</span>
-                        <i data-feather="chevron-right" class="arrow-icon"></i>
-                    </a>
-
-                    <a href="{{ route('deteksi.putuscinta') }}" class="menu-item-link">
-                        <span class="item-text">Putus Cinta</span>
-                        <i data-feather="chevron-right" class="arrow-icon"></i>
-                    </a>
-                    
+                    @foreach ($kategori_deteksi as $item)
+                        <a href="{{ route('deteksi.show', $item->id) }}" class="menu-item-link">
+                            <span class="item-text">{{ $item->nama_kategori }}</span>
+                            <i data-feather="chevron-right" class="arrow-icon"></i>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </section>

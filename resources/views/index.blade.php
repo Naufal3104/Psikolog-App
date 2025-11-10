@@ -14,20 +14,13 @@
 </head>
 
 <body
-  x-data="{
-      page: 'home',
-      darkMode: true,
-      stickyMenu: false,
-      navigationOpen: false,
-      scrollTop: false,
-      sidebarOpen: false   // <— penting
-  }"
-  x-init="
-      darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-      $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
-  "
-  :class="{ 'b eh': darkMode === true }"
-  x-cloak
+     x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }"
+    x-init="
+        darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
+        $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
+    "
+    x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
+    :class="{ 'b eh': darkMode }"
 >
     <x-layout.navbar />
 
@@ -80,7 +73,7 @@
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <a href="{{ route('artikel.index') }}">
+                        <a href="{{ route('artikel-publik.index') }}">
                             <img class="ce ed" src="{{ asset('images/newspaper-svgrepo-com.svg') }}" alt="Artikel" />
                             <h4 class="ek zj kk wm nb _b">Artikel</h4>
                             <p>Informasi dan tips seputar psikologi dan kesejahteraan.</p>

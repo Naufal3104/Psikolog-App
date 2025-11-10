@@ -9,7 +9,9 @@ class DeteksiDiniController extends Controller
 {
     public function index()
     {
-        return response()->json(DeteksiDini::all());
+        return view('fitur.deteksi', [
+            'kategori_deteksi' => KategoriDeteksi::all()
+        ]);
     }
 
     public function store(Request $request)
