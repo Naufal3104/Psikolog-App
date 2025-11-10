@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
     // Cek role user
     if (auth()->user()->hasRole('admin')) {
-        return redirect('/dashboard-dummy');
+        return redirect()->route('dashboard.index');
     }
 
     // Kalau bukan admin, arahkan ke halaman biasa

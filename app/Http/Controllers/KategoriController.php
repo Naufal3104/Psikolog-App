@@ -16,7 +16,7 @@ class KategoriController extends Controller
 
     public function show(KategoriDeteksi $kategori)
     {
-        $kategori->load('pertanyaan.pilihan_jawaban');
+        $kategori->load('pertanyaan.pilihanJawaban');
         return view('fitur.pertanyaandeteksi', ['kategori' => $kategori]);
     }
 }

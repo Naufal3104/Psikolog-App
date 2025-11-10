@@ -2,37 +2,29 @@
     {{-- 1. HEADER HALAMAN --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Tambahkan Pos Baru') }}
+            {{ __('Edit Artikel') }}
         </h2>
     </x-slot>
 
     {{-- 2. KONTEN UTAMA HALAMAN --}}
-    {{-- PERBAIKAN: Menggunakan div 'py-12' Bawaan Breeze --}}
     <div class="py-12">
-        {{-- PERBAIKAN: Menggunakan container standar Breeze 'max-w-7xl' --}}
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            {{-- PERBAIKAN: <form> sekarang membungkus grid --}}
-            <form method="POST" action="{{ route('artikel.store') }}" enctype="multipart/form-data">
+            
+            {{-- Form diubah ke rute update dengan method PUT --}}
+            <form method="POST" action="{{ route('artikel.update', $artikel->id) }}" enctype="multipart/form-data">
                 @csrf
-
-                {{-- 
-                  PERBAIKAN: 
-                  - Grid dipindahkan ke dalam <form>.
-                  - Diubah menjadi 3 kolom (lg:grid-cols-3).
-                  - 'gap-6' (bukan 8) agar lebih pas di layout Breeze.
-                --}}
+                @method('PUT')
+                
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
+                    
                     {{-- Kolom Utama (Isi Post) --}}
-                    {{-- PERBAIKAN: Diubah ke 'lg:col-span-2' agar mengambil 2/3 lebar --}}
-                    <div
-                        class="lg:col-span-2 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-
+                    <div class="lg:col-span-2 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                        
                         {{-- Judul --}}
                         <x-input-label for="title" :value="__('Judul Artikel')" />
                         <x-text-input id="title" name="title" type="text" class="w-full text-2xl font-bold"
-                            {{-- Ukuran font tetap besar --}} placeholder="Tambahkan judul" :value="old('title')" required />
+                        placeholder="Tambahkan judul" required 
+                        value="{{ old('title', $artikel->judul) }}"/>
                         <x-input-error :messages="$errors->get('title')" class="mt-2" />
 
                         {{-- Bagian SLUG --}}
@@ -45,61 +37,63 @@
                                   - Warna teks disesuaikan
                                 --}}
                                 class="flex-1 text-sm text-gray-700 dark:text-gray-300 border-none p-0 focus:ring-0 bg-transparent"
-                                placeholder="slug-akan-muncul-disini">
+                                placeholder="slug-akan-muncul-disini"
+                                value="{{ old('slug', $artikel->slug) }}">
                         </div>
 
                         {{-- Editor Konten --}}
                         {{-- PERBAIKAN: Dibungkus div agar ada margin-top --}}
                         <div class="mt-4 border border-gray-200 dark:border-gray-700 rounded-md">
                             <textarea id="editor" name="content" placeholder="Tulis isi pos di sini..." rows="20"
-                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500">{{ old('content', $artikel->isi) }}</textarea>
                         </div>
                     </div>
 
                     {{-- Sidebar Kanan (Disederhanakan) --}}
-                    {{-- PERBAIKAN: Diubah ke 'lg:col-span-1' agar mengambil 1/3 lebar --}}
                     <div class="lg:col-span-1 space-y-6">
 
                         {{-- Panel Terbitkan --}}
-                        <div
-                            class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Terbitkan</h3>
-                            <button type="submit" {{-- Tombol submit diganti --}}
+                        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                             <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Perbarui</h3>
+                            <button type="submit" 
                                 class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                Terbitkan
+                                Perbarui
                             </button>
                         </div>
-
+                        
                         {{-- Panel Gambar Unggulan --}}
-                        <div
-                            class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                             <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Gambar Unggulan</h3>
+                            
+                            <input type="file" id="featured_image" name="featured_image" class="hidden" accept="image/*">
 
-                            <input type="file" id="featured_image" name="featured_image" class="hidden"
-                                accept="image/*">
+                            {{-- Tampilkan gambar yang ada saat ini --}}
+                            <div id="image_current_container" class="{{ $artikel->gambar ? '' : 'hidden' }} mb-4">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Gambar Saat Ini:</label>
+                                <img id="image_current" src="{{ $artikel->gambar ? Storage::url($artikel->gambar) : '' }}" alt="Gambar saat ini" class="w-full rounded-lg border border-gray-300 dark:border-gray-600 mt-2">
+                            </div>
 
-                            {{-- PERBAIKAN: Tombol diubah ke secondary button style --}}
-                            <button type="button" id="upload_button"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
-                                Unggah Gambar
-                            </button>
-
+                            {{-- Preview untuk gambar baru --}}
                             <div id="image_preview_container" class="hidden mt-4">
-                                <img id="image_preview" src="" alt="Image Preview"
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600">
-                                <button type="button" id="remove_image_button"
-                                    class="w-full text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 mt-2 text-center">
-                                    Hapus Gambar
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pratinjau Gambar Baru:</label>
+                                <img id="image_preview" src="" alt="Image Preview" class="w-full rounded-lg border border-gray-300 dark:border-gray-600">
+                                <button type="button" id="remove_image_button" class="w-full text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 mt-2 text-center">
+                                    Batal Ganti Gambar
                                 </button>
                             </div>
+
+                            <button type="button" id="upload_button" class="w-full inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
+                                Ganti Gambar
+                            </button>
                         </div>
 
                         {{-- Panel Caption Gambar --}}
-                        <div
-                            class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
                             <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Caption Gambar</h3>
-                            <textarea name="image_caption" rows="3" placeholder="Tulis caption untuk gambar unggulan..."
-                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                            <textarea name="image_caption" 
+                                rows="3"
+                                placeholder="Tulis caption untuk gambar unggulan..."
+                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500">{{ old('keterangan_gambar', $artikel->keterangan_gambar) }}</textarea>
                         </div>
 
                     </div>
@@ -108,37 +102,30 @@
         </div>
     </div>
 
-    {{-- 
-      BLOK SCRIPT ANDA (TIDAK DIUBAH SAMA SEKALI)
-    --}}
-    {{-- CKEditor --}}
+    {{-- BLOK SCRIPT (DIMODIFIKASI UNTUK MENANGANI GAMBAR LAMA/BARU) --}}
     <script src="https://cdn.ckeditor.com/4.25.1-lts/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('editor', {
             height: 600
         });
     </script>
-
-    {{-- Script untuk generate SLUG --}}
     <script>
         const titleInput = document.getElementById('title');
         const slugInput = document.getElementById('slug');
 
         const slugify = (text) => {
             return text.toString().toLowerCase()
-                .replace(/\s+/g, '-') // Ganti spasi dengan -
-                .replace(/[^\w\-]+/g, '') // Hapus karakter non-alfanumerik
-                .replace(/\-\-+/g, '-') // Ganti -- dengan -
-                .replace(/^-+/, '') // Hapus - di awal
-                .replace(/-+$/, ''); // Hapus - di akhir
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
         };
 
         titleInput.addEventListener('keyup', (e) => {
             slugInput.value = slugify(e.target.value);
         });
     </script>
-
-    {{-- Script untuk preview gambar --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('featured_image');
@@ -146,6 +133,7 @@
             const previewContainer = document.getElementById('image_preview_container');
             const imagePreview = document.getElementById('image_preview');
             const removeButton = document.getElementById('remove_image_button');
+            const currentContainer = document.getElementById('image_current_container'); // Ambil container gambar lama
 
             uploadButton.addEventListener('click', () => {
                 fileInput.click();
@@ -159,6 +147,9 @@
                         imagePreview.setAttribute('src', event.target.result);
                         previewContainer.classList.remove('hidden');
                         uploadButton.classList.add('hidden');
+                        if (currentContainer) {
+                             currentContainer.classList.add('hidden'); // Sembunyikan gambar lama
+                        }
                     }
                     reader.readAsDataURL(file);
                 }
@@ -169,6 +160,9 @@
                 imagePreview.setAttribute('src', '');
                 previewContainer.classList.add('hidden');
                 uploadButton.classList.remove('hidden');
+                if (currentContainer) {
+                    currentContainer.classList.remove('hidden'); // Tampilkan lagi gambar lama
+                }
             });
         });
     </script>

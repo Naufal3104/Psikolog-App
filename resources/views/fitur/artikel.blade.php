@@ -12,7 +12,7 @@
                             @if ($item->gambar == null)
                                 <div class="h r s vd yc qh"></div>
                             @else
-                                <img src="{{ asset('storage/img' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
+                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
                                     class="h r s vd yc" style="object-fit: cover;" />
                             @endif
 

@@ -13,17 +13,17 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('artikel.create')" :active="request()->routeIs('artikel-admin.*')">
-                    {{ __('Artikel') }}
+                    <x-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel-admin.*')">
+                        {{ __('Artikel') }}
                     </x-nav-link>
 
 
                     <div
                         class="inline-flex items-center px-1 pt-1 border-b-2 
-                {{ request()->routeIs('kelola-deteksi.*') || request()->routeIs('interpretasi.*')
-                    ? 'border-indigo-400 dark:border-indigo-600'
-                    : 'border-transparent' }} 
-                transition duration-150 ease-in-out">
+                        {{ request()->routeIs('kelola-deteksi.*') || request()->routeIs('interpretasi.*')
+                        ? 'border-indigo-400 dark:border-indigo-600'
+                        : 'border-transparent' }} 
+                        transition duration-150 ease-in-out">
 
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
@@ -55,9 +55,16 @@
                                 <x-dropdown-link :href="route('kelola-skor.index')">
                                     {{ __('Interpretasi Skor') }}
                                 </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('kelola-riwayat.index')">
+                                    {{ __('Riwayat Deteksi') }}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    <x-nav-link :href="route('tanya.index')" :active="request()->routeIs('tanya.*')">
+                        {{ __('Tanya Jawab') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -118,7 +125,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('artikel.create')" :active="request()->routeIs('artikel.*')">
+            <x-responsive-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel.*')">
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
 

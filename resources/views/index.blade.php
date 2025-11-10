@@ -73,7 +73,7 @@
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <a href="{{ route('artikel.index') }}">
+                        <a href="{{ route('artikel-publik.index') }}">
                             <img class="ce ed" src="{{ asset('images/newspaper-svgrepo-com.svg') }}" alt="Artikel" />
                             <h4 class="ek zj kk wm nb _b">Artikel</h4>
                             <p>Informasi dan tips seputar psikologi dan kesejahteraan.</p>

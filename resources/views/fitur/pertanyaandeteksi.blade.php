@@ -207,7 +207,7 @@
                             </label>
 
                             {{-- Lakukan perulangan untuk setiap pilihan jawaban dari pertanyaan saat ini --}}
-                            @foreach ($pertanyaan->pilihan_jawaban as $pilihan)
+                            @foreach ($pertanyaan->pilihanJawaban as $pilihan)
                                 <label for="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}" class="radio-option">
                                     <input type="radio" id="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}"
                                         name="jawaban[{{ $pertanyaan->id }}]" value="{{ $pilihan->id }}"
