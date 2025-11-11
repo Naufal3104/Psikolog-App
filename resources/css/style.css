@@ -1781,3 +1781,26 @@
         }
     }
 }
+
+/* Smooth animation for floating shapes */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Ensure text remains readable on all backgrounds */
+@media (max-width: 640px) {
+    .fk.vj.zp.or.kk.wm.wb {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+    }
+}

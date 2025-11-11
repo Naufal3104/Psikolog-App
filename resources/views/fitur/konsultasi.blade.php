@@ -1,46 +1,59 @@
 @extends('layouts.main')
-
-@section('title', 'Konsultasi Psikolog - RSUD Jombang')
-@section('page-slug', 'konsultasi')
+@section('title', 'Tanya')
 
 @push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <style>
-        
         .centered-content {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 200px); 
-            
-            padding: 40px 0; 
+            min-height: calc(100vh - 200px);
+            padding: 120px 20px 60px 20px; /* Tambah padding top untuk spacing dari header */
             width: 100%;
         }
 
-        .icon-small {
-            /* ... */
+        /* Responsive padding untuk mobile */
+        @media (max-width: 768px) {
+            .centered-content {
+                padding: 100px 20px 40px 20px;
+            }
         }
+
         .consultation-card {
             max-width: 400px;
             width: 90%;
             background-color: white;
             border-radius: 24px;
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2),
+                        0 8px 10px -4px rgba(0, 0, 0, 0.08);
             border: 1px solid #e5e7eb;
             overflow: hidden;
             transition: all 0.3s ease;
-            .eh & {
-                background-color: #1f2937 !important;
-                border-color: #4b5563 !important;
-            }
         }
+
+        .consultation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.25),
+                        0 10px 15px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .eh .consultation-card {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+        }
+
         .card-header {
-            background-color: #004780 !important; 
+            background-color: #004780 !important;
             color: white;
             padding: 1.5rem;
             text-align: center;
             border-top-left-radius: 23px;
             border-top-right-radius: 23px;
         }
+
         .whatsapp-button {
             display: inline-flex;
             align-items: center;
@@ -51,12 +64,16 @@
             color: white;
             font-weight: 600;
             text-decoration: none;
-            transition: background-color 0.15s ease-in-out;
+            transition: all 0.3s ease;
             gap: 10px;
         }
+
         .whatsapp-button:hover {
             background-color: #0c7a5f !important;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(16, 168, 132, 0.3);
         }
+
         .badge {
             display: inline-flex;
             align-items: center;
@@ -67,54 +84,68 @@
             font-size: 0.875rem;
             color: #6b7280;
             margin: 4px;
-            .eh & {
-                background-color: #374151;
-                border-color: #4b5563;
-                color: #d1d5db;
-            }
-            .eh & .icon-small {
-                color: #93c5fd;
-            }
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .eh .badge {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #d1d5db;
+        }
+
+        .eh .badge .icon-small {
+            color: #93c5fd;
+        }
+
+        .icon-small {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
         }
     </style>
 @endpush
 
 @section('content')
 
-    <div class="bb ze ki xn 2xl:ud-px-0 jb">
-        <section class="centered-content">
-            <div class="consultation-card">
-                <div class="card-header">
-                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Konsultasi Psikolog</h2>
-                </div>
-                <div style="padding: 32px 24px;">
-                    <p style="text-align: center; margin-bottom: 32px; color: #4b5563;" class="dark:text-gray-300">
-                        Dapatkan layanan konsultasi psikologi via WhatsApp bersama psikolog profesional!
-                    </p>
-                    <div style="text-align: center; margin-bottom: 32px;">
-                        <a href="https://wa.me/nomorwhatsappanda" target="_blank" class="whatsapp-button">
-                            <i class="fab fa-whatsapp" style="font-size: 20px;"></i> 
-                            KLIK DISINI
-                        </a>
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 0.875rem; color: #6b7280;">
-                        <span class="badge">
-                            <i data-feather="lock" class="icon-small"></i>
-                            Privasi Terjamin
-                        </span>
-                        <span class="badge">
-                            <i data-feather="clock" class="icon-small"></i>
-                            Respon Cepat
-                        </span>
-                        <span class="badge">
-                            <i data-feather="user-check" class="icon-small"></i>
-                            Psikolog Berpengalaman
-                        </span>
-                    </div>
-                </div>
+<x-layout.navbar />
+
+<div class="centered-content">
+    <div class="consultation-card">
+        <div class="card-header">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Konsultasi Psikolog</h2>
+        </div>
+        <div style="padding: 32px 24px;">
+            <p style="text-align: center; margin-bottom: 32px; color: #4b5563;" class="dark:text-gray-300">
+                Dapatkan layanan konsultasi psikologi via WhatsApp bersama psikolog profesional!
+            </p>
+            <div style="text-align: center; margin-bottom: 32px;">
+                <a href="https://wa.me/nomorwhatsappanda" target="_blank" class="whatsapp-button">
+                    <i class="fab fa-whatsapp" style="font-size: 20px;"></i> 
+                    KLIK DISINI
+                </a>
             </div>
-        </section>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 0.875rem; color: #6b7280;">
+                <span class="badge">
+                    <i data-feather="lock" class="icon-small"></i>
+                    Privasi Terjamin
+                </span>
+                <span class="badge">
+                    <i data-feather="clock" class="icon-small"></i>
+                    Respon Cepat
+                </span>
+                <span class="badge">
+                    <i data-feather="user-check" class="icon-small"></i>
+                    Psikolog Berpengalaman
+                </span>
+            </div>
+        </div>
     </div>
+</div>
 
 @endsection
 

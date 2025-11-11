@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-// use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 require __DIR__.'/auth.php';
 
@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
     // Fitur lain
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
     Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
-    Route::post('/deteksi/process', [DeteksiDiniController::class, 'process'])->name('deteksi.process');
+    Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
     Route::get('/tanya', fn () => view('fitur.tanya'))->name('tanya.index');
     Route::get('/video', fn () => view('fitur.video'))->name('video.index');
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
@@ -64,7 +64,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kelola-skor', [AdminController::class, 'skor_index'])->name('kelola-skor.index');
         Route::get('/kelola-skor/create', [AdminController::class, 'skor_create'])->name('kelola-skor.create');
         Route::post('/kelola-skor', [AdminController::class, 'skor_store'])->name('kelola-skor.store');
-        // (Anda bisa menambahkan rute edit/update/destroy untuk skor di sini)
 
         // Riwayat Deteksi
         Route::get('/riwayat-deteksi', [AdminController::class, 'riwayat_index'])->name('kelola-riwayat.index');

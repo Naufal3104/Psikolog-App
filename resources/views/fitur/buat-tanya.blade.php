@@ -1,17 +1,24 @@
 @extends('layouts.main')
-
-@section('title', 'Buat Pertanyaan Baru - Tanya Psikolog')
-@section('page-slug', 'buat-pertanyaan-psikolog')
+@section('title', 'Tanya')
 
 @push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <style>
         .centered-content {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: calc(100vh - 100px); 
-            padding: 40px 0; 
+            padding: 120px 20px 60px 20px;
             width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .centered-content {
+                padding: 100px 20px 40px 20px;
+            }
         }
 
         .consultation-card {
@@ -90,6 +97,8 @@
 
 @section('content')
 
+<x-layout.navbar />
+
     <div class="bb ze ki xn 2xl:ud-px-0">
         <section class="centered-content">
             <div class="consultation-card">
@@ -141,3 +150,11 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    </script>
+@endpush
