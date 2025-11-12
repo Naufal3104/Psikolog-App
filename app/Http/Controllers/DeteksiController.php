@@ -28,6 +28,7 @@ class DeteksiController extends Controller
     }
     public function process(Request $request): RedirectResponse
     {
+        // dd($request->all());
         // 1. Validasi Input
         // (Kita asumsikan 'nama' adalah 'nullable' jika user tidak login)
         $validatedData = $request->validate([

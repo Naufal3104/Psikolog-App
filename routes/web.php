@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
 
     // Route POST
-    Route::post('/deteksi/process', fn (Request $request) => back()->with('success', 'Hasil deteksi berhasil diproses!'))->name('deteksi.process');
     Route::get('/buat-tanya', fn () => view('fitur.buat-tanya'))->name('buat.tanya');
     Route::post('/tanya', fn (Request $request) => back()->with('success', 'Pertanyaan berhasil dikirim!'))->name('tanya.store');
 
