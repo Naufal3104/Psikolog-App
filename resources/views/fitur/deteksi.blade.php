@@ -1,9 +1,10 @@
 @extends('layouts.main')
-
-@section('title', 'Deteksi Dini Psikologis - RSUD Jombang')
-@section('page-slug', 'deteksi')
+@section('title', 'Deteksi Dini')
 
 @push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <style>
         .centered-content {
             display: flex;
@@ -88,6 +89,8 @@
 @endpush
 
 @section('content')
+
+<x-layout.navbar />
 
     <div class="bb ze ki xn 2xl:ud-px-0 jb">
         <section class="centered-content">
