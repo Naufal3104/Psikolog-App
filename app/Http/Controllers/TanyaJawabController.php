@@ -12,13 +12,14 @@ class TanyaJawabController extends Controller
      * Tampilkan semua pertanyaan (fitur.tanya)
      */
     public function index()
-    {
-        $tanyaJawab = TanyaJawab::with(['user', 'psikiater'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+{
+    $tanya = TanyaJawab::with(['user', 'psikiater'])
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        return view('fitur.tanya', compact('tanyaJawab'));
-    }
+    return view('fitur.tanya', compact('tanya'));
+}
+
 
     /**
      * Form untuk membuat pertanyaan baru (fitur.buat-tanya)
