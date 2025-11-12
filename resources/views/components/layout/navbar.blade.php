@@ -16,7 +16,7 @@
                         <input type="checkbox" :checked="darkMode" @change="darkMode = !darkMode"
                             class="pf vd yc uk h r za ab" />
                         <svg :class="{
-                            'wn': page === 'home' && !stickyMenu && darkMode,
+                            'wn': !stickyMenu && darkMode,
                             'xh': page === 'home' && stickyMenu
                         }"
                             class="th om" width="25" height="25" viewBox="0 0 25 25" fill="none"

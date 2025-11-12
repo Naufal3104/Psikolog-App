@@ -10,7 +10,8 @@
 
     <link rel="icon" href="favicon.ico">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="../assets/styles/style.css" />
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -27,8 +28,7 @@
     @stack('styles')
 </head>
 
-<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }"
-x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }">
     <x-layout.navbar />
     <main>

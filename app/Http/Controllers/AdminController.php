@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -237,6 +238,50 @@ class AdminController extends Controller
         return redirect()->route('kelola-skor.index')->with('success', 'Interpretasi skor baru berhasil ditambahkan!');
     }
 
+    public function edit_score(InterpretasiSkor $skor)
+    {
+        // Ambil semua kategori untuk dropdown
+        $kategoriDeteksi = KategoriDeteksi::orderBy('nama_kategori')->get();
+
+        return view('admin.edit-skor', [
+            'skor' => $skor, // Kirim data skor yang akan diedit
+            'kategoriDeteksi' => $kategoriDeteksi,
+        ]);
+    }
+
+    /**
+     * Memperbarui interpretasi skor di database.
+     */
+    public function update_score(Request $request, InterpretasiSkor $skor)
+    {
+        // 1. Validasi data
+        $validatedData = $request->validate([
+            'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
+            'teks_interpretasi' => 'required|string|max:255',
+            'skor_minimal' => 'required|integer|min:0',
+            'skor_maksimal' => 'required|integer|gte:skor_minimal', 
+            'deskripsi_hasil' => 'nullable|string',
+        ]);
+
+        // 2. Update data
+        $skor->update($validatedData);
+
+        // 3. Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('kelola-skor.index')->with('success', 'Interpretasi skor berhasil diperbarui!');
+    }
+
+    /**
+     * Menghapus interpretasi skor dari database.
+     */
+    public function destroy_score(InterpretasiSkor $interpretasiSkor)
+    {
+        // 1. Hapus data
+        $interpretasiSkor->delete();
+
+        // 2. Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('kelola-skor.index')->with('success', 'Interpretasi skor berhasil dihapus!');
+    }
+
     public function index_riwayat(Request $request)
     {
         // 1. Ambil kategori untuk filter
@@ -349,7 +394,7 @@ class AdminController extends Controller
         ]);
 
         // 4. Redirect ke index admin
-        return redirect()->route('admin.artikel.index')->with('success', 'Artikel baru berhasil ditambahkan.');
+        return redirect()->route('artikel.index')->with('success', 'Artikel baru berhasil ditambahkan.');
     }
 
     /**
