@@ -1,7 +1,5 @@
 @extends('layouts.main')
-
-@section('title', 'Buat Pertanyaan Baru - Tanya Psikolog')
-@section('page-slug', 'buat-pertanyaan-psikolog')
+@section('title', 'Tanya')
 
 @push('styles')
 <style>
@@ -13,6 +11,24 @@
         padding: 40px 0;
         width: 100%;
     }
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    <style>
+        .centered-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 100px); 
+            padding: 120px 20px 60px 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .centered-content {
+                padding: 100px 20px 40px 20px;
+            }
+        }
 
     .consultation-card {
         max-width: 450px;
@@ -112,6 +128,26 @@
                         @enderror
                     </div>
 
+<x-layout.navbar />
+
+    <div class="bb ze ki xn 2xl:ud-px-0">
+        <section class="centered-content">
+            <div class="consultation-card">
+                <div class="card-header">
+                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Buat Pertanyaan</h2>
+                </div>
+                
+                <form action="{{ route('tanya.store') }}" method="POST">
+                    @csrf 
+                    <div style="padding: 24px;">
+                        
+                        <div class="form-group">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" id="name" name="name" class="form-input" 
+                                placeholder="Masukkan nama anda" required value="{{ old('name') }}">
+                            @error('name') <span style="color: red; font-size: 0.875rem;">{{ $message }}</span> @enderror
+                        </div>
+
                     <div class="form-group">
                         <label for="kategori" class="form-label">Kategori (Opsional)</label>
                         <input type="text" id="kategori" name="kategori" class="form-input"
@@ -129,3 +165,11 @@
     </section>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    </script>
+@endpush
