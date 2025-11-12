@@ -137,7 +137,7 @@
                 
                 <div style="padding: 24px;">
                     <div style="margin-bottom: 24px;">
-                        <a href="{{ route('buat.tanya') }}" class="ask-button">
+                        <a href="{{ route('tanya.create') }}"  class="ask-button">
                             <i data-feather="plus" style="width: 20px; height: 20px;"></i> 
                             Buat Pertanyaan
                         </a>

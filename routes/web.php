@@ -5,6 +5,7 @@ use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\TanyaJawabController;
 
 require __DIR__.'/auth.php';
 
@@ -30,9 +31,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/deteksi/process', fn (Request $request) => back()->with('success', 'Hasil deteksi berhasil diproses!'))->name('deteksi.process');
 
     // Tanya Psikolog, Video, Infografis, Konsultasi
-    Route::get('/tanya', fn () => view('fitur.tanya'))->name('tanya.index');
-    Route::get('/buat-tanya', fn () => view('fitur.buat-tanya'))->name('buat.tanya');
-    Route::post('/tanya', fn (Request $request) => back()->with('success', 'Pertanyaan berhasil dikirim!'))->name('tanya.store');
+    Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
+    Route::get('/tanya/buat', [TanyaJawabController::class, 'create'])->name('tanya.create');
+    Route::post('/tanya', [TanyaJawabController::class, 'store'])->name('tanya.store');
+    Route::get('/tanya/{id}', [TanyaJawabController::class, 'show'])->name('tanya.show');
+    Route::put('/tanya/{id}', [TanyaJawabController::class, 'update'])->name('tanya.update');
+    Route::delete('/tanya/{id}', [TanyaJawabController::class, 'destroy'])->name('tanya.destroy');
+
     Route::get('/video', fn () => view('fitur.video'))->name('video.index');
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
@@ -64,5 +69,10 @@ Route::middleware(['auth'])->group(function () {
         // === RIWAYAT DETEKSI ===
         Route::get('/riwayat-deteksi', [AdminController::class, 'index_riwayat'])->name('kelola-riwayat.index');
         Route::get('/riwayat-deteksi/{hasil_deteksi}', [AdminController::class, 'show_riwayat'])->name('kelola-riwayat.show');
+
+        // === TANYA JAWAB ===
+        Route::get('/psikolog/pertanyaan', [TanyaJawabController::class, 'belumDijawab'])->name('psikolog.pertanyaan');
+    Route::get('/psikolog/pertanyaan/{id}', [TanyaJawabController::class, 'formJawab'])->name('psikolog.jawab');
+    Route::put('/psikolog/pertanyaan/{id}', [TanyaJawabController::class, 'update'])->name('psikolog.jawab.submit');
     });
 });
