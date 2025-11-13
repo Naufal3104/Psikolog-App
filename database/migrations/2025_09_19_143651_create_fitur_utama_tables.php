@@ -34,25 +34,21 @@ return new class extends Migration
             $table->foreign('penulis_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-
         // Tabel tanya_jawab
         Schema::create('tanya_jawab', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 144)->primary();
             $table->bigInteger('user_id')->unsigned();
+            $table->string('judul_pertanyaan');
             $table->text('pertanyaan');
-            $table->text('jawaban')->nullable();
-            $table->bigInteger('psikiater_id')->unsigned()->nullable();
             $table->enum('status', ['belum dijawab', 'sudah dijawab'])->default('belum dijawab');
-            $table->string('kategori')->nullable();
-            $table->bigInteger('views')->default(0);
+            $table->bigInteger('vote_count')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('psikiater_id')->references('id')->on('users')->onDelete('set null');
         });
 
         Schema::create('balasan_tanya_jawab', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('tanya_jawab_id')->unsigned()->nullable();
+            $table->string('tanya_jawab_id');
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->string('isi_balasan');
             $table->foreign('tanya_jawab_id')->references('id')->on('tanya_jawab')->onDelete('cascade');

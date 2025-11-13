@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class TanyaJawab extends Model
 {
     use HasFactory;
-
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $table = 'tanya_jawab';
 
     protected $fillable = [
+        'id',
         'user_id',
+        'judul_pertanyaan',
         'pertanyaan',
-        'jawaban',
-        'psikiater_id',
-        'status',
-        'kategori',
-        'views',
+        'vote_count',
+        'status'
     ];
 
     /**
@@ -27,14 +27,6 @@ class TanyaJawab extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Relasi ke psikiater yang menjawab pertanyaan
-     */
-    public function psikiater()
-    {
-        return $this->belongsTo(User::class, 'psikiater_id');
     }
 
     /**

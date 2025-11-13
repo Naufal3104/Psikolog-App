@@ -41,11 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/video', fn () => view('fitur.video'))->name('video.index');
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
-
-    // Route POST
-    Route::get('/buat-tanya', fn () => view('fitur.buat-tanya'))->name('buat.tanya');
-    Route::post('/tanya', fn (Request $request) => back()->with('success', 'Pertanyaan berhasil dikirim!'))->name('tanya.store');
-
+    
     // === GRUP ADMIN ===
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
@@ -78,8 +74,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/riwayat-deteksi/{hasil_deteksi}', [AdminController::class, 'show_riwayat'])->name('kelola-riwayat.show');
 
         // === TANYA JAWAB ===
-        Route::get('/psikolog/pertanyaan', [TanyaJawabController::class, 'belumDijawab'])->name('psikolog.pertanyaan');
-        Route::get('/psikolog/pertanyaan/{id}', [TanyaJawabController::class, 'formJawab'])->name('psikolog.jawab');
-        Route::put('/psikolog/pertanyaan/{id}', [TanyaJawabController::class, 'update'])->name('psikolog.jawab.submit');
+        Route::get('/pertanyaan', [TanyaJawabController::class, 'belumDijawab'])->name('psikolog.pertanyaan');
+        Route::get('/pertanyaan/{id}', [TanyaJawabController::class, 'formJawab'])->name('psikolog.jawab');
+        Route::put('/pertanyaan/{id}', [TanyaJawabController::class, 'update'])->name('psikolog.jawab.submit');
     });
 });
