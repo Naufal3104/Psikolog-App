@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanyaJawabController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/tanya/{id}', [TanyaJawabController::class, 'destroy'])->name('tanya.destroy');
     Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
 
-    Route::get('/video', fn () => view('fitur.video'))->name('video.index');
+    //video video
+    Route::resource('video', VideoController::class);
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
     

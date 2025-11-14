@@ -177,174 +177,38 @@
 
         <!-- Video Grid -->
         <div class="video-grid">
-            <!-- Video 1 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/3QIfkeA6HBY" 
-                        title="Mengenal Kesehatan Mental"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Mengenal Kesehatan Mental</h3>
-                    <p class="video-description">
-                        Memahami pentingnya kesehatan mental dan cara menjaganya dalam kehidupan sehari-hari.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>8 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Edukasi</span>
-                        </div>
-                    </div>
-                </div>
+    @foreach ($videos as $video)
+        <div class="video-card">
+            <div class="video-thumbnail">
+                <iframe 
+                    src="{{ $video->embed_url }}"
+                    title="{{ $video->judul }}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
             </div>
+            <div class="video-content">
+                <h3 class="video-title">{{ $video->judul }}</h3>
 
-            <!-- Video 2 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/bSbpCYRJ9_Q" 
-                        title="Mengatasi Stress dan Kecemasan"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Mengatasi Stress dan Kecemasan</h3>
-                    <p class="video-description">
-                        Tips praktis untuk mengelola stress dan mengurangi kecemasan dalam kehidupan sehari-hari.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>10 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Tips</span>
-                        </div>
+                <p class="video-description">
+                    Video edukasi kategori: <strong>{{ $video->kategori }}</strong>
+                </p>
+
+                <div class="video-meta">
+                    <div class="video-meta-item">
+                        <i data-feather="user"></i>
+                        <span>{{ $video->penulis->name }}</span>
                     </div>
-                </div>
-            </div>
-
-            <!-- Video 3 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/NOAgplgTxfc" 
-                        title="Memahami Depresi"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Memahami Depresi</h3>
-                    <p class="video-description">
-                        Mengenal gejala depresi dan langkah-langkah yang dapat diambil untuk mendapatkan bantuan.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>12 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Informasi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video 4 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/vVEZl0B6N-k" 
-                        title="Self Care untuk Kesehatan Mental"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Self Care untuk Kesehatan Mental</h3>
-                    <p class="video-description">
-                        Pentingnya merawat diri sendiri dan strategi self care yang efektif untuk kesehatan mental.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>9 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Tips</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video 5 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/BWnJlHH3_Q4" 
-                        title="Komunikasi Efektif dalam Hubungan"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Komunikasi Efektif dalam Hubungan</h3>
-                    <p class="video-description">
-                        Cara berkomunikasi dengan baik untuk menjaga hubungan yang sehat dengan orang lain.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>11 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Edukasi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video 6 -->
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe 
-                        src="https://www.youtube.com/embed/rkZl2gsLUp4" 
-                        title="Mindfulness dan Meditasi"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="video-content">
-                    <h3 class="video-title">Mindfulness dan Meditasi</h3>
-                    <p class="video-description">
-                        Teknik mindfulness dan meditasi sederhana untuk ketenangan pikiran dan mengurangi stress.
-                    </p>
-                    <div class="video-meta">
-                        <div class="video-meta-item">
-                            <i data-feather="clock"></i>
-                            <span>15 menit</span>
-                        </div>
-                        <div class="video-meta-item">
-                            <i data-feather="play-circle"></i>
-                            <span>Praktik</span>
-                        </div>
+                    <div class="video-meta-item">
+                        <i data-feather="eye"></i>
+                        <span>{{ $video->views }} views</span>
                     </div>
                 </div>
             </div>
         </div>
+    @endforeach
+</div>
+
     </main>
     
     <x-layout.footer />
