@@ -17,7 +17,6 @@ class TanyaJawab extends Model
         'user_id',
         'judul_pertanyaan',
         'pertanyaan',
-        'vote_count',
         'status'
     ];
 

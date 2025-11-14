@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tanya/{id}', [TanyaJawabController::class, 'show'])->name('tanya.show');
     Route::put('/tanya/{id}', [TanyaJawabController::class, 'update'])->name('tanya.update');
     Route::delete('/tanya/{id}', [TanyaJawabController::class, 'destroy'])->name('tanya.destroy');
+    Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
 
     Route::get('/video', fn () => view('fitur.video'))->name('video.index');
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TanyaJawab;
+use App\Models\BalasanTanyaJawab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -135,5 +136,27 @@ class TanyaJawabController extends Controller
         $tanyaJawab->delete();
 
         return redirect()->route('tanya.index')->with('success', 'Pertanyaan berhasil dihapus.');
+    }
+
+    public function storeBalasan(Request $request, $id)
+    {
+        // 1. Validasi input
+        $request->validate([
+            'isi_balasan' => 'required|string|min:3', // Pastikan balasan tidak kosong
+        ]);
+
+        // 2. Pastikan pertanyaan utamanya ada
+        $tanyaJawab = TanyaJawab::findOrFail($id);
+
+        // 3. Buat balasan
+        BalasanTanyaJawab::create([
+            'tanya_jawab_id' => $tanyaJawab->id,
+            'user_id' => Auth::id(), // Ambil ID user yang sedang login
+            'isi_balasan' => $request->isi_balasan,
+        ]);
+
+        // 4. Kembalikan ke halaman 'show' dengan pesan sukses
+        return redirect()->route('tanya.show', $tanyaJawab->id)
+                         ->with('success', 'Balasan Anda berhasil dikirim!');
     }
 }

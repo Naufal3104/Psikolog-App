@@ -53,6 +53,7 @@ return new class extends Migration
             $table->string('isi_balasan');
             $table->foreign('tanya_jawab_id')->references('id')->on('tanya_jawab')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
         });
 
         // Tabel video
