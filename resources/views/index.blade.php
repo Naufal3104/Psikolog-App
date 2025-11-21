@@ -25,24 +25,39 @@
     <x-layout.navbar />
 
     <main>
-        <!-- ===== Hero Start ===== -->
-        <section class="gj do ir hj sp jr i pg">
-            <div class="bb ze ki xn 2xl:ud-px-0">
-                <div class="tc sf wf rj">
-                    <div class="animate_left">
-                        <h1 class="fk vj zp or kk wm wb">Kesehatan Mental Anda Prioritas Kami</h1>
-                        <p class="fq">
-                            Temukan solusi terbaik untuk kesehatan mental Anda bersama psikolog profesional
-                        </p>
-                        {{-- CTA optional
-                        <div class="mb">
-                            <a href="#layanan" class="ek jk lk gh gi hi rg ml il vc _d _l">Mulai Sekarang</a>
-                        </div> --}}
-                    </div>
-                </div>
+<!-- ===== Hero Start ===== -->
+<section class="gj do ir hj sp jr i pg" style="position: relative; overflow: hidden; margin-bottom: 5rem;">
+    <!-- Background Image with Overlay -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+        <!-- Background Image -->
+        <img 
+        src="/images/header.jpg"
+        alt="Mental Health Background"
+        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+/>
+        
+        <!-- Dark Overlay untuk readability -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.85), rgba(30, 64, 175, 0.75), rgba(30, 58, 138, 0.6));"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="bb ze ki xn 2xl:ud-px-0" style="position: relative; z-index: 10; padding-top: 8rem; padding-bottom: 8rem;">
+        <div class="tc sf wf rj">
+            <div class="animate_left" style="max-width: 56rem; margin-left: auto; margin-right: auto; text-align: center;">
+                <!-- Main Heading -->
+                <h1 class="fk vj zp or kk wm wb" style="color: white; margin-bottom: 1.5rem; font-size: clamp(1.875rem, 5vw, 3.75rem); line-height: 1.2;">
+                    Kesehatan Mental Anda Adalah Prioritas Kami
+                </h1>
+                
+                <!-- Description -->
+                <p class="fq" style="color: rgba(255, 255, 255, 0.95); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.75; text-align: center; margin-left: auto; margin-right: auto; max-width: 48rem;">
+                    Temukan solusi terbaik untuk kesehatan mental Anda bersama psikolog profesional yang berpengalaman dan terpercaya
+                </p>
             </div>
-        </section>
-        <!-- ===== Hero End ===== -->
+        </div>
+    </div>
+</section>
+<!-- ===== Hero End ===== -->
 
         <!-- ===== Services Start ===== -->
         <section id="layanan" class="lj tp kr">
@@ -73,7 +88,7 @@
 
                     <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <a href="{{ route('artikel.index') }}">
+                        <a href="{{ route('artikel-publik.index') }}">
                             <img class="ce ed" src="{{ asset('images/newspaper-svgrepo-com.svg') }}" alt="Artikel" />
                             <h4 class="ek zj kk wm nb _b">Artikel</h4>
                             <p>Informasi dan tips seputar psikologi dan kesejahteraan.</p>

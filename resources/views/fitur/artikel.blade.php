@@ -1,6 +1,17 @@
 @extends('layouts.main')
+
 @section('title', 'Artikel')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
+@endpush
+
 @section('content')
+
+<x-layout.navbar />
+
     <!-- ===== Blog Grid Start ===== -->
     <section class="ji gp uq">
         <div class="bb ye ki xn vq jb jo">
@@ -12,7 +23,7 @@
                             @if ($item->gambar == null)
                                 <div class="h r s vd yc qh"></div>
                             @else
-                                <img src="{{ asset('storage/img' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
+                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
                                     class="h r s vd yc" style="object-fit: cover;" />
                             @endif
 
@@ -103,3 +114,9 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        feather.replace();
+    </script>
+@endpush

@@ -8,27 +8,31 @@ use Illuminate\Database\Eloquent\Model;
 class TanyaJawab extends Model
 {
     use HasFactory;
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $table = 'tanya_jawab';
 
     protected $fillable = [
+        'id',
         'user_id',
+        'judul_pertanyaan',
         'pertanyaan',
-        'jawaban',
-        'psikiater_id',
-        'status',
-        'kategori',
-        'views',
+        'status'
     ];
 
-    // Relasi dengan model User (user yang bertanya)
+    /**
+     * Relasi ke user yang membuat pertanyaan
+     */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relasi dengan model User (psikiater yang menjawab)
-    public function psikiater()
+    /**
+     * Relasi ke balasan (komentar) dari pertanyaan ini
+     */
+    public function balasan()
     {
-        return $this->belongsTo(User::class, 'psikiater_id');
+        return $this->hasMany(BalasanTanyaJawab::class, 'tanya_jawab_id');
     }
 }
-
