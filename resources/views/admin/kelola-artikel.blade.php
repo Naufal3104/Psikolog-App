@@ -37,6 +37,7 @@
                 <form method="GET" action="{{ route('artikel.index') }}">
                     <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between gap-4">
                         <div class="relative flex-grow">
+                            {{-- Input name="search" sudah benar, value mengambil dari request --}}
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul artikel..." class="w-full md:w-64 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm pl-10">
                             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -118,4 +119,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>x    
+</x-app-layout>

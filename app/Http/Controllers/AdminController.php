@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artikel;
 use App\Models\HasilDeteksi;
 use App\Models\InterpretasiSkor;
 use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
-use App\Models\Artikel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.dashboard');
     }
 
@@ -259,7 +260,7 @@ class AdminController extends Controller
             'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
             'teks_interpretasi' => 'required|string|max:255',
             'skor_minimal' => 'required|integer|min:0',
-            'skor_maksimal' => 'required|integer|gte:skor_minimal', 
+            'skor_maksimal' => 'required|integer|gte:skor_minimal',
             'deskripsi_hasil' => 'nullable|string',
         ]);
 
@@ -334,10 +335,26 @@ class AdminController extends Controller
         ]);
     }
 
-    public function index_artikel()
+    public function index_artikel(Request $request)
     {
-        return view('admin.kelola-artikel', [ // Pastikan view ini ada
-            'artikel' => Artikel::with('penulis')->latest()->paginate(20) // Menggunakan paginate
+        // 1. Mulai query dasar (load relasi penulis)
+        // Kita gunakan query() agar bisa disambung dengan kondisi lain
+        $query = Artikel::with('penulis')->latest();
+
+        // 2. Terapkan filter PENCARIAN (jika ada request 'search')
+        $query->when($request->query('search'), function ($q, $search) {
+            // Cari berdasarkan Judul ATAU Slug (opsional)
+            $q->where('judul', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%");
+        });
+
+        // 3. Eksekusi query dengan PAGINATE
+        // withQueryString() penting agar saat pindah halaman, kata kunci pencarian tidak hilang
+        $artikel = $query->paginate(20)->withQueryString();
+
+        // 4. Kirim ke view
+        return view('admin.kelola-artikel', [
+            'artikel' => $artikel,
         ]);
     }
 
@@ -348,7 +365,7 @@ class AdminController extends Controller
     public function index_artikel_publik()
     {
         return view('fitur.artikel', [
-            'artikel' => Artikel::with('penulis')->latest()->get() 
+            'artikel' => Artikel::with('penulis')->latest()->get(),
         ]);
     }
 
@@ -357,7 +374,7 @@ class AdminController extends Controller
      */
     public function create_artikel()
     {
-        return view('admin.tambah-post'); 
+        return view('admin.tambah-post');
     }
 
     /**
@@ -367,11 +384,11 @@ class AdminController extends Controller
     {
         // 1. Validasi
         $validatedData = $request->validate([
-            'title'          => 'required|string|max:255',
-            'slug'           => 'required|string|max:255|unique:artikel,slug',
-            'content'        => 'required|string',
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:artikel,slug',
+            'content' => 'required|string',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
-            'image_caption'  => 'nullable|string|max:255',
+            'image_caption' => 'nullable|string|max:255',
         ]);
 
         $gambarPath = null;
@@ -383,14 +400,14 @@ class AdminController extends Controller
 
         // 3. Simpan data
         Artikel::create([
-            'id'                => (string) Str::ulid(),
-            'judul'             => $validatedData['title'],
-            'slug'              => $validatedData['slug'],
-            'isi'               => $validatedData['content'],
-            'penulis_id'        => Auth::id(),
-            'gambar'            => $gambarPath,
+            'id' => (string) Str::ulid(),
+            'judul' => $validatedData['title'],
+            'slug' => $validatedData['slug'],
+            'isi' => $validatedData['content'],
+            'penulis_id' => Auth::id(),
+            'gambar' => $gambarPath,
             'keterangan_gambar' => $validatedData['image_caption'] ?? null,
-            'views'             => 0,
+            'views' => 0,
         ]);
 
         // 4. Redirect ke index admin
@@ -403,8 +420,9 @@ class AdminController extends Controller
     public function show_artikel($id)
     {
         $artikel = Artikel::with('penulis')->findOrFail($id);
+
         return view('fitur.isiartikel', [
-            'artikel' => $artikel
+            'artikel' => $artikel,
         ]);
     }
 
@@ -414,9 +432,10 @@ class AdminController extends Controller
     public function edit_artikel($id)
     {
         $artikel = Artikel::findOrFail($id);
+
         // Pastikan Anda membuat view ini nanti:
-        return view('admin.edit-artikel', [ 
-            'artikel' => $artikel
+        return view('admin.edit-artikel', [
+            'artikel' => $artikel,
         ]);
     }
 
@@ -429,14 +448,14 @@ class AdminController extends Controller
 
         // 1. Validasi
         $validatedData = $request->validate([
-            'title'         => 'required|string|max:255',
-            'slug'          => ['required', 'string', 'max:255', Rule::unique('artikel', 'slug')->ignore($artikel->id)],
-            'content'       => 'required|string',
-            'featured_image'=> 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'title' => 'required|string|max:255',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('artikel', 'slug')->ignore($artikel->id)],
+            'content' => 'required|string',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'image_caption' => 'nullable|string|max:255',
         ]);
 
-        $gambarPath = $artikel->gambar; 
+        $gambarPath = $artikel->gambar;
 
         // 2. Cek gambar baru
         if ($request->hasFile('featured_image')) {
@@ -448,10 +467,10 @@ class AdminController extends Controller
 
         // 3. Update data
         $artikel->update([
-            'judul'             => $validatedData['title'],
-            'slug'              => $validatedData['slug'],
-            'isi'               => $validatedData['content'],
-            'gambar'            => $gambarPath,
+            'judul' => $validatedData['title'],
+            'slug' => $validatedData['slug'],
+            'isi' => $validatedData['content'],
+            'gambar' => $gambarPath,
             'keterangan_gambar' => $validatedData['image_caption'] ?? null,
         ]);
 
@@ -475,4 +494,3 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Artikel berhasil dihapus.');
     }
 }
-

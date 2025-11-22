@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
     Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
-    Route::post('/deteksi/process', fn (Request $request) => back()->with('success', 'Hasil deteksi berhasil diproses!'))->name('deteksi.process');
+    Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
 
     // Tanya Psikolog, Video, Infografis, Konsultasi
     Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
