@@ -16,6 +16,7 @@ class TanyaJawabController extends Controller
     public function index()
     {
         $tanya = TanyaJawab::with('user') // Eager loading
+            ->orderBy('vote_count', 'desc')
             ->latest() // Urutkan berdasarkan terbaru
             ->paginate(10); // Gunakan pagination
 
@@ -81,7 +82,7 @@ class TanyaJawabController extends Controller
             'user_id' => Auth::id(),
             'judul_pertanyaan' => $request->judul_pertanyaan,
             'pertanyaan' => $request->pertanyaan,
-            'status' => 'belum dijawab',
+            'status' => 'Belum Dijawab',
             // 'kategori' dan 'views' dihapus karena tidak ada di $fillable baru
         ]);
 
@@ -142,21 +143,48 @@ class TanyaJawabController extends Controller
     {
         // 1. Validasi input
         $request->validate([
-            'isi_balasan' => 'required|string|min:3', // Pastikan balasan tidak kosong
+            'isi_balasan' => 'required|string|min:3', 
         ]);
 
         // 2. Pastikan pertanyaan utamanya ada
         $tanyaJawab = TanyaJawab::findOrFail($id);
+        $user = Auth::user(); // Ambil user yang sedang login
 
         // 3. Buat balasan
         BalasanTanyaJawab::create([
             'tanya_jawab_id' => $tanyaJawab->id,
-            'user_id' => Auth::id(), // Ambil ID user yang sedang login
+            'user_id' => $user->id,
             'isi_balasan' => $request->isi_balasan,
         ]);
+
+        // [LOGIKA BARU] Cek Role Psikolog & Update Status
+        // Jika user punya role 'psikolog' DAN status saat ini masih 'belum dijawab'
+        if ($user->hasRole('psikolog') && $tanyaJawab->status == 'Belum Dijawab') {
+            
+            // Update status pertanyaan jadi 'sudah dijawab'
+            // Kita juga bisa set psikiater_id ke user yang membalas ini
+            $tanyaJawab->update([
+                'status' => 'Sudah Dijawab',
+                'psikiater_id' => $user->id 
+            ]);
+        }
 
         // 4. Kembalikan ke halaman 'show' dengan pesan sukses
         return redirect()->route('tanya.show', $tanyaJawab->id)
                          ->with('success', 'Balasan Anda berhasil dikirim!');
+    }
+
+    public function upvote($id)
+    {
+        $tanya = TanyaJawab::findOrFail($id);
+        $tanya->increment('vote_count');
+        return back(); // Kembali ke halaman sebelumnya
+    }
+
+    public function downvote($id)
+    {
+        $tanya = TanyaJawab::findOrFail($id);
+        $tanya->decrement('vote_count');
+        return back(); // Kembali ke halaman sebelumnya
     }
 }

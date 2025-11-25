@@ -5,7 +5,6 @@ use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanyaJawabController;
 use App\Http\Controllers\VideoController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -28,8 +27,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
+    Route::get('/deteksi/hasil', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
     Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
     Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
+    Route::get('/deteksi/hasil/{id}', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
 
     // Tanya Psikolog, Video, Infografis, Konsultasi
     Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
@@ -39,12 +40,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tanya/{id}', [TanyaJawabController::class, 'update'])->name('tanya.update');
     Route::delete('/tanya/{id}', [TanyaJawabController::class, 'destroy'])->name('tanya.destroy');
     Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
+    Route::post('/tanya/{id}/upvote', [TanyaJawabController::class, 'upvote'])->name('tanya.upvote');
+    Route::post('/tanya/{id}/downvote', [TanyaJawabController::class, 'downvote'])->name('tanya.downvote');
 
-    //video video
+    // video video
     Route::resource('video', VideoController::class);
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
-    
+
     // === GRUP ADMIN ===
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');

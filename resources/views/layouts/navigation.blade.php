@@ -58,7 +58,7 @@
                         </x-dropdown>
                     </div>
 
-                    <x-nav-link :href="route('psikolog.pertanyaan')" :active="request()->routeIs('psikolog.pertanyaan')">
+                    <x-nav-link :href="route('tanya.index')" :active="request()->routeIs('psikolog.pertanyaan')">
                         {{ __('Tanya Jawab') }}
                     </x-nav-link>
                 </div>
