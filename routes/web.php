@@ -3,11 +3,14 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PsikologController;
 use App\Http\Controllers\TanyaJawabController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
+Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('psikolog.register');
+Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psikolog.register.store');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', fn () => view('index'))->name('home');

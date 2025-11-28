@@ -22,6 +22,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'NIK',
+        'alamat',
+        'no_telp',
+        'foto_profil',
         'password',
     ];
 
@@ -33,4 +37,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function psikologProfile()
+    {
+        return $this->hasOne(PsikologProfile::class);
+    }
+
+    public function hasilDeteksi()
+    {
+        return $this->hasMany(HasilDeteksi::class);
+    }
 }
