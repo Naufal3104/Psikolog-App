@@ -48,6 +48,15 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+        $user = Auth::user();
+        if ($user->hasRole('psikolog')) {
+            if ($user->psikologProfile && $user->psikologProfile->status !== 'approved') {
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'email' => 'Akun Anda belum disetujui oleh Admin atau status ditolak/pending.',
+                ]);
+            }
+        }
 
         RateLimiter::clear($this->throttleKey());
     }

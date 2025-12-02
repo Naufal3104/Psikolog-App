@@ -54,6 +54,7 @@ return new class extends Migration
                 'Saturday',
                 'Sunday',
             ])->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
@@ -66,5 +67,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('psikolog_profiles');
     }
 };

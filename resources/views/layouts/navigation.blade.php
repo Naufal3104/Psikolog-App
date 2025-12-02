@@ -61,6 +61,10 @@
                     <x-nav-link :href="route('tanya.index')" :active="request()->routeIs('psikolog.pertanyaan')">
                         {{ __('Tanya Jawab') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
+                        {{ __('Verifikasi Psikolog') }}
+                    </x-nav-link>
                 </div>
             </div>
 

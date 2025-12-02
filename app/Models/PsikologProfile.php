@@ -14,6 +14,7 @@ class PsikologProfile extends Model
         'NIP',
         'spesialisasi',
         'hari_jaga',
+        'status',
     ];
 
     protected $table = 'psikolog_profiles';

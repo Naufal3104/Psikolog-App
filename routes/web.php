@@ -86,5 +86,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pertanyaan', [TanyaJawabController::class, 'belumDijawab'])->name('psikolog.pertanyaan');
         Route::get('/pertanyaan/{id}', [TanyaJawabController::class, 'formJawab'])->name('psikolog.jawab');
         Route::put('/pertanyaan/{id}', [TanyaJawabController::class, 'update'])->name('psikolog.jawab.submit');
+
+        Route::get('/verifikasi-psikolog', [AdminController::class, 'index_verifikasi_psikolog'])->name('verifikasi.index');
+        Route::post('/verifikasi-psikolog/{id}/approve', [AdminController::class, 'approve_psikolog'])->name('verifikasi.approve');
+        Route::delete('/verifikasi-psikolog/{id}/reject', [AdminController::class, 'reject_psikolog'])->name('verifikasi.reject');
+        Route::get('/verifikasi-psikolog/{id}/edit', [AdminController::class, 'edit_psikolog'])->name('verifikasi.edit');
+        Route::put('/verifikasi-psikolog/{id}', [AdminController::class, 'update_psikolog'])->name('verifikasi.update');
     });
 });

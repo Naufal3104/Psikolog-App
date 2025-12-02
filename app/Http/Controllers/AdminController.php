@@ -7,6 +7,7 @@ use App\Models\HasilDeteksi;
 use App\Models\InterpretasiSkor;
 use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -492,5 +493,89 @@ class AdminController extends Controller
 
         // 3. Redirect ke index admin
         return redirect()->back()->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    // Menampilkan daftar psikolog pending
+    public function index_verifikasi_psikolog()
+    {
+        // Ambil data user yang punya role psikolog DAN status profilnya 'pending'
+        $psikologs = User::role('psikolog')
+                ->with('psikologProfile')
+                ->get()
+                ->sortBy(function($user) {
+                    return $user->psikologProfile->status === 'pending' ? 0 : 1;
+                });
+
+        return view('admin.kelola-psikolog', compact('psikologs'));
+    }
+
+    // Proses Approve
+    public function approve_psikolog($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->psikologProfile) {
+            $user->psikologProfile->update(['status' => 'approved']);
+
+            return back()->with('success', 'Psikolog berhasil disetujui.');
+        }
+
+        return back()->with('error', 'Profil tidak ditemukan.');
+    }
+
+    // Proses Reject (Opsional)
+    public function reject_psikolog($id)
+    {
+        $user = User::findOrFail($id);
+        // Hapus user atau ubah status ke rejected
+        $user->delete(); // Atau update status jadi 'rejected'
+
+        return back()->with('success', 'Permintaan ditolak.');
+    }
+
+    // --- TAMBAHAN EDIT PSIKOLOG ---
+    public function edit_psikolog($id)
+    {
+        $psikolog = User::with('psikologProfile')->findOrFail($id);
+        return view('admin.edit-psikolog', compact('psikolog'));
+    }
+
+    public function update_psikolog(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            // Validasi User Data
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'NIK' => ['required', 'string', 'max:20'],
+            'no_telp' => ['required', 'string', 'max:20'],
+            'alamat' => ['required', 'string'],
+            
+            // Validasi Profile Data
+            'NIP' => ['required', 'string'],
+            'spesialisasi' => ['required', 'string'],
+            'status' => ['required', 'in:pending,approved,rejected'], // Bisa ubah status manual juga
+        ]);
+
+        // Update Tabel Users
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'NIK' => $request->NIK,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+        ]);
+
+        // Update Tabel PsikologProfile
+        if ($user->psikologProfile) {
+            $user->psikologProfile->update([
+                'NIP' => $request->NIP,
+                'spesialisasi' => $request->spesialisasi,
+                'status' => $request->status,
+            ]);
+        }
+
+        return redirect()->route('admin.verifikasi.index')->with('success', 'Data Psikolog berhasil diperbarui.');
     }
 }

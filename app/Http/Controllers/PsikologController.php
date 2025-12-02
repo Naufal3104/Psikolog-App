@@ -68,14 +68,10 @@ class PsikologController extends Controller
                     'hari_jaga' => null, 
                 ]);
 
-                // Trigger event registered (kirim email verifikasi jika aktif)
                 event(new Registered($user));
-
-                // Langsung login setelah register
-                Auth::login($user);
             });
 
-            return redirect(route('home', absolute: false));
+            return redirect(route('login', absolute: false));
 
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Gagal mendaftar. Silakan coba lagi. ' . $e->getMessage()]);
