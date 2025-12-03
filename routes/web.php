@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
     Route::get('/deteksi/hasil', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
+    Route::get('/deteksi/riwayat', [DeteksiController::class, 'riwayat'])->name('deteksi.riwayat');
     Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
     Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
     Route::get('/deteksi/hasil/{id}', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
