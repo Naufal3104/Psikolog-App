@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InterpretasiSkor extends Model
 {
@@ -32,5 +33,10 @@ class InterpretasiSkor extends Model
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(KategoriDeteksi::class, 'kategori_deteksi_id');
+    }
+
+    public function hasilDeteksi(): HasMany
+    {
+        return $this->hasMany(HasilDeteksi::class);
     }
 }
