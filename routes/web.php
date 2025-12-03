@@ -5,6 +5,7 @@ use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PsikologController;
 use App\Http\Controllers\TanyaJawabController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +16,9 @@ Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psik
 Route::middleware(['auth'])->group(function () {
     Route::get('/', fn () => view('index'))->name('home');
 
-    // === Laravel Breeze ===
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');
+    Route::patch('/user/profile', [UserController::class, 'update'])->name('user.profile.update');
+    Route::delete('/user/profile', [UserController::class, 'destroy'])->name('user.profile.destroy');
 
     // === 6 FITUR UTAMA (PUBLIK) ===
     // Artikel (Publik + Form Tambah)
@@ -92,5 +92,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/verifikasi-psikolog/{id}/reject', [AdminController::class, 'reject_psikolog'])->name('verifikasi.reject');
         Route::get('/verifikasi-psikolog/{id}/edit', [AdminController::class, 'edit_psikolog'])->name('verifikasi.edit');
         Route::put('/verifikasi-psikolog/{id}', [AdminController::class, 'update_psikolog'])->name('verifikasi.update');
+
+        // === Laravel Breeze ===
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });
