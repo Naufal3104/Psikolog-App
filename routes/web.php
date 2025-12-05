@@ -13,7 +13,7 @@ require __DIR__.'/auth.php';
 Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('psikolog.register');
 Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psikolog.register.store');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', fn () => view('index'))->name('home');
 
     Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');
@@ -93,6 +93,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/verifikasi-psikolog/{id}/reject', [AdminController::class, 'reject_psikolog'])->name('verifikasi.reject');
         Route::get('/verifikasi-psikolog/{id}/edit', [AdminController::class, 'edit_psikolog'])->name('verifikasi.edit');
         Route::put('/verifikasi-psikolog/{id}', [AdminController::class, 'update_psikolog'])->name('verifikasi.update');
+
+        Route::get('/admin/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs.index');
 
         // === Laravel Breeze ===
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Artikel;
 use App\Models\HasilDeteksi;
 use App\Models\InterpretasiSkor;
@@ -500,11 +501,11 @@ class AdminController extends Controller
     {
         // Ambil data user yang punya role psikolog DAN status profilnya 'pending'
         $psikologs = User::role('psikolog')
-                ->with('psikologProfile')
-                ->get()
-                ->sortBy(function($user) {
-                    return $user->psikologProfile->status === 'pending' ? 0 : 1;
-                });
+            ->with('psikologProfile')
+            ->get()
+            ->sortBy(function ($user) {
+                return $user->psikologProfile->status === 'pending' ? 0 : 1;
+            });
 
         return view('admin.kelola-psikolog', compact('psikologs'));
     }
@@ -537,6 +538,7 @@ class AdminController extends Controller
     public function edit_psikolog($id)
     {
         $psikolog = User::with('psikologProfile')->findOrFail($id);
+
         return view('admin.edit-psikolog', compact('psikolog'));
     }
 
@@ -551,7 +553,7 @@ class AdminController extends Controller
             'NIK' => ['required', 'string', 'max:20'],
             'no_telp' => ['required', 'string', 'max:20'],
             'alamat' => ['required', 'string'],
-            
+
             // Validasi Profile Data
             'NIP' => ['required', 'string'],
             'spesialisasi' => ['required', 'string'],
@@ -576,6 +578,34 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.verifikasi.index')->with('success', 'Data Psikolog berhasil diperbarui.');
+        return redirect()->route('verifikasi.index')->with('success', 'Data Psikolog berhasil diperbarui.');
+    }
+
+    public function activityLogs(Request $request)
+    {
+        // 1. Memulai Query dari data terbaru (CCTV rekaman terakhir)
+        $query = ActivityLog::latest();
+
+        // 2. Logika Pencarian (Search Filter)
+        // Jika admin mengetik sesuatu di kolom cari, kita filter berdasarkan Nama User atau Jenis Aksi
+        if ($request->has('search') && $request->search != null) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('user_name', 'like', "%$search%")
+                    ->orWhere('action', 'like', "%$search%");
+            });
+        }
+
+        // 3. Logika Filter Tipe Aksi (Opsional, menggantikan dropdown Kategori)
+        if ($request->has('filter_action') && $request->filter_action != null) {
+            // Mencari aksi spesifik, misal hanya ingin lihat siapa yang LOGIN
+            $query->where('action', 'like', '%'.$request->filter_action.'%');
+        }
+
+        // 4. Eksekusi dengan Pagination (10 data per halaman)
+        $logs = $query->paginate(10)->withQueryString();
+
+        // 5. Kirim data ke View
+        return view('admin.activity-log', compact('logs'));
     }
 }
