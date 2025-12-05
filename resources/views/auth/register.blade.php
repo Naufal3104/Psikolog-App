@@ -55,7 +55,7 @@
                             autofocus
                             autocomplete="name"
                             placeholder="Nama lengkap"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40  text-black placeholder-gray-400 pr-10" />
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -72,46 +72,99 @@
                             required
                             autocomplete="username"
                             placeholder="example@gmail.com"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40  text-black placeholder-gray-400 pr-10" />
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     {{-- Password --}}
-                    <div class="wb mt-4">
-                        <label class="rc kk wm vb" for="password">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            required
-                            autocomplete="new-password"
-                            placeholder="Minimal 8 karakter"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                        <p class="text-xs mt-2 dark:text-gray-400">
-                            Gunakan kombinasi huruf besar, kecil, angka, dan simbol.
-                        </p>
-                    </div>
+<div class="wb mt-4">
+    <label class="rc kk wm vb" for="password">Password</label>
 
-                    {{-- Confirm Password --}}
-                    <div class="wb mt-4">
-                        <label class="rc kk wm vb" for="password_confirmation">Konfirmasi Password</label>
-                        <input
-                            id="password_confirmation"
-                            type="password"
-                            name="password_confirmation"
-                            required
-                            autocomplete="new-password"
-                            placeholder="Ulangi password"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
-                        @error('password_confirmation')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+    <div class="relative">
+        <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            autocomplete="new-password"
+            placeholder="Minimal 8 karakter"
+            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+
+        <!-- Icon Mata -->
+        <button type="button"
+            onclick="togglePassword('password', 'eyeIcon1')"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+            <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 
+                    4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+        </button>
+    </div>
+
+    @error('password')
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+
+    <p class="text-xs mt-2 dark:text-gray-400">
+        Gunakan kombinasi huruf besar, kecil, angka, dan simbol.
+    </p>
+</div>
+
+{{-- Confirm Password --}}
+<div class="wb mt-4">
+    <label class="rc kk wm vb" for="password_confirmation">Konfirmasi Password</label>
+
+    <div class="relative">
+        <input
+            id="password_confirmation"
+            type="password"
+            name="password_confirmation"
+            required
+            autocomplete="new-password"
+            placeholder="Ulangi password"
+            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+
+        <!-- Icon Mata -->
+        <button type="button"
+            onclick="togglePassword('password_confirmation', 'eyeIcon2')"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+            <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 
+                    4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+        </button>
+    </div>
+
+    @error('password_confirmation')
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
+
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.setAttribute("stroke", "#000");
+        } else {
+            input.type = "password";
+            icon.setAttribute("stroke", "currentColor");
+        }
+    }
+</script>
+
 
                     {{-- Terms (opsional) --}}
                     <div class="block mt-4">
