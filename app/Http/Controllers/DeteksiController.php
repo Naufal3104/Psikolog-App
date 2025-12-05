@@ -102,4 +102,16 @@ class DeteksiController extends Controller
         // 3. Kirim data ke view
         return view('fitur.hasil-deteksi', compact('hasilDeteksi'));
     }
+
+    public function riwayat()
+    {
+        // Mengambil data hasil deteksi milik user saat ini
+        // Kita urutkan dari yang terbaru (latest) dan kita batasi 10 per halaman (paginate)
+        $riwayat = HasilDeteksi::with(['kategori', 'interpretasi'])
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(10);
+
+        return view('fitur.riwayat-deteksi', compact('riwayat'));
+    }
 }

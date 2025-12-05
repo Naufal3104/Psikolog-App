@@ -56,9 +56,14 @@
                             </div>
 
                             <div class="py-1">
-                                <a href="{{ route('profile.edit') }}"
+                                <a href="{{ route('user.profile.edit') }}"
                                     class="rj rc vd text-left text-sm pk wm xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
                                     Edit Profil
+                                </a>
+
+                                <a href="{{ route('deteksi.riwayat') }}"
+                                    class="rj rc vd text-left text-sm pk wm xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Riwayat Deteksi
                                 </a>
 
                                 <form action="{{ route('logout') }}" method="POST">
@@ -155,10 +160,15 @@
                         </div>
 
                         <div class="py-1">
-                            <a href="{{ route('profile.edit') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                Edit Profil
-                            </a>
+                            <a href="{{ route('user.profile.edit') }}"
+                                    class="rj rc vd text-left text-sm pk wm xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Edit Profil
+                                </a>
+
+                                <a href="{{ route('deteksi.riwayat') }}"
+                                    class="rj rc vd text-left text-sm pk wm xl px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    Riwayat Deteksi
+                                </a>
 
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
