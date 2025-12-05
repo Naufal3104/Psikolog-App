@@ -58,26 +58,60 @@
                             autofocus
                             autocomplete="username"
                             placeholder="example@gmail.com"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40  text-black placeholder-gray-400 pr-10"" />
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div class="wb mt-4">
-                        <label for="password" class="rc kk wm vb">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            required
-                            autocomplete="current-password"
-                            placeholder="**************"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+    <label for="password" class="rc kk wm vb">Password</label>
+
+    <div class="relative">
+        <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            autocomplete="current-password"
+            placeholder="**************"
+            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+
+        <!-- Icon Mata -->
+        <button type="button"
+            onclick="togglePassword()"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 
+                    4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+        </button>
+    </div>
+
+    @error('password')
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
+
+<script>
+    function togglePassword() {
+        const input = document.getElementById("password");
+        const icon = document.getElementById("eyeIcon");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.setAttribute("stroke", "#000"); // optional
+        } else {
+            input.type = "password";
+            icon.setAttribute("stroke", "currentColor"); // optional
+        }
+    }
+</script>
+
 
                     <div class="block mt-4">
                         <label for="remember_me" class="inline-flex items-center">
