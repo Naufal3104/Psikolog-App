@@ -10,7 +10,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 // tambahkan ini
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable,HasRoles;
 
