@@ -96,6 +96,71 @@
         .submit-button:hover {
             background-color: #003666;
         }
+
+        .back-button {
+            display: block;
+            width: 100%;
+            padding: 12px 28px;
+            border-radius: 12px;
+            background-color: #6b7280;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .back-button:hover {
+            background-color: #4b5563;
+        }
+
+        /* Dark Mode Styles */
+        .eh .consultation-card {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+        }
+
+        .eh .form-label {
+            color: #d1d5db !important;
+        }
+
+        .eh .form-input,
+        .eh .form-textarea {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #d1d5db !important;
+        }
+
+        .eh .form-input::placeholder,
+        .eh .form-textarea::placeholder {
+            color: #9ca3af !important;
+        }
+
+        .eh .form-input:focus,
+        .eh .form-textarea:focus {
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25) !important;
+        }
+
+        .eh .submit-button {
+            background-color: #3b82f6 !important;
+        }
+
+        .eh .submit-button:hover {
+            background-color: #2563eb !important;
+        }
+
+        .eh .back-button {
+            background-color: #4b5563 !important;
+        }
+
+        .eh .back-button:hover {
+            background-color: #374151 !important;
+        }
     </style>
 @endpush
 
@@ -133,6 +198,7 @@
                         </div>
                         
                         <button type="submit" class="submit-button">Kirim</button>
+                        <a href="{{ url()->previous() }}" class="back-button">Kembali</a>
                     </div>
                 </form>
             </div>

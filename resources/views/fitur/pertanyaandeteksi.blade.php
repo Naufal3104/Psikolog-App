@@ -131,6 +131,27 @@
             background-color: #003666;
         }
 
+        .btn-back {
+    width: 100%;
+    padding: 1rem;
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 0.75rem;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.btn-back:hover {
+    background-color: #4b5563;
+}
+
         .eh .detection-card {
             background-color: #1f2937 !important;
             border-color: #4b5563 !important;
@@ -171,6 +192,14 @@
         .eh .btn-submit:hover {
             background-color: #2563eb;
         }
+
+        .eh .btn-back {
+    background-color: #4b5563;
+}
+
+.eh .btn-back:hover {
+    background-color: #374151;
+}
     </style>
 @endpush
 
@@ -221,6 +250,7 @@
                     @endforeach
 
                     <button type="submit" class="btn-submit">Selesai & Lihat Hasil</button>
+                    <a href="{{ route('deteksi.index') }}" class="btn-back">Kembali</a>
                 </div>
             </form>
         </section>

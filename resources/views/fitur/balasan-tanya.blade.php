@@ -11,12 +11,10 @@
             gap: 16px;
             padding: 16px 0;
             border-bottom: 1px solid #f3f4f6;
-            /* Garis pemisah antar komentar */
         }
 
         .comment-item:last-child {
             border-bottom: none;
-            /* Hapus garis di komentar terakhir */
         }
 
         .avatar-placeholder {
@@ -24,20 +22,17 @@
             height: 40px;
             border-radius: 50%;
             background-color: #e5e7eb;
-            /* Abu-abu muda */
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             color: #6b7280;
-            /* Warna teks ikon/inisial */
             font-weight: 600;
         }
 
         .comment-content .author-name {
             font-weight: 600;
             color: #1f2937;
-            /* Hitam pekat */
             margin-bottom: 4px;
             display: flex;
             align-items: center;
@@ -47,14 +42,12 @@
         .comment-content .comment-text {
             font-size: 0.95rem;
             color: #374151;
-            /* Abu-abu tua */
             line-height: 1.6;
         }
 
         .comment-content .comment-meta {
             font-size: 0.8rem;
             color: #9ca3af;
-            /* Abu-abu muda */
             margin-top: 6px;
         }
 
@@ -84,12 +77,12 @@
             border: 1px solid #d1d5db;
             transition: border-color 0.2s, box-shadow 0.2s;
             font-size: 0.95rem;
+            background-color: white;
         }
 
         .form-textarea:focus {
             outline: none;
             border-color: #004780;
-            /* Warna biru primer Anda */
             box-shadow: 0 0 0 2px rgba(0, 71, 128, 0.2);
         }
 
@@ -100,7 +93,6 @@
             padding: 10px 24px;
             border-radius: 8px;
             background-color: #004780;
-            /* Warna biru primer Anda */
             color: white;
             font-weight: 600;
             text-decoration: none;
@@ -112,7 +104,178 @@
 
         .submit-button:hover {
             background-color: #00335c;
-            /* Warna biru lebih gelap */
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 8px;
+            background-color: #6b7280;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.15s ease-in-out;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #4b5563;
+        }
+
+        .back-button svg {
+            margin-right: 8px;
+        }
+
+        /* Dark Mode Styles - Menggunakan multiple selectors */
+        /* FORCE OVERRIDE CARD BACKGROUND */
+        .dark .animate_top,
+        .eh .animate_top,
+        html.dark .animate_top {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+        }
+        .dark .comment-item,
+        .eh .comment-item,
+        html.dark .comment-item {
+            border-bottom-color: #374151 !important;
+        }
+
+        .dark .avatar-placeholder,
+        .eh .avatar-placeholder,
+        html.dark .avatar-placeholder {
+            background-color: #374151 !important;
+            color: #9ca3af !important;
+        }
+
+        .dark .comment-content .author-name,
+        .eh .comment-content .author-name,
+        html.dark .comment-content .author-name {
+            color: #f3f4f6 !important;
+        }
+
+        .dark .comment-content .comment-text,
+        .eh .comment-content .comment-text,
+        html.dark .comment-content .comment-text {
+            color: #d1d5db !important;
+        }
+
+        .dark .comment-content .comment-meta,
+        .eh .comment-content .comment-meta,
+        html.dark .comment-content .comment-meta {
+            color: #6b7280 !important;
+        }
+
+        .dark .tag-penanya,
+        .eh .tag-penanya,
+        html.dark .tag-penanya {
+            color: #60a5fa !important;
+            background-color: #1e3a5f !important;
+        }
+
+        .dark .tag-psikolog,
+        .eh .tag-psikolog,
+        html.dark .tag-psikolog {
+            color: #34d399 !important;
+            background-color: #064e3b !important;
+        }
+
+        .dark .form-textarea,
+        .eh .form-textarea,
+        html.dark .form-textarea {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #d1d5db !important;
+        }
+
+        .dark .form-textarea::placeholder,
+        .eh .form-textarea::placeholder,
+        html.dark .form-textarea::placeholder {
+            color: #9ca3af !important;
+        }
+
+        .dark .form-textarea:focus,
+        .eh .form-textarea:focus,
+        html.dark .form-textarea:focus {
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+        }
+
+        .dark .submit-button,
+        .eh .submit-button,
+        html.dark .submit-button {
+            background-color: #3b82f6 !important;
+        }
+
+        .dark .submit-button:hover,
+        .eh .submit-button:hover,
+        html.dark .submit-button:hover {
+            background-color: #2563eb !important;
+        }
+
+        .dark .back-button,
+        .eh .back-button,
+        html.dark .back-button {
+            background-color: #4b5563 !important;
+        }
+
+        .dark .back-button:hover,
+        .eh .back-button:hover,
+        html.dark .back-button:hover {
+            background-color: #374151 !important;
+        }
+
+        /* Dark mode untuk teks paragraf justify */
+        .dark p.justify,
+        .eh p.justify,
+        html.dark p.justify {
+            color: #d1d5db !important;
+        }
+
+        /* Dark mode untuk meta info list */
+        .dark ul.tc.uf.cg li,
+        .eh ul.tc.uf.cg li,
+        html.dark ul.tc.uf.cg li {
+            color: #d1d5db !important;
+        }
+
+        .dark ul.tc.uf.cg li span.rc,
+        .eh ul.tc.uf.cg li span.rc,
+        html.dark ul.tc.uf.cg li span.rc {
+            color: #9ca3af !important;
+        }
+
+        /* Dark mode untuk heading */
+        .dark h2.ek,
+        .dark h3.ek,
+        .eh h2.ek,
+        .eh h3.ek,
+        html.dark h2.ek,
+        html.dark h3.ek {
+            color: #f3f4f6 !important;
+        }
+
+        /* Dark mode untuk empty state */
+        .dark .comments-list p,
+        .eh .comments-list p,
+        html.dark .comments-list p {
+            color: #9ca3af !important;
+        }
+
+        /* Dark mode untuk label form */
+        .dark label,
+        .eh label,
+        html.dark label {
+            color: #d1d5db !important;
+        }
+
+        /* Dark mode untuk text-gray-700 dari Tailwind */
+        .dark .text-gray-700,
+        .eh .text-gray-700,
+        html.dark .text-gray-700 {
+            color: #d1d5db !important;
         }
     </style>
 @endpush
@@ -205,6 +368,18 @@
                                 </a>
                             </li>
                         </ul>
+
+                        {{-- Tombol Kembali --}}
+                        <div style="margin-top: 1.5rem;">
+                            <a href="{{ url()->previous() }}" class="back-button">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                Kembali
+                            </a>
+                        </div>
                     </div>
 
                     {{-- REVISI 2: Urutan ditukar --}}

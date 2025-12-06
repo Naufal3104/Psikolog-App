@@ -130,7 +130,7 @@
 
         .btn-submit:hover {
             background-color: #003666;
-        }
+        }z
         
         .eh .detection-card { background-color: #1f2937 !important; border-color: #4b5563 !important; color: #d1d5db; }
         .eh .question-text { color: #d1d5db; }

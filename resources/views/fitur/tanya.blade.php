@@ -68,8 +68,8 @@
             border-bottom: 1px solid #f3f4f6;
             cursor: pointer;
             transition: background-color 0.1s;
-            text-decoration: none; /* [MODIFIKASI] Menghapus garis bawah link */
-            color: inherit; /* [MODIFIKASI] Mewarisi warna teks normal */
+            text-decoration: none;
+            color: inherit;
         }
 
         .question-item:hover {
@@ -135,6 +135,60 @@
             background-color: #004780;
             color: white;
         }
+
+        /* Dark Mode Styles */
+        .eh .consultation-card {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+        }
+
+        .eh .ask-button {
+            background-color: #059669 !important;
+        }
+
+        .eh .ask-button:hover {
+            background-color: #047857 !important;
+        }
+
+        .eh .question-item {
+            border-bottom-color: #374151 !important;
+            color: #d1d5db !important;
+        }
+
+        .eh .question-item:hover {
+            background-color: #374151 !important;
+        }
+
+        .eh .avatar-placeholder {
+            background-color: #374151 !important;
+            color: #9ca3af !important;
+        }
+
+        .eh .question-title {
+            color: #f3f4f6 !important;
+        }
+
+        .eh .question-excerpt {
+            color: #9ca3af !important;
+        }
+
+        .eh .pagination {
+            border-top-color: #374151 !important;
+        }
+
+        .eh .pagination-link {
+            background-color: #374151 !important;
+            color: #d1d5db !important;
+        }
+
+        .eh .pagination-link:hover:not(.active) {
+            background-color: #4b5563 !important;
+        }
+
+        .eh .pagination-link.active {
+            background-color: #3b82f6 !important;
+            color: white !important;
+        }
     </style>
 @endpush
 
@@ -159,14 +213,12 @@
 
                     <div class="questions-list">
                         @forelse ($tanya as $item)
-                            {{-- [MODIFIKASI] Mengubah <div> menjadi <a> --}}
                             <a href="{{ route('tanya.show', $item->id) }}" class="question-item">
                                 <div class="avatar-placeholder">
                                     <i data-feather="user" style="width: 20px; height: 20px;"></i>
                                 </div>
                                 <div>
                                     <div class="question-title">
-                                        {{-- [MODIFIKASI] Menampilkan judul_pertanyaan, bukan isi pertanyaan --}}
                                         {{ $item->judul_pertanyaan }}
                                     </div>
                                     <div class="question-excerpt">
@@ -183,7 +235,7 @@
                                         @endif
                                     </div>
                                 </div>
-                            </a> {{-- [MODIFIKASI] Penutup tag <a> --}}
+                            </a>
                         @empty
                             <p style="text-align: center; color: #6b7280;">Belum ada pertanyaan.</p>
                         @endforelse
