@@ -46,11 +46,22 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         @enderror
                     </div>
 
+                    {{-- username --}}
+                    <div class="wb">
+                        <label class="rc kk wm vb" for="name">Username</label>
+                        <input id="username" type="text" name="username" value="{{ old('username') }}" required
+                            autofocus autocomplete="username" placeholder="Username"
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                        @error('username')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     {{-- NIK --}}
                     <div class="wb mt-4">
                         <label class="rc kk wm vb" for="NIK">NIK (Nomor Induk Kependudukan)</label>
                         <input id="NIK" type="text" name="NIK" value="{{ old('NIK') }}" required
-                            placeholder="16 Digit NIK" maxlength="16"
+                            placeholder="16 Digit NIK" maxlength="16" unique
                             class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
                         @error('NIK')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

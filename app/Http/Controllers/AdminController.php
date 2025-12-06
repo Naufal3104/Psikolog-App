@@ -384,6 +384,7 @@ class AdminController extends Controller
      */
     public function store_artikel(Request $request)
     {
+        // dd($request->all());
         // 1. Validasi
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -397,7 +398,7 @@ class AdminController extends Controller
 
         // 2. Simpan gambar
         if ($request->hasFile('featured_image')) {
-            $gambarPath = $request->file('featured_image')->store('artikel-gambar', 'public');
+            $gambarPath = $request->file('featured_image')->store('', 'public');
         }
 
         // 3. Simpan data
@@ -464,7 +465,7 @@ class AdminController extends Controller
             if ($artikel->gambar) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
-            $gambarPath = $request->file('featured_image')->store('artikel-gambar', 'public');
+            $gambarPath = $request->file('featured_image')->store('', 'public');
         }
 
         // 3. Update data

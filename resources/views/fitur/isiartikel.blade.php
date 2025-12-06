@@ -11,7 +11,7 @@
                             <img src="../images/noimage.svg" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
                                 style="object-fit: cover; width: 100%; height: auto;" />
                         @else
-                            <img src="{{ asset('storage/img' . $item->gambar) }}" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
+                            <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
                                 style="object-fit: cover; width: 100%; height: auto;" />
                         @endif
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">{{ $artikel->judul }}</h2>

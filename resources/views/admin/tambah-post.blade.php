@@ -45,7 +45,7 @@
                                   - Warna teks disesuaikan
                                 --}}
                                 class="flex-1 text-sm text-gray-700 dark:text-gray-300 border-none p-0 focus:ring-0 bg-transparent"
-                                placeholder="slug-akan-muncul-disini">
+                                placeholder="slug-akan-muncul-disini" readonly />
                         </div>
 
                         {{-- Editor Konten --}}
