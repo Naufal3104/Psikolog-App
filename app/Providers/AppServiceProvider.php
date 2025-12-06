@@ -2,27 +2,27 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Event;
 use App\Listeners\AuthActivity;
-use App\Observers\GeneralObserver;
-
-// Import Semua Model Anda di sini
-use App\Models\User;
 use App\Models\Artikel;
 use App\Models\BalasanTanyaJawab;
 use App\Models\DeteksiDini;
+// Import Semua Model Anda di sini
 use App\Models\HasilDeteksi;
 use App\Models\Infografis;
 use App\Models\InterpretasiSkor;
-use App\Models\JawabanUser;
 use App\Models\KategoriDeteksi;
 use App\Models\Konsultasi;
 use App\Models\Pertanyaan;
 use App\Models\PilihanJawaban;
+// use App\Models\JawabanUser; gaussah
 use App\Models\PsikologProfile;
 use App\Models\TanyaJawab;
+use App\Models\User;
 use App\Models\Video;
+use App\Observers\GeneralObserver;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,7 +39,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       // 1. Daftar Model yang ingin diawasi CCTV (Observer)
+
+        if (config('app.url')) {
+            URL::forceRootUrl(config('app.url'));
+        }
+
+        // Opsional: Jika tunnel Anda HTTPS, paksa HTTPS juga
+        if (str_contains(config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
+        // 1. Daftar Model yang ingin diawasi CCTV (Observer)
         $modelsToObserve = [
             User::class,
             Artikel::class,
@@ -48,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
             HasilDeteksi::class,
             Infografis::class,
             InterpretasiSkor::class,
-            JawabanUser::class,
             KategoriDeteksi::class,
             Konsultasi::class,
             Pertanyaan::class,
