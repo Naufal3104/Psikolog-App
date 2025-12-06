@@ -2,12 +2,14 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
+                <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard.index') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
 
+                <!-- Navigation Links (Desktop) -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard.index')" :active="request()->routeIs('dashboard.*')">
                         {{ __('Dashboard') }}
@@ -17,24 +19,26 @@
                         {{ __('Artikel') }}
                     </x-nav-link>
 
-
+                    <!-- Deteksi Dini Dropdown -->
                     <div
                         class="inline-flex items-center px-1 pt-1 border-b-2 
-                        {{ request()->routeIs('kelola-deteksi.*') || request()->routeIs('interpretasi.*')
-                        ? 'border-indigo-400 dark:border-indigo-600'
-                        : 'border-transparent' }} 
+                        {{ request()->routeIs('kelola-deteksi.*') ||
+                        request()->routeIs('kelola-skor.*') ||
+                        request()->routeIs('kelola-riwayat.*')
+                            ? 'border-indigo-400 dark:border-indigo-600'
+                            : 'border-transparent' }} 
                         transition duration-150 ease-in-out">
 
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
                                 <button
                                     class="inline-flex items-center text-sm font-medium leading-5
-                             {{-- Logika 'active' state untuk WARNA TEKS --}}
-                             {{ request()->routeIs('kelola-deteksi.*') || request()->routeIs('interpretasi.*')
-                                 ? 'text-gray-900 dark:text-gray-100'
-                                 : 'text-gray-500 dark:text-gray-400' }}
-                             hover:text-gray-700 dark:hover:text-gray-300
-                             focus:outline-none transition duration-150 ease-in-out">
+                                    {{ request()->routeIs('kelola-deteksi.*') ||
+                                    request()->routeIs('kelola-skor.*') ||
+                                    request()->routeIs('kelola-riwayat.*')
+                                        ? 'text-gray-900 dark:text-gray-100'
+                                        : 'text-gray-500 dark:text-gray-400' }}
+                                    hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition duration-150 ease-in-out">
                                     <div>{{ __('Deteksi Dini') }}</div>
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -62,12 +66,22 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
-                    <x-nav-link :href="route('psikolog.pertanyaan')" :active="request()->routeIs('psikolog.pertanyaan')">
+
+                    <x-nav-link :href="route('tanya.index')" :active="request()->routeIs('psikolog.pertanyaan')">
                         {{ __('Tanya Jawab') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
+                        {{ __('Verifikasi Psikolog') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
+                        {{ __('Riwayat Aktivitas') }}
                     </x-nav-link>
                 </div>
             </div>
 
+            <!-- Settings Dropdown (Desktop) -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -93,10 +107,9 @@
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -104,6 +117,7 @@
                 </x-dropdown>
             </div>
 
+            <!-- Hamburger (Mobile) -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
@@ -119,6 +133,7 @@
         </div>
     </div>
 
+    <!-- Responsive Navigation Menu (Mobile) -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard.index')" :active="request()->routeIs('dashboard.*')">
@@ -129,11 +144,39 @@
                 {{ __('Artikel') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('deteksi.index')" :active="request()->routeIs('deteksi.*')">
-                {{ __('Deteksi Dini') }}
+            <!-- Menu Deteksi Dini (Dipecah menjadi item list agar mudah diakses) -->
+            <div class="pt-2 pb-2 border-t border-gray-100 dark:border-gray-700">
+                <div class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                    {{ __('Deteksi Dini') }}
+                </div>
+                <x-responsive-nav-link :href="route('kelola-deteksi.index')" :active="request()->routeIs('kelola-deteksi.*')">
+                    {{ __('Kelola Pertanyaan') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('kelola-skor.index')" :active="request()->routeIs('kelola-skor.*')">
+                    {{ __('Interpretasi Skor') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('kelola-riwayat.index')" :active="request()->routeIs('kelola-riwayat.*')">
+                    {{ __('Riwayat Deteksi') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <x-responsive-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
+                {{ __('Verifikasi Psikolog') }}
+            </x-responsive-nav-link>
+
+            <!-- Tanya Jawab -->
+            <x-responsive-nav-link :href="route('psikolog.pertanyaan')" :active="request()->routeIs('psikolog.pertanyaan')">
+                {{ __('Tanya Jawab') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
+                {{ __('Riwayat Aktivitas') }}
             </x-responsive-nav-link>
         </div>
 
+        <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
@@ -147,10 +190,9 @@
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                        this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>

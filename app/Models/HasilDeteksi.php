@@ -10,19 +10,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class HasilDeteksi extends Model
 {
     use HasFactory;
+
     protected $table = 'hasil_deteksi';
 
     /**
      * Atribut yang tidak boleh diisi massal.
+     *
      * @var array
      */
     protected $guarded = ['id'];
+
     protected $fillable = [
         'user_id',
         'kategori_deteksi_id',
         'total_skor',
-        'interpretasi_hasil',
+        'interpretasi_id',
     ];
+
     /**
      * Relasi ke User
      */
@@ -45,5 +49,10 @@ class HasilDeteksi extends Model
     public function jawabanUser(): HasMany
     {
         return $this->hasMany(JawabanUser::class);
+    }
+
+    public function interpretasi(): BelongsTo
+    {
+        return $this->belongsTo(InterpretasiSkor::class);
     }
 }

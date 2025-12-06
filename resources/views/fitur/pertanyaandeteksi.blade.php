@@ -221,12 +221,12 @@
 
                 <div class="card-body-detection">
                     <div class="form-group">
-                        <label for="nama" class="question-text">Nama</label>
-                        <input type="text" id="nama" name="nama" class="input-text" 
+                        {{-- <label for="nama" class="question-text">Nama</label> --}}
+                        <input type="hidden" id="nama" name="nama" class="input-text" 
                         @if (auth()->check()) 
                             value="{{ auth()->user()->name }}"
                         @endif
-                            placeholder="Masukkan nama anda" required>
+                            required>
                     </div>
                     {{-- Lakukan perulangan untuk setiap pertanyaan yang ada di dalam $kategori --}}
                     @foreach ($kategori->pertanyaan as $pertanyaan)

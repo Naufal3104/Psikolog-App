@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
+use App\Models\Artikel;
 use App\Models\HasilDeteksi;
 use App\Models\InterpretasiSkor;
 use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
-use App\Models\Artikel;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('admin.dashboard');
     }
 
@@ -259,7 +262,7 @@ class AdminController extends Controller
             'kategori_deteksi_id' => 'required|string|exists:kategori_deteksi,id',
             'teks_interpretasi' => 'required|string|max:255',
             'skor_minimal' => 'required|integer|min:0',
-            'skor_maksimal' => 'required|integer|gte:skor_minimal', 
+            'skor_maksimal' => 'required|integer|gte:skor_minimal',
             'deskripsi_hasil' => 'nullable|string',
         ]);
 
@@ -334,10 +337,26 @@ class AdminController extends Controller
         ]);
     }
 
-    public function index_artikel()
+    public function index_artikel(Request $request)
     {
-        return view('admin.kelola-artikel', [ // Pastikan view ini ada
-            'artikel' => Artikel::with('penulis')->latest()->paginate(20) // Menggunakan paginate
+        // 1. Mulai query dasar (load relasi penulis)
+        // Kita gunakan query() agar bisa disambung dengan kondisi lain
+        $query = Artikel::with('penulis')->latest();
+
+        // 2. Terapkan filter PENCARIAN (jika ada request 'search')
+        $query->when($request->query('search'), function ($q, $search) {
+            // Cari berdasarkan Judul ATAU Slug (opsional)
+            $q->where('judul', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%");
+        });
+
+        // 3. Eksekusi query dengan PAGINATE
+        // withQueryString() penting agar saat pindah halaman, kata kunci pencarian tidak hilang
+        $artikel = $query->paginate(20)->withQueryString();
+
+        // 4. Kirim ke view
+        return view('admin.kelola-artikel', [
+            'artikel' => $artikel,
         ]);
     }
 
@@ -348,7 +367,7 @@ class AdminController extends Controller
     public function index_artikel_publik()
     {
         return view('fitur.artikel', [
-            'artikel' => Artikel::with('penulis')->latest()->get() 
+            'artikel' => Artikel::with('penulis')->latest()->get(),
         ]);
     }
 
@@ -357,7 +376,7 @@ class AdminController extends Controller
      */
     public function create_artikel()
     {
-        return view('admin.tambah-post'); 
+        return view('admin.tambah-post');
     }
 
     /**
@@ -365,32 +384,33 @@ class AdminController extends Controller
      */
     public function store_artikel(Request $request)
     {
+        // dd($request->all());
         // 1. Validasi
         $validatedData = $request->validate([
-            'title'          => 'required|string|max:255',
-            'slug'           => 'required|string|max:255|unique:artikel,slug',
-            'content'        => 'required|string',
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:artikel,slug',
+            'content' => 'required|string',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
-            'image_caption'  => 'nullable|string|max:255',
+            'image_caption' => 'nullable|string|max:255',
         ]);
 
         $gambarPath = null;
 
         // 2. Simpan gambar
         if ($request->hasFile('featured_image')) {
-            $gambarPath = $request->file('featured_image')->store('artikel-gambar', 'public');
+            $gambarPath = $request->file('featured_image')->store('', 'public');
         }
 
         // 3. Simpan data
         Artikel::create([
-            'id'                => (string) Str::ulid(),
-            'judul'             => $validatedData['title'],
-            'slug'              => $validatedData['slug'],
-            'isi'               => $validatedData['content'],
-            'penulis_id'        => Auth::id(),
-            'gambar'            => $gambarPath,
+            'id' => (string) Str::ulid(),
+            'judul' => $validatedData['title'],
+            'slug' => $validatedData['slug'],
+            'isi' => $validatedData['content'],
+            'penulis_id' => Auth::id(),
+            'gambar' => $gambarPath,
             'keterangan_gambar' => $validatedData['image_caption'] ?? null,
-            'views'             => 0,
+            'views' => 0,
         ]);
 
         // 4. Redirect ke index admin
@@ -403,8 +423,9 @@ class AdminController extends Controller
     public function show_artikel($id)
     {
         $artikel = Artikel::with('penulis')->findOrFail($id);
+
         return view('fitur.isiartikel', [
-            'artikel' => $artikel
+            'artikel' => $artikel,
         ]);
     }
 
@@ -414,9 +435,10 @@ class AdminController extends Controller
     public function edit_artikel($id)
     {
         $artikel = Artikel::findOrFail($id);
+
         // Pastikan Anda membuat view ini nanti:
-        return view('admin.edit-artikel', [ 
-            'artikel' => $artikel
+        return view('admin.edit-artikel', [
+            'artikel' => $artikel,
         ]);
     }
 
@@ -429,29 +451,29 @@ class AdminController extends Controller
 
         // 1. Validasi
         $validatedData = $request->validate([
-            'title'         => 'required|string|max:255',
-            'slug'          => ['required', 'string', 'max:255', Rule::unique('artikel', 'slug')->ignore($artikel->id)],
-            'content'       => 'required|string',
-            'featured_image'=> 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'title' => 'required|string|max:255',
+            'slug' => ['required', 'string', 'max:255', Rule::unique('artikel', 'slug')->ignore($artikel->id)],
+            'content' => 'required|string',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'image_caption' => 'nullable|string|max:255',
         ]);
 
-        $gambarPath = $artikel->gambar; 
+        $gambarPath = $artikel->gambar;
 
         // 2. Cek gambar baru
         if ($request->hasFile('featured_image')) {
             if ($artikel->gambar) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
-            $gambarPath = $request->file('featured_image')->store('artikel-gambar', 'public');
+            $gambarPath = $request->file('featured_image')->store('', 'public');
         }
 
         // 3. Update data
         $artikel->update([
-            'judul'             => $validatedData['title'],
-            'slug'              => $validatedData['slug'],
-            'isi'               => $validatedData['content'],
-            'gambar'            => $gambarPath,
+            'judul' => $validatedData['title'],
+            'slug' => $validatedData['slug'],
+            'isi' => $validatedData['content'],
+            'gambar' => $gambarPath,
             'keterangan_gambar' => $validatedData['image_caption'] ?? null,
         ]);
 
@@ -474,5 +496,117 @@ class AdminController extends Controller
         // 3. Redirect ke index admin
         return redirect()->back()->with('success', 'Artikel berhasil dihapus.');
     }
-}
 
+    // Menampilkan daftar psikolog pending
+    public function index_verifikasi_psikolog()
+    {
+        // Ambil data user yang punya role psikolog DAN status profilnya 'pending'
+        $psikologs = User::role('psikolog')
+            ->with('psikologProfile')
+            ->get()
+            ->sortBy(function ($user) {
+                return $user->psikologProfile->status === 'pending' ? 0 : 1;
+            });
+
+        return view('admin.kelola-psikolog', compact('psikologs'));
+    }
+
+    // Proses Approve
+    public function approve_psikolog($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->psikologProfile) {
+            $user->psikologProfile->update(['status' => 'approved']);
+
+            return back()->with('success', 'Psikolog berhasil disetujui.');
+        }
+
+        return back()->with('error', 'Profil tidak ditemukan.');
+    }
+
+    // Proses Reject (Opsional)
+    public function reject_psikolog($id)
+    {
+        $user = User::findOrFail($id);
+        // Hapus user atau ubah status ke rejected
+        $user->delete(); // Atau update status jadi 'rejected'
+
+        return back()->with('success', 'Permintaan ditolak.');
+    }
+
+    // --- TAMBAHAN EDIT PSIKOLOG ---
+    public function edit_psikolog($id)
+    {
+        $psikolog = User::with('psikologProfile')->findOrFail($id);
+
+        return view('admin.edit-psikolog', compact('psikolog'));
+    }
+
+    public function update_psikolog(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            // Validasi User Data
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'NIK' => ['required', 'string', 'max:20'],
+            'no_telp' => ['required', 'string', 'max:20'],
+            'alamat' => ['required', 'string'],
+
+            // Validasi Profile Data
+            'NIP' => ['required', 'string'],
+            'spesialisasi' => ['required', 'string'],
+            'status' => ['required', 'in:pending,approved,rejected'], // Bisa ubah status manual juga
+        ]);
+
+        // Update Tabel Users
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'NIK' => $request->NIK,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+        ]);
+
+        // Update Tabel PsikologProfile
+        if ($user->psikologProfile) {
+            $user->psikologProfile->update([
+                'NIP' => $request->NIP,
+                'spesialisasi' => $request->spesialisasi,
+                'status' => $request->status,
+            ]);
+        }
+
+        return redirect()->route('verifikasi.index')->with('success', 'Data Psikolog berhasil diperbarui.');
+    }
+
+    public function activityLogs(Request $request)
+    {
+        // 1. Memulai Query dari data terbaru (CCTV rekaman terakhir)
+        $query = ActivityLog::latest();
+
+        // 2. Logika Pencarian (Search Filter)
+        // Jika admin mengetik sesuatu di kolom cari, kita filter berdasarkan Nama User atau Jenis Aksi
+        if ($request->has('search') && $request->search != null) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('user_name', 'like', "%$search%")
+                    ->orWhere('action', 'like', "%$search%");
+            });
+        }
+
+        // 3. Logika Filter Tipe Aksi (Opsional, menggantikan dropdown Kategori)
+        if ($request->has('filter_action') && $request->filter_action != null) {
+            // Mencari aksi spesifik, misal hanya ingin lihat siapa yang LOGIN
+            $query->where('action', 'like', '%'.$request->filter_action.'%');
+        }
+
+        // 4. Eksekusi dengan Pagination (10 data per halaman)
+        $logs = $query->paginate(10)->withQueryString();
+
+        // 5. Kirim data ke View
+        return view('admin.activity-log', compact('logs'));
+    }
+}

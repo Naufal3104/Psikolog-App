@@ -3,20 +3,22 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PsikologController;
 use App\Http\Controllers\TanyaJawabController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
+Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('psikolog.register');
+Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psikolog.register.store');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', fn () => view('index'))->name('home');
 
-    // === Laravel Breeze ===
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');
+    Route::patch('/user/profile', [UserController::class, 'update'])->name('user.profile.update');
+    Route::delete('/user/profile', [UserController::class, 'destroy'])->name('user.profile.destroy');
 
     // === 6 FITUR UTAMA (PUBLIK) ===
     // Artikel (Publik + Form Tambah)
@@ -28,8 +30,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
+    Route::get('/deteksi/hasil', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
+    Route::get('/deteksi/riwayat', [DeteksiController::class, 'riwayat'])->name('deteksi.riwayat');
     Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
-    Route::post('/deteksi/process', fn (Request $request) => back()->with('success', 'Hasil deteksi berhasil diproses!'))->name('deteksi.process');
+    Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
+    Route::get('/deteksi/hasil/{id}', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
 
     // Tanya Psikolog, Video, Infografis, Konsultasi
     Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
@@ -39,12 +44,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/tanya/{id}', [TanyaJawabController::class, 'update'])->name('tanya.update');
     Route::delete('/tanya/{id}', [TanyaJawabController::class, 'destroy'])->name('tanya.destroy');
     Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
+    Route::post('/tanya/{id}/upvote', [TanyaJawabController::class, 'upvote'])->name('tanya.upvote');
+    Route::post('/tanya/{id}/downvote', [TanyaJawabController::class, 'downvote'])->name('tanya.downvote');
 
-    //video video
+    // video video
     Route::resource('video', VideoController::class);
     Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
     Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
-    
+
     // === GRUP ADMIN ===
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
@@ -80,5 +87,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pertanyaan', [TanyaJawabController::class, 'belumDijawab'])->name('psikolog.pertanyaan');
         Route::get('/pertanyaan/{id}', [TanyaJawabController::class, 'formJawab'])->name('psikolog.jawab');
         Route::put('/pertanyaan/{id}', [TanyaJawabController::class, 'update'])->name('psikolog.jawab.submit');
+
+        Route::get('/verifikasi-psikolog', [AdminController::class, 'index_verifikasi_psikolog'])->name('verifikasi.index');
+        Route::post('/verifikasi-psikolog/{id}/approve', [AdminController::class, 'approve_psikolog'])->name('verifikasi.approve');
+        Route::delete('/verifikasi-psikolog/{id}/reject', [AdminController::class, 'reject_psikolog'])->name('verifikasi.reject');
+        Route::get('/verifikasi-psikolog/{id}/edit', [AdminController::class, 'edit_psikolog'])->name('verifikasi.edit');
+        Route::put('/verifikasi-psikolog/{id}', [AdminController::class, 'update_psikolog'])->name('verifikasi.update');
+
+        Route::get('/admin/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs.index');
+
+        // === Laravel Breeze ===
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });

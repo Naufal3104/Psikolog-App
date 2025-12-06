@@ -1194,6 +1194,9 @@ h6 {
 .sb {
     margin-top: 2.25rem;
 }
+.ubd {
+    margin-right: 1.250rem;
+}
 .tb {
     margin-right: 0.625rem;
 }
@@ -1776,6 +1779,10 @@ h6 {
 }
 .xh {
     fill: #79808a !important;
+}
+
+.bla {
+    fill: #000000 !important;
 }
 .yh {
     padding: 1.875rem;

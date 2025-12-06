@@ -63,11 +63,81 @@
 
         .question-item {
             display: flex;
-            gap: 16px;
+            align-items: center;
+            /* [PENTING] Ini membuat Kiri (Vote) dan Kanan (Konten) sejajar di tengah secara vertikal */
             padding: 20px 24px;
             border-bottom: 1px solid #f3f4f6;
-            cursor: pointer;
             transition: background-color 0.1s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Kolom Vote (Kiri) */
+        .vote-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Tengahkan ikon dan angka secara horizontal */
+            justify-content: center;
+            /* Tengahkan ikon dan angka secara vertikal */
+            min-width: 60px;
+            /* Beri lebar pasti agar tidak goyang */
+            margin-right: 16px;
+            /* Jarak antara Vote dan Konten */
+            height: 100%;
+            /* Pastikan tinggi mengikuti container */
+        }
+
+        .vote-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        /* Reset tombol vote agar rapi */
+        .vote-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            /* Beri sedikit ruang klik */
+            display: flex;
+            /* Pastikan icon di tengah tombol */
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            transition: color 0.2s ease;
+        }
+
+        .vote-count {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #374151;
+            margin: 4px 0;
+            text-align: center;
+            line-height: 1;
+        }
+
+        /* Kolom Konten (Kanan) */
+        .content-section {
+            flex-grow: 1;
+            display: flex;
+            gap: 16px;
+            text-decoration: none;
+            /* Agar link tidak bergaris bawah */
+            color: inherit;
+        }
+
+        /* Wrapper link agar area teks tetap bisa diklik */
+        .content-link-wrapper {
+            display: flex;
+            align-items: center;
+            /* [PENTING] Sejajarkan Avatar dan Teks di tengah */
+            gap: 16px;
+            width: 100%;
             text-decoration: none;
             color: inherit;
         }
@@ -213,31 +283,57 @@
 
                     <div class="questions-list">
                         @forelse ($tanya as $item)
-                            <a href="{{ route('tanya.show', $item->id) }}" class="question-item">
-                                <div class="avatar-placeholder">
-                                    <i data-feather="user" style="width: 20px; height: 20px;"></i>
+                            <div class="question-item">
+
+                                {{-- BAGIAN KIRI: VOTING --}}
+                                <div class="vote-section">
+                                    {{-- Tombol Upvote --}}
+                                    <form action="{{ route('tanya.upvote', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="vote-btn" title="Upvote">
+                                            <i data-feather="chevron-up" style="width: 32px; height: 32px;"></i>
+                                        </button>
+                                    </form>
+
+                                    {{-- Angka Vote --}}
+                                    <span class="vote-count">{{ $item->vote_count }}</span>
+
+                                    {{-- Tombol Downvote --}}
+                                    <form action="{{ route('tanya.downvote', $item->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="vote-btn" title="Downvote">
+                                            <i data-feather="chevron-down" style="width: 32px; height: 32px;"></i>
+                                        </button>
+                                    </form>
                                 </div>
-                                <div>
-                                    <div class="question-title">
-                                        {{ $item->judul_pertanyaan }}
+
+                                {{-- BAGIAN KANAN: KONTEN (Bisa diklik menuju detail) --}}
+                                <a href="{{ route('tanya.show', $item->id) }}" class="content-link-wrapper">
+                                    <div class="avatar-placeholder">
+                                        <i data-feather="user" style="width: 20px; height: 20px;"></i>
                                     </div>
-                                    <div class="question-excerpt">
-                                        @if ($item->jawaban)
-                                            <strong>Jawaban Psikolog:</strong> {{ Str::limit($item->jawaban, 100) }}
-                                        @else
-                                            <em>Belum dijawab oleh psikolog.</em>
-                                        @endif
+                                    <div>
+                                        <div class="question-title">
+                                            {{ $item->judul_pertanyaan }}
+                                        </div>
+                                        <div class="question-excerpt">
+                                            <em
+                                                class="{{ $item->status == 'Sudah Dijawab' ? 'text-green-600' : 'text-gray-500' }}">
+                                                {{ ucfirst($item->status) }}
+                                            </em>
+                                        </div>
+                                        <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 6px;">
+                                            oleh {{ $item->user->name ?? 'Anonim' }}
+                                            @if ($item->psikiater)
+                                                • dijawab oleh {{ $item->psikiater->name ?? '-' }}
+                                            @endif
+                                            • {{ $item->created_at->diffForHumans() }}
+                                        </div>
                                     </div>
-                                    <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 6px;">
-                                        oleh {{ $item->user->name ?? 'Anonim' }}
-                                        @if ($item->psikiater)
-                                            • dijawab oleh {{ $item->psikiater->name ?? '-' }}
-                                        @endif
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         @empty
-                            <p style="text-align: center; color: #6b7280;">Belum ada pertanyaan.</p>
+                            <p style="text-align: center; color: #6b7280; padding: 20px;">Belum ada pertanyaan.</p>
                         @endforelse
                     </div>
                 </div>
