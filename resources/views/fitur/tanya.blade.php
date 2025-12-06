@@ -205,6 +205,60 @@
             background-color: #004780;
             color: white;
         }
+
+        /* Dark Mode Styles */
+        .eh .consultation-card {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+        }
+
+        .eh .ask-button {
+            background-color: #059669 !important;
+        }
+
+        .eh .ask-button:hover {
+            background-color: #047857 !important;
+        }
+
+        .eh .question-item {
+            border-bottom-color: #374151 !important;
+            color: #d1d5db !important;
+        }
+
+        .eh .question-item:hover {
+            background-color: #374151 !important;
+        }
+
+        .eh .avatar-placeholder {
+            background-color: #374151 !important;
+            color: #9ca3af !important;
+        }
+
+        .eh .question-title {
+            color: #f3f4f6 !important;
+        }
+
+        .eh .question-excerpt {
+            color: #9ca3af !important;
+        }
+
+        .eh .pagination {
+            border-top-color: #374151 !important;
+        }
+
+        .eh .pagination-link {
+            background-color: #374151 !important;
+            color: #d1d5db !important;
+        }
+
+        .eh .pagination-link:hover:not(.active) {
+            background-color: #4b5563 !important;
+        }
+
+        .eh .pagination-link.active {
+            background-color: #3b82f6 !important;
+            color: white !important;
+        }
     </style>
 @endpush
 
