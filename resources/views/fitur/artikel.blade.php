@@ -5,16 +5,26 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 @endpush
 
 @section('content')
 
-<x-layout.navbar />
+    <x-layout.navbar />
 
     <!-- ===== Blog Grid Start ===== -->
     <section class="ji gp uq">
         <div class="bb ye ki xn vq jb jo">
+            <div>
+                <a href="{{ route('home') }}"
+                    class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Kembali
+                </a>
+            </div>
             <div class="wc qf pn xo zf iq">
                 @foreach ($artikel as $item)
                     <div class="animate_top sg vk rm xm">
@@ -28,7 +38,8 @@
                             @endif
 
                             <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="artikel/{{$item->id}}" class="vc ek rg lk gh sl ml il gi hi">Baca Selengkapnya</a>
+                                <a href="artikel/{{ $item->id }}" class="vc ek rg lk gh sl ml il gi hi">Baca
+                                    Selengkapnya</a>
                             </div>
                         </div>
 
@@ -50,11 +61,11 @@
                                 </div>
                             </div>
                             <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="artikel/{{$item->id}}">{{ $item->judul }}</a>
+                                <a href="artikel/{{ $item->id }}">{{ $item->judul }}</a>
                             </h4>
-                            <p class="text-sm text-gray-500 mt-2">
+                            {{-- <p class="text-sm text-gray-500 mt-2">
                                 Slug: {{ \Illuminate\Support\Str::words($item->slug, 5, '...') }}
-                            </p>
+                            </p> --}}
                         </div>
                     </div>
                 @endforeach

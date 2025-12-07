@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TanyaJawab;
 use App\Models\BalasanTanyaJawab;
+use App\Models\TanyaJawab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,12 +13,21 @@ class TanyaJawabController extends Controller
     /**
      * Tampilkan semua pertanyaan (fitur.tanya)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tanya = TanyaJawab::with('user') // Eager loading
-            ->orderBy('vote_count', 'desc')
-            ->latest() // Urutkan berdasarkan terbaru
-            ->paginate(10); // Gunakan pagination
+        // Mulai Query
+        $query = TanyaJawab::with('user');
+
+        // Logika Pencarian
+        if ($request->has('search')) {
+            $query->where('judul_pertanyaan', 'like', '%'.$request->search.'%');
+        }
+
+        // Urutkan dan Paginate
+        $tanya = $query->orderBy('vote_count', 'desc')
+            ->latest()
+            ->paginate(10)
+            ->withQueryString(); // Agar parameter search tidak hilang saat klik pagination
 
         return view('fitur.tanya', compact('tanya'));
     }
@@ -143,7 +152,7 @@ class TanyaJawabController extends Controller
     {
         // 1. Validasi input
         $request->validate([
-            'isi_balasan' => 'required|string|min:3', 
+            'isi_balasan' => 'required|string|min:3',
         ]);
 
         // 2. Pastikan pertanyaan utamanya ada
@@ -160,24 +169,25 @@ class TanyaJawabController extends Controller
         // [LOGIKA BARU] Cek Role Psikolog & Update Status
         // Jika user punya role 'psikolog' DAN status saat ini masih 'belum dijawab'
         if ($user->hasRole('psikolog') && $tanyaJawab->status == 'Belum Dijawab') {
-            
+
             // Update status pertanyaan jadi 'sudah dijawab'
             // Kita juga bisa set psikiater_id ke user yang membalas ini
             $tanyaJawab->update([
                 'status' => 'Sudah Dijawab',
-                'psikiater_id' => $user->id 
+                'psikiater_id' => $user->id,
             ]);
         }
 
         // 4. Kembalikan ke halaman 'show' dengan pesan sukses
         return redirect()->route('tanya.show', $tanyaJawab->id)
-                         ->with('success', 'Balasan Anda berhasil dikirim!');
+            ->with('success', 'Balasan Anda berhasil dikirim!');
     }
 
     public function upvote($id)
     {
         $tanya = TanyaJawab::findOrFail($id);
         $tanya->increment('vote_count');
+
         return back(); // Kembali ke halaman sebelumnya
     }
 
@@ -185,6 +195,7 @@ class TanyaJawabController extends Controller
     {
         $tanya = TanyaJawab::findOrFail($id);
         $tanya->decrement('vote_count');
+
         return back(); // Kembali ke halaman sebelumnya
     }
 }

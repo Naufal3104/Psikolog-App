@@ -1,6 +1,7 @@
 {{-- resources/views/welcome.blade.php (atau home.blade.php) --}}
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,65 +10,61 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}">
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
-    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body
-     x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }"
-    x-init="
-        darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-        $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
-    "
-    x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
-    :class="{ 'b eh': darkMode }"
->
+<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
+$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
+    :class="{ 'b eh': darkMode }">
     <x-layout.navbar />
 
     <main>
-<!-- ===== Hero Start ===== -->
-<section class="gj do ir hj sp jr i pg" style="position: relative; overflow: hidden; margin-bottom: 5rem;">
-    <!-- Background Image with Overlay -->
-    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
-        <!-- Background Image -->
-        <img 
-        src="/images/header.jpg"
-        alt="Mental Health Background"
-        style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
-/>
-        
-        <!-- Dark Overlay untuk readability -->
-        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.85), rgba(30, 64, 175, 0.75), rgba(30, 58, 138, 0.6));"></div>
-    </div>
+        <!-- ===== Hero Start ===== -->
+        <section class="gj do ir hj sp jr i pg" style="position: relative; overflow: hidden; margin-bottom: 5rem;">
+            <!-- Background Image with Overlay -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
+                <!-- Background Image -->
+                <img src="/images/header.jpg" alt="Mental Health Background"
+                    style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
 
-    <!-- Content -->
-    <div class="bb ze ki xn 2xl:ud-px-0" style="position: relative; z-index: 10; padding-top: 8rem; padding-bottom: 8rem;">
-        <div class="tc sf wf rj">
-            <div class="animate_left" style="max-width: 56rem; margin-left: auto; margin-right: auto; text-align: center;">
-                <!-- Main Heading -->
-                <h1 class="fk vj zp or kk wm wb" style="color: white; margin-bottom: 1.5rem; font-size: clamp(1.875rem, 5vw, 3.75rem); line-height: 1.2;">
-                    Kesehatan Mental Anda Adalah Prioritas Kami
-                </h1>
-                
-                <!-- Description -->
-                <p class="fq" style="color: rgba(255, 255, 255, 0.95); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.75; text-align: center; margin-left: auto; margin-right: auto; max-width: 48rem;">
-                    Temukan solusi terbaik untuk kesehatan mental Anda bersama psikolog profesional yang berpengalaman dan terpercaya
-                </p>
+                <!-- Dark Overlay untuk readability -->
+                <div
+                    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.85), rgba(30, 64, 175, 0.75), rgba(30, 58, 138, 0.6));">
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- ===== Hero End ===== -->
+
+            <!-- Content -->
+            <div class="bb ze ki xn 2xl:ud-px-0"
+                style="position: relative; z-index: 10; padding-top: 8rem; padding-bottom: 8rem;">
+                <div class="tc sf wf rj">
+                    <div class="animate_left"
+                        style="max-width: 56rem; margin-left: auto; margin-right: auto; text-align: center;">
+                        <!-- Main Heading -->
+                        <h1 class="fk vj zp or kk wm wb"
+                            style="color: white; margin-bottom: 1.5rem; font-size: clamp(1.875rem, 5vw, 3.75rem); line-height: 1.2;">
+                            Kesehatan Mental Anda Adalah Prioritas Kami
+                        </h1>
+
+                        <!-- Description -->
+                        <p class="fq"
+                            style="color: rgba(255, 255, 255, 0.95); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.75; text-align: center; margin-left: auto; margin-right: auto; max-width: 48rem;">
+                            Temukan solusi terbaik untuk kesehatan mental Anda bersama psikolog profesional yang
+                            berpengalaman dan terpercaya
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ===== Hero End ===== -->
 
         <!-- ===== Services Start ===== -->
         <section id="layanan" class="lj tp kr">
             <!-- Section Title Start -->
-            <div
-                x-data="{
-                    sectionTitle: 'Layanan Kami',
-                    sectionTitleText: 'Layanan psikolog profesional untuk mendukung kesehatan mental dan kesejahteraan Anda secara personal dan terpercaya.'
-                }"
-            >
+            <div x-data="{
+                sectionTitle: 'Layanan Kami',
+                sectionTitleText: 'Layanan psikolog profesional untuk mendukung kesehatan mental dan kesejahteraan Anda secara personal dan terpercaya.'
+            }">
                 <div class="animate_top bb ze rj ki xn vq">
                     <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
                     <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -187,12 +184,10 @@
 
         <!-- ===== Blog Start ===== -->
         <section class="ji gp uq">
-            <div
-                x-data="{
-                    sectionTitle: 'Artikel Kesehatan',
-                    sectionTitleText: 'Baca informasi terbaru seputar kesehatan mental, edukasi, dan perkembangan layanan kami.'
-                }"
-            >
+            <div x-data="{
+                sectionTitle: 'Artikel Kesehatan',
+                sectionTitleText: 'Baca informasi terbaru seputar kesehatan mental, edukasi, dan perkembangan layanan kami.'
+            }">
                 <div class="animate_top bb ze rj ki xn vq">
                     <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
                     <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
@@ -202,79 +197,41 @@
             <div class="bb ye ki xn vq jb jo">
                 <div class="wc qf pn xo zf iq">
                     <!-- Blog Item 1 -->
+                    @forelse ($artikel as $item)
                     <div class="animate_top sg vk rm xm">
                         <div class="c rc i z-1 pg">
-                            <img class="w-full" src="{{ asset('images/blog-01.png') }}" alt="Blog" />
+                            @if ($item->gambar == null)
+                                <img class="w-full" src="{{ asset('images/noimage.svg') }}" alt="Blog" />
+                            @else
+                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
+                                    class="w-full" style="object-fit: cover;" />
+                            @endif
                             <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ url('/blog/free-advertising') }}" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
+                                <a href="{{ route('artikel.show', $item->id) }}"
+                                    class="vc ek rg lk gh sl ml il gi hi">Baca Selengkapnya</a>
                             </div>
                         </div>
                         <div class="yh">
                             <div class="tc uf wf ag jq">
                                 <div class="tc wf ag">
                                     <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                    <p>Musharof Chy</p>
+                                    <p>{{ optional($item->penulis)->name ?? 'Penulis' }}</p>
                                 </div>
                                 <div class="tc wf ag">
                                     <img src="{{ asset('images/icon-calender.svg') }}" alt="Calendar" />
-                                    <p>25 Dec, 2025</p>
+                                    <p>{{ $item->created_at->format('d M Y') }}</p>
                                 </div>
                             </div>
                             <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="{{ url('/blog/free-advertising') }}">Free advertising for your online business</a>
+                                <a href="{{ route('artikel.show', $item->id) }}">{{ $item->judul }}</a>
                             </h4>
+                            {{-- <p class="text-sm text-gray-500 mt-2">
+                                Slug: {{ \Illuminate\Support\Str::words($item->slug, 5, '...') }}
+                            </p> --}}
                         </div>
                     </div>
-
-                    <!-- Blog Item 2 -->
-                    <div class="animate_top sg vk rm xm">
-                        <div class="c rc i z-1 pg">
-                            <img class="w-full" src="{{ asset('images/blog-02.png') }}" alt="Blog" />
-                            <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ url('/blog/improve-design') }}" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
-                            </div>
-                        </div>
-                        <div class="yh">
-                            <div class="tc uf wf ag jq">
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                    <p>Musharof Chy</p>
-                                </div>
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-calender.svg') }}" alt="Calendar" />
-                                    <p>25 Dec, 2025</p>
-                                </div>
-                            </div>
-                            <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="{{ url('/blog/improve-design') }}">9 simple ways to improve your design skills</a>
-                            </h4>
-                        </div>
-                    </div>
-
-                    <!-- Blog Item 3 -->
-                    <div class="animate_top sg vk rm xm">
-                        <div class="c rc i z-1 pg">
-                            <img class="w-full" src="{{ asset('images/blog-03.png') }}" alt="Blog" />
-                            <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ url('/blog/coding-speed') }}" class="vc ek rg lk gh sl ml il gi hi">Read More</a>
-                            </div>
-                        </div>
-                        <div class="yh">
-                            <div class="tc uf wf ag jq">
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                    <p>Musharof Chy</p>
-                                </div>
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-calender.svg') }}" alt="Calendar" />
-                                    <p>25 Dec, 2025</p>
-                                </div>
-                            </div>
-                            <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="{{ url('/blog/coding-speed') }}">Tips to quickly improve your coding speed.</a>
-                            </h4>
-                        </div>
-                    </div>
+                    @empty
+                    @endforelse
                 </div>
             </div>
         </section>
@@ -285,4 +242,5 @@
 
     <script defer src="{{ asset('bundle.js') }}"></script>
 </body>
+
 </html>

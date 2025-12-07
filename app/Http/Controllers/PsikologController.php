@@ -26,7 +26,7 @@ class PsikologController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
         // 1. Validasi Input Lengkap
         $request->validate([
             // Data Akun Dasar

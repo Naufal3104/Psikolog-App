@@ -1,15 +1,7 @@
-{{-- resources/views/fitur/video.blade.php --}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video - Psikolog - RSUD Jombang</title>
-    <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
-    <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    @vite(['resources/css/app.css','resources/js/app.js'])
+@extends('layouts.main')
+@section('title', 'Video')
+
+@push('styles')
     <style>
         .video-section {
             padding: 120px 20px 60px 20px;
@@ -148,78 +140,67 @@
             height: 16px;
         }
     </style>
-    @stack('styles')
-</head>
-<body
-  x-data="{
-      page: 'home',
-      darkMode: true,
-      stickyMenu: false,
-      navigationOpen: false,
-      scrollTop: false,
-      sidebarOpen: false
-  }"
-  x-init="
-      darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-      $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
-  "
-  :class="{ 'b eh': darkMode === true }"
-  x-cloak
->
-    <x-layout.navbar />
-    
+@endpush
+
+@section('content')
     <main class="video-section">
-        <!-- Section Header -->
+        
+        {{-- TOMBOL KEMBALI --}}
+        <div style="margin-bottom: 2rem;">
+            <a href="{{ url('/') }}"
+                class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Kembali
+            </a>
+        </div>
+
         <div class="section-title">
             <h1>Video Edukasi Psikologi</h1>
             <p>Pelajari lebih lanjut tentang kesehatan mental melalui video edukatif</p>
         </div>
 
-        <!-- Video Grid -->
         <div class="video-grid">
-    @foreach ($videos as $video)
-        <div class="video-card">
-            <div class="video-thumbnail">
-                <iframe 
-                    src="{{ $video->embed_url }}"
-                    title="{{ $video->judul }}"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
-            <div class="video-content">
-                <h3 class="video-title">{{ $video->judul }}</h3>
-
-                <p class="video-description">
-                    Video edukasi kategori: <strong>{{ $video->kategori }}</strong>
-                </p>
-
-                <div class="video-meta">
-                    <div class="video-meta-item">
-                        <i data-feather="user"></i>
-                        <span>{{ $video->penulis->name }}</span>
+            @foreach ($videos as $video)
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <iframe 
+                            src="{{ $video->embed_url }}"
+                            title="{{ $video->judul }}"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
                     </div>
-                    <div class="video-meta-item">
-                        <i data-feather="eye"></i>
-                        <span>{{ $video->views }} views</span>
+                    <div class="video-content">
+                        <h3 class="video-title">{{ $video->judul }}</h3>
+
+                        <p class="video-description">
+                            Video edukasi kategori: <strong>{{ $video->kategori }}</strong>
+                        </p>
+
+                        <div class="video-meta">
+                            <div class="video-meta-item">
+                                <i data-feather="user"></i>
+                                <span>{{ $video->penulis->name }}</span>
+                            </div>
+                            <div class="video-meta-item">
+                                <i data-feather="eye"></i>
+                                <span>{{ $video->views }} views</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-    @endforeach
-</div>
 
     </main>
-    
-    <x-layout.footer />
-    
-    <script defer src="{{ asset('bundle.js') }}"></script>
+@endsection
+
+@push('scripts')
     <script>
-        // Initialize Feather Icons
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
     </script>
-    @stack('scripts')
-</body>
-</html>
+@endpush

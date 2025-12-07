@@ -9,7 +9,7 @@
         .centered-content {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: calc(100vh - 100px);
             padding: 120px 20px 60px 20px;
             width: 100%;
@@ -21,9 +21,17 @@
             }
         }
 
+        /* WRAPPER UTAMA: Mengatur lebar layout agar kembali seperti semula (450px) */
+        .layout-wrapper {
+            width: 100%;
+            max-width: 450px; /* KEMBALI KE LEBAR ASLI */
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Jarak antara tombol kembali dan kartu */
+        }
+
         .consultation-card {
-            max-width: 450px;
-            width: 90%;
+            width: 100%;
             background-color: white;
             border-radius: 24px;
             box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.08);
@@ -61,10 +69,46 @@
             background-color: #0c7a5f;
         }
 
+        /* STYLE FORM PENCARIAN */
+        .search-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 0.95rem;
+            background-color: #f9fafb;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #004780;
+            background-color: white;
+        }
+
+        .search-button {
+            padding: 0 16px;
+            border-radius: 10px;
+            background-color: #004780;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-button:hover {
+            background-color: #00335c;
+        }
+
         .question-item {
             display: flex;
             align-items: center;
-            /* [PENTING] Ini membuat Kiri (Vote) dan Kanan (Konten) sejajar di tengah secara vertikal */
             padding: 20px 24px;
             border-bottom: 1px solid #f3f4f6;
             transition: background-color 0.1s;
@@ -72,40 +116,22 @@
             color: inherit;
         }
 
-        /* Kolom Vote (Kiri) */
         .vote-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Tengahkan ikon dan angka secara horizontal */
             justify-content: center;
-            /* Tengahkan ikon dan angka secara vertikal */
             min-width: 60px;
-            /* Beri lebar pasti agar tidak goyang */
             margin-right: 16px;
-            /* Jarak antara Vote dan Konten */
             height: 100%;
-            /* Pastikan tinggi mengikuti container */
         }
 
-        .vote-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #6b7280;
-            padding: 0;
-            transition: color 0.2s;
-        }
-
-        /* Reset tombol vote agar rapi */
         .vote-btn {
             background: none;
             border: none;
             cursor: pointer;
             padding: 4px;
-            /* Beri sedikit ruang klik */
             display: flex;
-            /* Pastikan icon di tengah tombol */
             align-items: center;
             justify-content: center;
             color: #9ca3af;
@@ -121,21 +147,9 @@
             line-height: 1;
         }
 
-        /* Kolom Konten (Kanan) */
-        .content-section {
-            flex-grow: 1;
-            display: flex;
-            gap: 16px;
-            text-decoration: none;
-            /* Agar link tidak bergaris bawah */
-            color: inherit;
-        }
-
-        /* Wrapper link agar area teks tetap bisa diklik */
         .content-link-wrapper {
             display: flex;
             align-items: center;
-            /* [PENTING] Sejajarkan Avatar dan Teks di tengah */
             gap: 16px;
             width: 100%;
             text-decoration: none;
@@ -220,6 +234,24 @@
             background-color: #047857 !important;
         }
 
+        .eh .search-input {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #f3f4f6 !important;
+        }
+
+        .eh .search-input:focus {
+            border-color: #3b82f6 !important;
+        }
+
+        .eh .search-button {
+            background-color: #3b82f6 !important;
+        }
+
+        .eh .search-button:hover {
+            background-color: #2563eb !important;
+        }
+
         .eh .question-item {
             border-bottom-color: #374151 !important;
             color: #d1d5db !important;
@@ -268,82 +300,120 @@
 
     <div class="bb ze ki xn 2xl:ud-px-0">
         <section class="centered-content">
-            <div class="consultation-card">
-                <div class="card-header">
-                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Tanya Psikolog</h2>
+            
+            {{-- Wrapper untuk Layout (Lebar max 450px) --}}
+            <div class="layout-wrapper">
+
+                {{-- 1. TOMBOL KEMBALI (Di luar card) --}}
+                <div>
+                    <a href="{{ url('/') }}" 
+                       class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Kembali
+                    </a>
                 </div>
 
-                <div style="padding: 24px;">
-                    <div style="margin-bottom: 24px;">
-                        <a href="{{ route('tanya.create') }}" class="ask-button">
-                            <i data-feather="plus" style="width: 20px; height: 20px;"></i>
-                            Buat Pertanyaan
-                        </a>
+                {{-- KARTU UTAMA --}}
+                <div class="consultation-card">
+                    <div class="card-header">
+                        <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Tanya Psikolog</h2>
                     </div>
 
-                    <div class="questions-list">
-                        @forelse ($tanya as $item)
-                            <div class="question-item">
+                    <div style="padding: 24px;">
+                        {{-- Tombol Buat Pertanyaan --}}
+                        <div style="margin-bottom: 16px;">
+                            <a href="{{ route('tanya.create') }}" class="ask-button">
+                                <i data-feather="plus" style="width: 20px; height: 20px;"></i>
+                                Buat Pertanyaan
+                            </a>
+                        </div>
 
-                                {{-- BAGIAN KIRI: VOTING --}}
-                                <div class="vote-section">
-                                    {{-- Tombol Upvote --}}
-                                    <form action="{{ route('tanya.upvote', $item->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="vote-btn" title="Upvote">
-                                            <i data-feather="chevron-up" style="width: 32px; height: 32px;"></i>
-                                        </button>
-                                    </form>
+                        {{-- Form Pencarian (BARU) --}}
+                        <form action="{{ route('tanya.index') }}" method="GET" class="search-form">
+                            <input type="text" name="search" class="search-input" 
+                                   placeholder="Cari pertanyaan..." 
+                                   value="{{ request('search') }}">
+                            <button type="submit" class="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
 
-                                    {{-- Angka Vote --}}
-                                    <span class="vote-count">{{ $item->vote_count }}</span>
+                        {{-- Daftar Pertanyaan --}}
+                        <div class="questions-list">
+                            @forelse ($tanya as $item)
+                                <div class="question-item">
 
-                                    {{-- Tombol Downvote --}}
-                                    <form action="{{ route('tanya.downvote', $item->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="vote-btn" title="Downvote">
-                                            <i data-feather="chevron-down" style="width: 32px; height: 32px;"></i>
-                                        </button>
-                                    </form>
+                                    {{-- BAGIAN KIRI: VOTING --}}
+                                    <div class="vote-section">
+                                        {{-- Tombol Upvote --}}
+                                        <form action="{{ route('tanya.upvote', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="vote-btn" title="Upvote">
+                                                <i data-feather="chevron-up" style="width: 32px; height: 32px;"></i>
+                                            </button>
+                                        </form>
+
+                                        {{-- Angka Vote --}}
+                                        <span class="vote-count">{{ $item->vote_count }}</span>
+
+                                        {{-- Tombol Downvote --}}
+                                        <form action="{{ route('tanya.downvote', $item->id) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="vote-btn" title="Downvote">
+                                                <i data-feather="chevron-down" style="width: 32px; height: 32px;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    {{-- BAGIAN KANAN: KONTEN (Bisa diklik menuju detail) --}}
+                                    <a href="{{ route('tanya.show', $item->id) }}" class="content-link-wrapper">
+                                        <div class="avatar-placeholder">
+                                            <i data-feather="user" style="width: 20px; height: 20px;"></i>
+                                        </div>
+                                        <div>
+                                            <div class="question-title">
+                                                {{ $item->judul_pertanyaan }}
+                                            </div>
+                                            <div class="question-excerpt">
+                                                <em
+                                                    class="{{ $item->status == 'Sudah Dijawab' ? 'text-green-600' : 'text-gray-500' }}">
+                                                    {{ ucfirst($item->status) }}
+                                                </em>
+                                            </div>
+                                            <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 6px;">
+                                                oleh {{ $item->user->name ?? 'Anonim' }}
+                                                @if ($item->psikiater)
+                                                    • dijawab oleh {{ $item->psikiater->name ?? '-' }}
+                                                @endif
+                                                • {{ $item->created_at->diffForHumans() }}
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-
-                                {{-- BAGIAN KANAN: KONTEN (Bisa diklik menuju detail) --}}
-                                <a href="{{ route('tanya.show', $item->id) }}" class="content-link-wrapper">
-                                    <div class="avatar-placeholder">
-                                        <i data-feather="user" style="width: 20px; height: 20px;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="question-title">
-                                            {{ $item->judul_pertanyaan }}
-                                        </div>
-                                        <div class="question-excerpt">
-                                            <em
-                                                class="{{ $item->status == 'Sudah Dijawab' ? 'text-green-600' : 'text-gray-500' }}">
-                                                {{ ucfirst($item->status) }}
-                                            </em>
-                                        </div>
-                                        <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 6px;">
-                                            oleh {{ $item->user->name ?? 'Anonim' }}
-                                            @if ($item->psikiater)
-                                                • dijawab oleh {{ $item->psikiater->name ?? '-' }}
-                                            @endif
-                                            • {{ $item->created_at->diffForHumans() }}
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @empty
-                            <p style="text-align: center; color: #6b7280; padding: 20px;">Belum ada pertanyaan.</p>
-                        @endforelse
+                            @empty
+                                <div style="text-align: center; color: #6b7280; padding: 40px 20px;">
+                                    @if(request('search'))
+                                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                        <p>Pertanyaan dengan kata kunci "<strong>{{ request('search') }}</strong>" tidak ditemukan.</p>
+                                        <a href="{{ route('tanya.index') }}" style="color: #004780; text-decoration: underline; font-size: 0.9rem; display: block; margin-top: 8px;">Reset Pencarian</a>
+                                    @else
+                                        <p>Belum ada pertanyaan.</p>
+                                    @endif
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
+
+                    {{-- Pagination --}}
+                    @if (method_exists($tanya, 'links'))
+                        <div class="pagination">
+                            {{ $tanya->links() }}
+                        </div>
+                    @endif
                 </div>
 
-                {{-- Pagination jika kamu pakai paginate() --}}
-                @if (method_exists($tanya, 'links'))
-                    <div class="pagination">
-                        {{ $tanya->links() }}
-                    </div>
-                @endif
             </div>
         </section>
     </div>

@@ -137,6 +137,7 @@
             background-color: #1f2937 !important;
             border-color: #4b5563 !important;
         }
+
         .dark .comment-item,
         .eh .comment-item,
         html.dark .comment-item {
@@ -288,21 +289,56 @@
             {{-- REVISI 1: Ganti layout grid 2-kolom dengan 1-kolom terpusat --}}
             {{-- Saya ganti `tc sf yo zf kq` dengan container Tailwind standar --}}
             <div class="max-w-4xl mx-auto">
-
+                {{-- 1. TOMBOL KEMBALI (Di luar card, pojok kiri atas) --}}
+                <div class="mb-6">
+                    <a href="{{ url()->previous() }}"
+                        class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        Kembali
+                    </a>
+                </div>
                 {{-- KOLOM KONTEN UTAMA (sekarang full-width) --}}
                 <div class="w-full">
 
                     {{-- KARTU 1: POSTINGAN PERTANYAAN --}}
-                    {{-- REVISI 3: Jarak margin bawah dikurangi dari mb-10 menjadi mb-6 --}}
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10 mb-6">
 
-                        {{-- Judul Pertanyaan --}}
-                        <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">
-                            {{ $tanyaJawab->judul_pertanyaan }}
-                        </h2>
+                        {{-- REVISI: Header Flexbox untuk Judul & Tombol Hapus --}}
+                        <div class="flex justify-between items-start gap-4 mb-6">
 
-                        {{-- Meta Info: Penanya, Tanggal, Status --}}
+                            {{-- Judul Pertanyaan --}}
+                            <h2 class="ek vj 2xl:ud-text-title-lg kk wm flex-1">
+                                {{ $tanyaJawab->judul_pertanyaan }}
+                            </h2>
+
+                            {{-- 2. TOMBOL HAPUS (Pojok Kanan Sejajar Judul) --}}
+                            @if (Auth::check() && Auth::id() == $tanyaJawab->user_id)
+                                <form action="{{ route('tanya.destroy', $tanyaJawab->id) }}" method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pertanyaan ini? Tindakan ini tidak dapat dibatalkan.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg dark:text-red-400 dark:bg-red-900/20 dark:hover:bg-red-900/40 transition-colors shrink-0">
+                                        {{-- Ikon Sampah --}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        </svg>
+                                        Hapus
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+
+                        {{-- Meta Info --}}
                         <ul class="tc uf cg 2xl:ud-gap-15 fb">
                             <li>
                                 <span class="rc kk wm">Penanya: </span>
@@ -326,14 +362,13 @@
                             {!! nl2br(e($tanyaJawab->pertanyaan)) !!}
                         </p>
 
-                        {{-- Tombol Share (diambil dari isiartikel) --}}
+                        {{-- Tombol Share --}}
                         <ul class="tc wf bg sb">
                             <li>
                                 <p class="sj kk wm tb">Bagikan di:</p>
                             </li>
                             <li>
                                 <a href="#!" class="tc wf xf yd ad rg ml il ih wk">
-                                    {{-- SVG Facebook --}}
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <g clip-path="url(#clip0_47_28)">
@@ -351,7 +386,6 @@
                             </li>
                             <li>
                                 <a href="#!" class="tc wf xf yd ad rg ml il jh wk">
-                                    {{-- SVG Twitter --}}
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <g clip-path="url(#clip0_47_47)">
@@ -369,22 +403,9 @@
                             </li>
                         </ul>
 
-                        {{-- Tombol Kembali --}}
-                        <div style="margin-top: 1.5rem;">
-                            <a href="{{ url()->previous() }}" class="back-button">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Kembali
-                            </a>
-                        </div>
                     </div>
 
-                    {{-- REVISI 2: Urutan ditukar --}}
-                    {{-- KARTU 2: DAFTAR BALASAN/KOMENTAR --}}
-                    {{-- REVISI 3: Jarak margin bawah dikurangi menjadi mb-6 --}}
+                    {{-- KARTU 2: DAFTAR BALASAN --}}
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10 mb-6">
                         <h3 class="ek vj kk wm nb gb mb-6">
@@ -406,10 +427,6 @@
                                             @elseif ($balasan->user && $balasan->user->hasRole('psikolog'))
                                                 <span class="author-tag tag-psikolog">Psikolog Terverifikasi</span>
                                             @endif
-
-                                            {{-- @if ($balasan->user->role == 'psikolog')
-                                                <span class="author-tag tag-psikolog">Psikolog</span>
-                                            @endif --}}
                                         </div>
                                         <div class="comment-text">
                                             {!! nl2br(e($balasan->isi_balasan)) !!}
@@ -427,34 +444,48 @@
                         </div>
                     </div>
 
-                    {{-- REVISI 2: Urutan ditukar --}}
-                    {{-- KARTU 3: FORM BUAT BALASAN/KOMENTAR --}}
+                    {{-- KARTU 3: FORM BUAT BALASAN --}}
+                    {{-- KARTU 3: FORM BUAT BALASAN --}}
                     <div
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                         <h3 class="ek vj kk wm nb gb">Beri Balasan</h3>
 
-                        {{-- 
-                            CATATAN: Anda perlu membuat route dan method controller untuk ini.
-                            Contoh: Route::post('/tanya/{id}/balas', [BalasanController::class, 'store'])->name('tanya.balas.store');
-                        --}}
-                        <form action="{{ route('tanya.balas.store', $tanyaJawab->id) }}" method="POST">
+                        {{-- Penambahan x-data dan @submit untuk animasi loading --}}
+                        <form action="{{ route('tanya.balas.store', $tanyaJawab->id) }}" method="POST"
+                            x-data="{ loading: false }" @submit="loading = true">
                             @csrf
+
                             <div class="mb-4">
                                 <label for="isi_balasan"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">Balasan
-                                    Anda:</label>
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
+                                    Balasan Anda:
+                                </label>
+                                {{-- Menambahkan attribute required agar tidak submit kosong --}}
                                 <textarea name="isi_balasan" id="isi_balasan" rows="4" class="form-textarea"
-                                    placeholder="Tulis balasan Anda di sini..."></textarea>
+                                    placeholder="Tulis balasan Anda di sini..." required></textarea>
                             </div>
+
                             <div>
-                                <button type="submit" class="submit-button">
-                                    Kirim Balasan
+                                {{-- Button dengan logika disable & loading --}}
+                                <button type="submit" class="submit-button" :disabled="loading"
+                                    :class="{ 'opacity-70 cursor-not-allowed': loading }">
+
+                                    {{-- Teks Normal --}}
+                                    <span x-show="!loading">
+                                        Kirim Balasan
+                                    </span>
+
+                                    {{-- Teks Loading (Muncul saat submit) --}}
+                                    <span x-show="loading" style="display: none;">
+                                        {{-- Menggunakan class fa-solid agar konsisten dengan FA 6 --}}
+                                        <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Mengirim...
+                                    </span>
                                 </button>
                             </div>
                         </form>
                     </div>
 
-                </div> {{-- Akhir Kolom Konten Utama --}}
+                </div>
 
                 {{-- REVISI 1: KOLOM SIDEBAR DIHAPUS --}}
 

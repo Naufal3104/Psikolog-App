@@ -1,8 +1,18 @@
 @extends('layouts.main')
-@section('title',  $artikel->judul )
+@section('title', $artikel->judul)
 @section('content')
     <section class="ri qp gr hj rp hr" style="padding-top: 6rem !important;">
         <div class="bb ze ki xn 2xl:ud-px-0">
+            <div>
+                <a href="{{ route('artikel-publik.index') }}"
+                    class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Kembali
+                </a>
+            </div>
             <div class="tc sf yo zf kq">
                 <div class="ro">
                     <div
@@ -11,8 +21,8 @@
                             <img src="../images/noimage.svg" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
                                 style="object-fit: cover; width: 100%; height: auto;" />
                         @else
-                            <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
-                                style="object-fit: cover; width: 100%; height: auto;" />
+                            <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="Gambar {{ $artikel->judul }}"
+                                class="rounded-md mb-6" style="object-fit: cover; width: 100%; height: auto;" />
                         @endif
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">{{ $artikel->judul }}</h2>
 
@@ -119,27 +129,30 @@
                     </div>
 
                     <div class="animate_top">
-                        <h4 class="tj kk wm qb">Related Posts</h4>
+                        <h4 class="tj kk wm qb">Artikel Terkait</h4>
 
                         <div>
-                            <div class="tc fg 2xl:ud-gap-6 qb">
-                                <img src="images/blog-small-01.png" alt="Blog" />
-                                <h5 class="wj kk wm xl bn ml il">
-                                    <a href="#!">Free advertising for your online business</a>
-                                </h5>
-                            </div>
-                            <div class="tc fg 2xl:ud-gap-6 qb">
-                                <img src="images/blog-small-02.png" alt="Blog" />
-                                <h5 class="wj kk wm xl bn ml il">
-                                    <a href="#!">9 simple ways to improve your design skills</a>
-                                </h5>
-                            </div>
-                            <div class="tc fg 2xl:ud-gap-6">
-                                <img src="images/blog-small-03.png" alt="Blog" />
-                                <h5 class="wj kk wm xl bn ml il">
-                                    <a href="#!">Tips to quickly improve your coding speed.</a>
-                                </h5>
-                            </div>
+                            @forelse ($saranArtikel as $item)
+                                <div class="tc fg 2xl:ud-gap-6 qb">
+                                    {{-- Gambar Dinamis --}}
+                                    @if ($item->gambar)
+                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"
+                                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+                                    @else
+                                        <img src="{{ asset('images/blog-small-01.png') }}" alt="No Image"
+                                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" />
+                                    @endif
+
+                                    {{-- Judul & Link --}}
+                                    <h5 class="wj kk wm xl bn ml il">
+                                        <a href="{{ route('artikel.show', $item->id) }}">
+                                            {{ $item->judul }}
+                                        </a>
+                                    </h5>
+                                </div>
+                            @empty
+                                <p style="color: #9ca3af; font-size: 0.9rem;">Belum ada artikel terkait lainnya.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>

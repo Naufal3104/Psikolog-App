@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/styles/style.css') }}" />
     <link href="{{ asset('fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <style>
         /* --- Layout & Card --- */
         .centered-content {
@@ -15,8 +15,10 @@
             min-height: calc(100vh - 100px);
             padding: 120px 20px 60px 20px;
             width: 100%;
-            background-color: #f9fafb; /* Sedikit abu-abu agar kartu menonjol */
+            background-color: #f9fafb;
+            /* Sedikit abu-abu agar kartu menonjol */
         }
+
         .dark .centered-content {
             background-color: #111827;
         }
@@ -90,7 +92,8 @@
 
         /* --- Buttons --- */
         .submit-button {
-            display: flex; /* Supaya icon loading bisa ditengah */
+            display: flex;
+            /* Supaya icon loading bisa ditengah */
             justify-content: center;
             align-items: center;
             width: 100%;
@@ -112,7 +115,8 @@
 
         /* Style khusus saat tombol Disabled / Loading */
         .submit-button:disabled {
-            background-color: #9ca3af; /* Abu-abu */
+            background-color: #9ca3af;
+            /* Abu-abu */
             cursor: not-allowed;
             opacity: 0.8;
         }
@@ -144,17 +148,31 @@
             background-color: #1f2937;
             border-color: #374151;
         }
-        .eh .form-label { color: #e5e7eb; }
-        .eh .form-input, .eh .form-textarea {
+
+        .eh .form-label {
+            color: #e5e7eb;
+        }
+
+        .eh .form-input,
+        .eh .form-textarea {
             background-color: #374151;
             border-color: #4b5563;
             color: #f3f4f6;
         }
-        .eh .form-input:focus, .eh .form-textarea:focus {
+
+        .eh .form-input:focus,
+        .eh .form-textarea:focus {
             background-color: #1f2937;
         }
-        .eh .back-button { color: #9ca3af; }
-        .eh .back-button:hover { color: #e5e7eb; background-color: #374151; }
+
+        .eh .back-button {
+            color: #9ca3af;
+        }
+
+        .eh .back-button:hover {
+            color: #e5e7eb;
+            background-color: #374151;
+        }
     </style>
 @endpush
 
@@ -162,35 +180,25 @@
     <div class="bb ze ki xn 2xl:ud-px-0">
         <section class="centered-content">
             <div class="consultation-card">
-                
+
                 {{-- Header --}}
                 <div class="card-header">
                     <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700;">Buat Pertanyaan</h2>
-                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 0.9rem;">Konsultasi dengan Psikolog atau Komunitas</p>
+                    <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 0.9rem;">Konsultasi dengan Psikolog atau Komunitas
+                    </p>
                 </div>
 
                 {{-- Form dengan Alpine.js untuk Loading State --}}
-                <form 
-                    action="{{ route('tanya.store') }}" 
-                    method="POST" 
-                    class="card-body"
-                    x-data="{ loading: false }" 
-                    @submit="loading = true"
-                >
+                <form action="{{ route('tanya.store') }}" method="POST" class="card-body" x-data="{ loading: false }"
+                    @submit="loading = true">
                     @csrf
-                    
+
                     {{-- Input Judul --}}
                     <div class="form-group">
                         <label for="judul_pertanyaan" class="form-label">Judul Pertanyaan</label>
-                        <input 
-                            type="text" 
-                            id="judul_pertanyaan" 
-                            name="judul_pertanyaan" 
-                            class="form-input" 
-                            placeholder="Contoh: Cara mengatasi cemas berlebih" 
-                            value="{{ old('judul_pertanyaan') }}" 
-                            required
-                        >
+                        <input type="text" id="judul_pertanyaan" name="judul_pertanyaan" class="form-input"
+                            placeholder="Contoh: Cara mengatasi cemas berlebih" value="{{ old('judul_pertanyaan') }}"
+                            required>
                         @error('judul_pertanyaan')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
@@ -199,18 +207,13 @@
                     {{-- Input Pertanyaan --}}
                     <div class="form-group">
                         <label for="pertanyaan" class="form-label">Detail Pertanyaan</label>
-                        <textarea 
-                            id="pertanyaan" 
-                            name="pertanyaan" 
-                            class="form-textarea" 
-                            placeholder="Ceritakan keluhan Anda secara lengkap di sini..."
-                            required
-                        >{{ old('pertanyaan') }}</textarea>
+                        <textarea id="pertanyaan" name="pertanyaan" class="form-textarea"
+                            placeholder="Ceritakan keluhan Anda secara lengkap di sini..." required>{{ old('pertanyaan') }}</textarea>
                         @error('pertanyaan')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
-                    
+
                     {{-- Tombol Submit --}}
                     <button type="submit" class="submit-button" :disabled="loading">
                         {{-- Teks Normal --}}

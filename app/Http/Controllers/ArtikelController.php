@@ -71,13 +71,12 @@ class ArtikelController extends Controller
      */
     public function show($id)
     {
+        $saranArtikel = Artikel::orderBy('created_at', 'desc')->take(3)->get();
         $artikel = Artikel::with('penulis')->findOrFail($id);
 
-        // Contoh: Menambah 'views' setiap kali artikel dilihat
-        // $artikel->increment('views'); // Pindahkan ini ke logic jika diperlukan
-
         return view('fitur.isiartikel', [
-            'artikel' => $artikel
+            'artikel' => $artikel,
+            'saranArtikel' => $saranArtikel
         ]);
     }
 

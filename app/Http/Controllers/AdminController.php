@@ -423,9 +423,11 @@ class AdminController extends Controller
     public function show_artikel($id)
     {
         $artikel = Artikel::with('penulis')->findOrFail($id);
+        $saranArtikel = Artikel::orderBy('created_at', 'desc')->take(3)->get();
 
         return view('fitur.isiartikel', [
             'artikel' => $artikel,
+            'saranArtikel' => $saranArtikel,
         ]);
     }
 

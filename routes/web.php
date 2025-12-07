@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\DeteksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PsikologController;
@@ -14,7 +16,7 @@ Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('p
 Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psikolog.register.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', fn () => view('index'))->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/user/profile', [UserController::class, 'update'])->name('user.profile.update');
@@ -26,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/artikel/create', [AdminController::class, 'create_artikel'])->name('artikel.create');
     });
     Route::get('/artikel', [AdminController::class, 'index_artikel_publik'])->name('artikel-publik.index');
-    Route::get('/artikel/{id}', [AdminController::class, 'show_artikel'])->name('artikel.show');
+    Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');

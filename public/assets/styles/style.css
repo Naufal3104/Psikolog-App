@@ -1780,7 +1780,19 @@ h6 {
 .xh {
     fill: #79808a !important;
 }
+.bla-text {
+    color: #000000 !important;
+}
 
+/* 2. Abu-abu saat Sticky (Versi Text/Icon) */
+.xh-text {
+    color: #79808a !important;
+}
+
+/* 3. Putih saat Dark Mode (Versi Text/Icon) */
+.wm-text {
+    color: #ffffff !important;
+}
 .bla {
     fill: #000000 !important;
 }
