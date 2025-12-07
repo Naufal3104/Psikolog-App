@@ -28,8 +28,8 @@
     @stack('styles')
 </head>
 
-<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }">
+<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode')) ;
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'b eh': darkMode === true }" style="overflow-x: hidden;">
     <x-layout.navbar />
     <main>
         @yield('content')

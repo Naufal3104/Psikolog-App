@@ -14,39 +14,35 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
-    :class="{ 'b eh': darkMode }">
+<body x-data="{ darkMode: true, scrollTop: false, sidebarOpen: false, stickyMenu: false, navigationOpen: false }" 
+    x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true'); $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" 
+    x-on:scroll.window="scrollTop = (window.pageYOffset > 300)"
+    :class="{ 'b eh': darkMode }"
+    style="overflow-x: hidden;">
+
     <x-layout.navbar />
 
     <main>
-        <!-- ===== Hero Start ===== -->
         <section class="gj do ir hj sp jr i pg" style="position: relative; overflow: hidden; margin-bottom: 5rem;">
-            <!-- Background Image with Overlay -->
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;">
-                <!-- Background Image -->
                 <img src="/images/header.jpg" alt="Mental Health Background"
                     style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
 
-                <!-- Dark Overlay untuk readability -->
                 <div
                     style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.85), rgba(30, 64, 175, 0.75), rgba(30, 58, 138, 0.6));">
                 </div>
             </div>
 
-            <!-- Content -->
             <div class="bb ze ki xn 2xl:ud-px-0"
                 style="position: relative; z-index: 10; padding-top: 8rem; padding-bottom: 8rem;">
                 <div class="tc sf wf rj">
                     <div class="animate_left"
                         style="max-width: 56rem; margin-left: auto; margin-right: auto; text-align: center;">
-                        <!-- Main Heading -->
                         <h1 class="fk vj zp or kk wm wb"
                             style="color: white; margin-bottom: 1.5rem; font-size: clamp(1.875rem, 5vw, 3.75rem); line-height: 1.2;">
                             Kesehatan Mental Anda Adalah Prioritas Kami
                         </h1>
 
-                        <!-- Description -->
                         <p class="fq"
                             style="color: rgba(255, 255, 255, 0.95); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.75; text-align: center; margin-left: auto; margin-right: auto; max-width: 48rem;">
                             Temukan solusi terbaik untuk kesehatan mental Anda bersama psikolog profesional yang
@@ -56,11 +52,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                 </div>
             </div>
         </section>
-        <!-- ===== Hero End ===== -->
-
-        <!-- ===== Services Start ===== -->
         <section id="layanan" class="lj tp kr">
-            <!-- Section Title Start -->
             <div x-data="{
                 sectionTitle: 'Layanan Kami',
                 sectionTitleText: 'Layanan psikolog profesional untuk mendukung kesehatan mental dan kesejahteraan Anda secara personal dan terpercaya.'
@@ -70,11 +62,8 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                     <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
                 </div>
             </div>
-            <!-- Section Title End -->
-
             <div class="bb ze ki xn yq mb en">
                 <div class="wc qf pn xo ng">
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('konsultasi.whatsapp') }}">
                             <img class="ce ed" src="{{ asset('images/comment.svg') }}" alt="Konsultasi" />
@@ -83,7 +72,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                         </a>
                     </div>
 
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('artikel-publik.index') }}">
                             <img class="ce ed" src="{{ asset('images/newspaper-svgrepo-com.svg') }}" alt="Artikel" />
@@ -92,7 +80,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                         </a>
                     </div>
 
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('deteksi.index') }}">
                             <img class="ce ed" src="{{ asset('images/detect.svg') }}" alt="Deteksi Dini" />
@@ -101,7 +88,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                         </a>
                     </div>
 
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('tanya.index') }}">
                             <img class="ce ed" src="{{ asset('images/ask.svg') }}" alt="Tanya Jawab" />
@@ -110,7 +96,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                         </a>
                     </div>
 
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('video.index') }}">
                             <img class="ce ed" src="{{ asset('images/video.svg') }}" alt="Video" />
@@ -119,7 +104,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                         </a>
                     </div>
 
-                    <!-- Service Item -->
                     <div class="animate_top sg oi pi zq ml il am cn _m">
                         <a href="{{ route('infografis.index') }}">
                             <img class="ce ed" src="{{ asset('images/infografis.svg') }}" alt="Infografis" />
@@ -130,9 +114,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                 </div>
             </div>
         </section>
-        <!-- ===== Services End ===== -->
-
-        <!-- ===== Small Features Start ===== -->
         <section class="lj tp kr">
             <div x-data="{ sectionTitle: 'Kenapa Kami?', sectionTitleText: '' }">
                 <div class="animate_top bb ze rj ki xn vq mb-20">
@@ -143,7 +124,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                 <section id="features">
                     <div class="bb ze ki yn 2xl:ud-px-12.5">
                         <div class="tc uf zo xf ap zf bp mq">
-                            <!-- Small Features Item -->
                             <div class="animate_top kn to/3 tc cg oq">
                                 <div class="tc wf xf cf ae cd rg nh" style="background-color: #044f86;">
                                     <img class="ce ed" src="{{ asset('images/medal.svg') }}" alt="Berkualitas" />
@@ -154,7 +134,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                                 </div>
                             </div>
 
-                            <!-- Small Features Item -->
                             <div class="animate_top kn to/3 tc cg oq">
                                 <div class="tc wf xf cf ae cd rg nh" style="background-color: #044f86;">
                                     <img class="ce ed" src="{{ asset('images/lock.svg') }}" alt="Privasi" />
@@ -165,7 +144,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                                 </div>
                             </div>
 
-                            <!-- Small Features Item -->
                             <div class="animate_top kn to/3 tc cg oq">
                                 <div class="tc wf xf cf ae cd rg oh" style="background-color: #044f86;">
                                     <img class="ce ed" src="{{ asset('images/globe.svg') }}" alt="Akses" />
@@ -180,9 +158,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                 </section>
             </div>
         </section>
-        <!-- ===== Small Features End ===== -->
-
-        <!-- ===== Blog Start ===== -->
         <section class="ji gp uq">
             <div x-data="{
                 sectionTitle: 'Artikel Kesehatan',
@@ -196,7 +171,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
 
             <div class="bb ye ki xn vq jb jo">
                 <div class="wc qf pn xo zf iq">
-                    <!-- Blog Item 1 -->
                     @forelse ($artikel as $item)
                     <div class="animate_top sg vk rm xm">
                         <div class="c rc i z-1 pg">
@@ -225,9 +199,6 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                             <h4 class="ek tj ml il kk wm xl eq lb">
                                 <a href="{{ route('artikel.show', $item->id) }}">{{ $item->judul }}</a>
                             </h4>
-                            {{-- <p class="text-sm text-gray-500 mt-2">
-                                Slug: {{ \Illuminate\Support\Str::words($item->slug, 5, '...') }}
-                            </p> --}}
                         </div>
                     </div>
                     @empty
@@ -235,8 +206,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" x-
                 </div>
             </div>
         </section>
-        <!-- ===== Blog End ===== -->
-    </main>
+        </main>
 
     <x-layout.footer />
 
