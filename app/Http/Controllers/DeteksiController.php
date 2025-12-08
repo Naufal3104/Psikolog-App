@@ -95,7 +95,7 @@ class DeteksiController extends Controller
         $hasilDeteksi = HasilDeteksi::with('interpretasi')->findOrFail($id);
 
         // 2. (Opsional) Validasi Keamanan: Pastikan yang melihat adalah pemilik data
-        if ($hasilDeteksi->user_id !== Auth::id()) {
+        if ($hasilDeteksi->user_id !== Auth::id() && !Auth::user()->hasRole('psikolog')) {
             abort(403, 'Anda tidak memiliki akses ke hasil ini.');
         }
 

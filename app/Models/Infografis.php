@@ -9,18 +9,11 @@ class Infografis extends Model
 {
     use HasFactory;
 
+    protected $table = 'infografis';
+
     protected $fillable = [
         'judul',
-        'gambar_url',
-        'kategori',
-        'views',
-        'penulis_id',
+        'gambar',
+        'caption',
     ];
-
-    // Relasi dengan model User (penulis)
-    public function penulis()
-    {
-        return $this->belongsTo(User::class, 'penulis_id');
-    }
 }
-

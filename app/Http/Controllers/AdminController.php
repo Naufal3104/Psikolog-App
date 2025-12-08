@@ -6,9 +6,11 @@ use App\Models\ActivityLog;
 use App\Models\Artikel;
 use App\Models\HasilDeteksi;
 use App\Models\InterpretasiSkor;
+use App\Models\Infografis;
 use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -423,9 +425,11 @@ class AdminController extends Controller
     public function show_artikel($id)
     {
         $artikel = Artikel::with('penulis')->findOrFail($id);
+        $saranArtikel = Artikel::orderBy('created_at', 'desc')->take(3)->get();
 
         return view('fitur.isiartikel', [
             'artikel' => $artikel,
+            'saranArtikel' => $saranArtikel,
         ]);
     }
 
@@ -608,5 +612,151 @@ class AdminController extends Controller
 
         // 5. Kirim data ke View
         return view('admin.activity-log', compact('logs'));
+    }
+
+    public function videoIndex(Request $request)
+    {
+        $query = Video::with('penulis');
+
+        // Fitur Pencarian
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%")
+                    ->orWhere('kategori', 'like', "%{$search}%");
+            });
+        }
+
+        $videos = $query->latest()->paginate(10);
+
+        return view('admin.kelola-video', compact('videos'));
+    }
+
+    public function videoCreate()
+    {
+        return view('admin.form-video');
+    }
+
+    public function videoStore(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'url' => 'required|url', // Validasi format URL
+            'kategori' => 'required|string',
+        ]);
+
+        Video::create([
+            'judul' => $request->judul,
+            'url' => $request->url,
+            'kategori' => $request->kategori,
+            'penulis_id' => Auth::id(), // Mengambil ID admin yang sedang login
+            'views' => 0,
+        ]);
+
+        return redirect()->route('admin.video.index')->with('success', 'Video berhasil ditambahkan.');
+    }
+
+    public function videoEdit($id)
+    {
+        $video = Video::findOrFail($id);
+
+        return view('admin.form-video', compact('video'));
+    }
+
+    public function videoUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'url' => 'required|url',
+            'kategori' => 'required|string',
+        ]);
+
+        $video = Video::findOrFail($id);
+        $video->update([
+            'judul' => $request->judul,
+            'url' => $request->url,
+            'kategori' => $request->kategori,
+        ]);
+
+        return redirect()->route('admin.video.index')->with('success', 'Video berhasil diperbarui.');
+    }
+
+    public function videoDestroy($id)
+    {
+        $video = Video::findOrFail($id);
+        $video->delete();
+
+        return redirect()->route('admin.video.index')->with('success', 'Video berhasil dihapus.');
+    }
+
+    public function infografisIndex(Request $request)
+    {
+        $query = Infografis::query();
+
+        // Fitur Pencarian
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('judul', 'like', "%{$search}%")
+                ->orWhere('caption', 'like', "%{$search}%");
+        }
+
+        $infografis = $query->latest()->paginate(10);
+
+        return view('admin.kelola-infografis', compact('infografis'));
+    }
+
+    public function infografisCreate()
+    {
+        return view('admin.form-infografis');
+    }
+
+    public function infografisStore(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'gambar' => 'required|url', // Wajib format URL
+            'caption' => 'nullable|string',
+        ]);
+
+        Infografis::create([
+            'judul' => $request->judul,
+            'gambar' => $request->gambar,
+            'caption' => $request->caption,
+        ]);
+
+        return redirect()->route('admin.infografis.index')->with('success', 'Infografis berhasil ditambahkan.');
+    }
+
+    public function infografisEdit($id)
+    {
+        $infografis = Infografis::findOrFail($id);
+
+        return view('admin.form-infografis', compact('infografis'));
+    }
+
+    public function infografisUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'gambar' => 'required|url',
+            'caption' => 'nullable|string',
+        ]);
+
+        $item = Infografis::findOrFail($id);
+        $item->update([
+            'judul' => $request->judul,
+            'gambar' => $request->gambar,
+            'caption' => $request->caption,
+        ]);
+
+        return redirect()->route('admin.infografis.index')->with('success', 'Infografis berhasil diperbarui.');
+    }
+
+    public function infografisDestroy($id)
+    {
+        $item = Infografis::findOrFail($id);
+        $item->delete();
+
+        return redirect()->route('admin.infografis.index')->with('success', 'Infografis berhasil dihapus.');
     }
 }
