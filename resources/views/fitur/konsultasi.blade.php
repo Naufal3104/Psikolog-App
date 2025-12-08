@@ -21,21 +21,19 @@
             }
         }
 
-        /* Wrapper baru agar tombol kembali sejajar dengan card */
         .content-wrapper {
             width: 90%;
             max-width: 400px;
             display: flex;
             flex-direction: column;
-            gap: 16px; /* Jarak antara tombol kembali dan card */
+            gap: 16px;
         }
 
         .consultation-card {
-            width: 100%; /* Lebar mengikuti wrapper */
+            width: 100%;
             background-color: white;
             border-radius: 24px;
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2),
-                0 8px 10px -4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.08);
             border: 1px solid #e5e7eb;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -43,8 +41,7 @@
 
         .consultation-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.25),
-                0 10px 15px -4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.25), 0 10px 15px -4px rgba(0, 0, 0, 0.1);
         }
 
         .eh .consultation-card {
@@ -75,7 +72,12 @@
             gap: 10px;
         }
 
-        .whatsapp-button:hover {
+        .whatsapp-button.offline {
+            background-color: #6b7280 !important; /* Warna abu-abu jika offline */
+            cursor: not-allowed;
+        }
+
+        .whatsapp-button:not(.offline):hover {
             background-color: #0c7a5f !important;
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(16, 168, 132, 0.3);
@@ -123,7 +125,6 @@
 
     <div class="centered-content">
         
-        {{-- Wrapper Pembungkus --}}
         <div class="content-wrapper">
 
             {{-- 1. TOMBOL KEMBALI --}}
@@ -143,17 +144,43 @@
                     <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Konsultasi Psikolog</h2>
                 </div>
                 <div style="padding: 32px 24px;">
-                    <p style="text-align: center; margin-bottom: 32px; color: #4b5563;" class="dark:text-gray-300">
-                        Dapatkan layanan konsultasi psikologi via WhatsApp bersama psikolog profesional!
-                    </p>
-                    <div style="text-align: center; margin-bottom: 32px;">
-                        <a href="https://wa.me/nomorwhatsappanda" target="_blank" class="whatsapp-button">
-                            <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
-                            KLIK DISINI
-                        </a>
-                    </div>
-                    <div
-                        style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 0.875rem; color: #6b7280;">
+                    
+                    {{-- Logika Tampilan Status --}}
+                    @if($jadwalAktif)
+                        {{-- JIKA ADA PSIKOLOG JAGA --}}
+                        <p style="text-align: center; margin-bottom: 8px; color: #4b5563;" class="dark:text-gray-300">
+                            Sekarang sedang berlangsung sesi jaga:
+                        </p>
+                        <p style="text-align: center; margin-bottom: 24px; font-weight: bold; color: #004780;" class="dark:text-blue-400">
+                            {{ $jadwalAktif->user->name }}
+                        </p>
+                        
+                        {{-- Ambil nomor WA via Accessor yang kita buat sebelumnya --}}
+                        @php
+                            $targetPhone = $jadwalAktif->user->no_telp ?? $nomorDefault;
+                            $pesan = "Halo Kak " . $jadwalAktif->user->name . ", saya ingin konsultasi.";
+                        @endphp
+
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <a href="https://wa.me/{{ $targetPhone }}?text={{ urlencode($pesan) }}" target="_blank" class="whatsapp-button">
+                                <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+                                CHAT SEKARANG
+                            </a>
+                        </div>
+                    @else
+                        {{-- JIKA TIDAK ADA JADWAL --}}
+                        <p style="text-align: center; margin-bottom: 32px; color: #4b5563;" class="dark:text-gray-300">
+                            Maaf, saat ini belum ada psikolog yang berjaga. Silakan hubungi Admin untuk info jadwal.
+                        </p>
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <a href="https://wa.me/{{ $nomorDefault }}?text=Halo%20Admin,%20kapan%20jadwal%20psikolog%20tersedia?" target="_blank" class="whatsapp-button" style="background-color: #4b5563 !important;">
+                                <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+                                HUBUNGI ADMIN
+                            </a>
+                        </div>
+                    @endif
+
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 0.875rem; color: #6b7280;">
                         <span class="badge">
                             <i data-feather="lock" class="icon-small"></i>
                             Privasi Terjamin

@@ -2,39 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Konsultasi;
+use Carbon\Carbon;
+use App\Models\JadwalPsikolog;
 use Illuminate\Http\Request;
 
 class KonsultasiController extends Controller
 {
     public function index()
     {
-        return response()->json(Konsultasi::all());
-    }
+        // 1. Ambil Hari Ini (Format Inggris)
+        $hariInggris = Carbon::now()->format('l');
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'gambar' => 'nullable|string',
-            'views' => 'nullable|integer',
-        ]);
-        return $this->storeResource($request, Konsultasi::class); // Memanggil storeResource dari Controller.php
-    }
+        // 2. Translate ke Indonesia
+        $namaHari = [
+            'Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'
+        ];
+        $hariIni = $namaHari[$hariInggris];
 
-    public function show($id)
-    {
-        return $this->getResource(Konsultasi::class, $id); // Memanggil getResource dari Controller.php
-    }
+        // 3. Cari Psikolog yang Jaga HARI INI
+        // Kita load relasi 'user' karena no_telp ada di tabel users
+        $jadwalAktif = JadwalPsikolog::with('user') 
+            ->where('hari', $hariIni)
+            ->inRandomOrder() 
+            ->first();
 
-    public function update(Request $request, $id)
-    {
-        return $this->updateResource($request, $id, Konsultasi::class); // Memanggil updateResource dari Controller.php
-    }
+        // 4. Nomor Admin (Cadangan)
+        $nomorDefault = '6281234567890'; 
 
-    public function destroy($id)
-    {
-        return $this->destroyResource($id, Konsultasi::class); // Memanggil destroyResource dari Controller.php
+        return view('fitur.konsultasi', compact('jadwalAktif', 'nomorDefault'));
     }
 }
- 

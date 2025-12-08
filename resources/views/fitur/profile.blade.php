@@ -186,7 +186,7 @@
                             @if ($user->foto_profil)
                                 <img src="{{ asset('storage/' . $user->foto_profil) }}" id="avatar-preview" class="avatar-preview" alt="Foto Profil">
                             @else
-                                <img src="{{ asset('images/icon-man.svg') }}" id="avatar-preview" class="avatar-preview" alt="Default Avatar">
+                                <img src="{{ asset('images/avatar.png') }}" id="avatar-preview" class="avatar-preview" alt="Default Avatar">
                             @endif
                         </div>
                         

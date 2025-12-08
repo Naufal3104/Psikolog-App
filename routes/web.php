@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\DeteksiController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfografisController;
+use App\Http\Controllers\KonsultasiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PsikologController;
 use App\Http\Controllers\TanyaJawabController;
@@ -25,7 +27,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // === 6 FITUR UTAMA (PUBLIK) ===
     // Artikel (Publik + Form Tambah)
     Route::middleware(['role:admin|psikolog'])->group(function () {
-        Route::get('/artikel/create', [AdminController::class, 'create_artikel'])->name('artikel.create');
+        Route::prefix('psikolog/artikel')->name('psikolog.artikel.')->group(function () {
+            Route::get('/', [PsikologController::class, 'index_artikel'])->name('index');
+            Route::get('/create', [PsikologController::class, 'create_artikel'])->name('create');
+            Route::post('/', [PsikologController::class, 'store_artikel'])->name('store');
+            Route::get('/{id}/edit', [PsikologController::class, 'edit_artikel'])->name('edit');
+            Route::put('/{id}', [PsikologController::class, 'update_artikel'])->name('update');
+            Route::delete('/{id}', [PsikologController::class, 'destroy_artikel'])->name('destroy');
+        });
+        Route::get('/psikolog/deteksi-pengguna', [PsikologController::class, 'index_deteksi'])
+            ->name('psikolog.deteksi.index');
     });
     Route::get('/artikel', [AdminController::class, 'index_artikel_publik'])->name('artikel-publik.index');
     Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
@@ -51,15 +62,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // video video
     Route::resource('video', VideoController::class);
-    Route::get('/infografis', fn () => view('fitur.infografis'))->name('infografis.index');
-    Route::get('/konsultasi/whatsapp', fn () => view('fitur.konsultasi'))->name('konsultasi.whatsapp');
-
+    Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
+    Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
     // === GRUP ADMIN ===
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
 
         // === KELOLA ARTIKEL ===
         Route::get('/artikel', [AdminController::class, 'index_artikel'])->name('artikel.index');
+        Route::get('/artikel/create', [AdminController::class, 'create_artikel'])->name('artikel.create');
         Route::post('/artikel', [AdminController::class, 'store_artikel'])->name('artikel.store');
         Route::get('/artikel/{id}/edit', [AdminController::class, 'edit_artikel'])->name('artikel.edit');
         Route::put('/artikel/{id}', [AdminController::class, 'update_artikel'])->name('artikel.update');
@@ -102,5 +113,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::prefix('video')->name('admin.video.')->middleware(['auth', 'verified'])->group(function () {
+            Route::get('/', [AdminController::class, 'videoIndex'])->name('index');
+            Route::get('/create', [AdminController::class, 'videoCreate'])->name('create');
+            Route::post('/store', [AdminController::class, 'videoStore'])->name('store');
+            Route::get('/edit/{id}', [AdminController::class, 'videoEdit'])->name('edit');
+            Route::put('/update/{id}', [AdminController::class, 'videoUpdate'])->name('update');
+            Route::delete('/destroy/{id}', [AdminController::class, 'videoDestroy'])->name('destroy');
+        });
+        Route::prefix('infografis')->name('admin.infografis.')->middleware(['auth', 'verified'])->group(function () {
+            Route::get('/', [AdminController::class, 'infografisIndex'])->name('index');
+            Route::get('/create', [AdminController::class, 'infografisCreate'])->name('create');
+            Route::post('/store', [AdminController::class, 'infografisStore'])->name('store');
+            Route::get('/edit/{id}', [AdminController::class, 'infografisEdit'])->name('edit');
+            Route::put('/update/{id}', [AdminController::class, 'infografisUpdate'])->name('update');
+            Route::delete('/destroy/{id}', [AdminController::class, 'infografisDestroy'])->name('destroy');
+        });
     });
 });

@@ -291,7 +291,7 @@
             <div class="max-w-4xl mx-auto">
                 {{-- 1. TOMBOL KEMBALI (Di luar card, pojok kiri atas) --}}
                 <div class="mb-6">
-                    <a href="{{ url()->previous() }}"
+                    <a href="{{ route('tanya.index') }}"
                         class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">

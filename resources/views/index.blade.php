@@ -65,7 +65,7 @@
             <div class="bb ze ki xn yq mb en">
                 <div class="wc qf pn xo ng">
                     <div class="animate_top sg oi pi zq ml il am cn _m">
-                        <a href="{{ route('konsultasi.whatsapp') }}">
+                        <a href="{{ route('konsultasi.index') }}">
                             <img class="ce ed" src="{{ asset('images/comment.svg') }}" alt="Konsultasi" />
                             <h4 class="ek zj kk wm nb _b">Konsultasi Psikolog</h4>
                             <p>Bimbingan profesional untuk kesehatan mental Anda.</p>

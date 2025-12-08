@@ -1129,6 +1129,28 @@ h6 {
 ._a {
     z-index: 999;
 }
+
+/* Custom Sidebar Styles */
+.sidebar-panel-light {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+.sidebar-panel-dark {
+    background-color: #181c31 !important; /* Warna Dark Blue sesuai tema */
+    color: #ffffff !important;
+}
+.sidebar-border-light {
+    border-color: #e5e7eb !important;
+}
+.sidebar-border-dark {
+    border-color: #2d3748 !important;
+}
+.sidebar-item-hover-light:hover {
+    background-color: #f3f4f6 !important;
+}
+.sidebar-item-hover-dark:hover {
+    background-color: #2d3342 !important;
+}
 .ab {
     margin: 0px;
 }

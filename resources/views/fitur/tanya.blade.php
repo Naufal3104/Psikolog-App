@@ -21,13 +21,12 @@
             }
         }
 
-        /* WRAPPER UTAMA: Mengatur lebar layout agar kembali seperti semula (450px) */
         .layout-wrapper {
             width: 100%;
-            max-width: 450px; /* KEMBALI KE LEBAR ASLI */
+            max-width: 600px;
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Jarak antara tombol kembali dan kartu */
+            gap: 15px;
         }
 
         .consultation-card {
@@ -69,15 +68,16 @@
             background-color: #0c7a5f;
         }
 
-        /* STYLE FORM PENCARIAN */
+        /* --- STYLE FORM PENCARIAN & FILTER --- */
         .search-form {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
         }
 
+        /* Style Input Search */
         .search-input {
-            width: 100%;
+            flex: 1; /* Mengisi ruang yang tersedia */
             padding: 10px 16px;
             border-radius: 10px;
             border: 1px solid #d1d5db;
@@ -86,7 +86,20 @@
             transition: border-color 0.2s;
         }
 
-        .search-input:focus {
+        /* Style Select Filter (Baru) */
+        .filter-select {
+            width: 140px; /* Lebar fix untuk dropdown */
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 0.9rem;
+            background-color: #f9fafb;
+            color: #374151;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus, .filter-select:focus {
             outline: none;
             border-color: #004780;
             background-color: white;
@@ -234,13 +247,13 @@
             background-color: #047857 !important;
         }
 
-        .eh .search-input {
+        .eh .search-input, .eh .filter-select {
             background-color: #374151 !important;
             border-color: #4b5563 !important;
             color: #f3f4f6 !important;
         }
 
-        .eh .search-input:focus {
+        .eh .search-input:focus, .eh .filter-select:focus {
             border-color: #3b82f6 !important;
         }
 
@@ -301,10 +314,10 @@
     <div class="bb ze ki xn 2xl:ud-px-0">
         <section class="centered-content">
             
-            {{-- Wrapper untuk Layout (Lebar max 450px) --}}
+            {{-- Wrapper untuk Layout --}}
             <div class="layout-wrapper">
 
-                {{-- 1. TOMBOL KEMBALI (Di luar card) --}}
+                {{-- 1. TOMBOL KEMBALI --}}
                 <div>
                     <a href="{{ url('/') }}" 
                        class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
@@ -330,11 +343,21 @@
                             </a>
                         </div>
 
-                        {{-- Form Pencarian (BARU) --}}
+                        {{-- Form Pencarian & Filter (BARU) --}}
                         <form action="{{ route('tanya.index') }}" method="GET" class="search-form">
+                            
+                            {{-- Input Pencarian --}}
                             <input type="text" name="search" class="search-input" 
                                    placeholder="Cari pertanyaan..." 
                                    value="{{ request('search') }}">
+
+                            {{-- Dropdown Filter (BARU) --}}
+                            <select name="filter" class="filter-select">
+                                <option value="semua" {{ request('filter') == 'semua' ? 'selected' : '' }}>Semua</option>
+                                <option value="belum_dijawab" {{ request('filter') == 'belum_dijawab' ? 'selected' : '' }}>Belum Dijawab</option>
+                                <option value="sudah_dijawab" {{ request('filter') == 'sudah_dijawab' ? 'selected' : '' }}>Sudah Dijawab</option>
+                            </select>
+
                             <button type="submit" class="search-button">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -347,7 +370,6 @@
 
                                     {{-- BAGIAN KIRI: VOTING --}}
                                     <div class="vote-section">
-                                        {{-- Tombol Upvote --}}
                                         <form action="{{ route('tanya.upvote', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="vote-btn" title="Upvote">
@@ -355,10 +377,8 @@
                                             </button>
                                         </form>
 
-                                        {{-- Angka Vote --}}
                                         <span class="vote-count">{{ $item->vote_count }}</span>
 
-                                        {{-- Tombol Downvote --}}
                                         <form action="{{ route('tanya.downvote', $item->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="vote-btn" title="Downvote">
@@ -367,7 +387,7 @@
                                         </form>
                                     </div>
 
-                                    {{-- BAGIAN KANAN: KONTEN (Bisa diklik menuju detail) --}}
+                                    {{-- BAGIAN KANAN: KONTEN --}}
                                     <a href="{{ route('tanya.show', $item->id) }}" class="content-link-wrapper">
                                         <div class="avatar-placeholder">
                                             <i data-feather="user" style="width: 20px; height: 20px;"></i>
@@ -377,8 +397,7 @@
                                                 {{ $item->judul_pertanyaan }}
                                             </div>
                                             <div class="question-excerpt">
-                                                <em
-                                                    class="{{ $item->status == 'Sudah Dijawab' ? 'text-green-600' : 'text-gray-500' }}">
+                                                <em class="{{ $item->status == 'Sudah Dijawab' ? 'text-green-600' : 'text-gray-500' }}">
                                                     {{ ucfirst($item->status) }}
                                                 </em>
                                             </div>
@@ -394,12 +413,10 @@
                                 </div>
                             @empty
                                 <div style="text-align: center; color: #6b7280; padding: 40px 20px;">
-                                    @if(request('search'))
-                                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                                        <p>Pertanyaan dengan kata kunci "<strong>{{ request('search') }}</strong>" tidak ditemukan.</p>
-                                        <a href="{{ route('tanya.index') }}" style="color: #004780; text-decoration: underline; font-size: 0.9rem; display: block; margin-top: 8px;">Reset Pencarian</a>
-                                    @else
-                                        <p>Belum ada pertanyaan.</p>
+                                    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                    <p>Tidak ada pertanyaan ditemukan.</p>
+                                    @if(request('search') || request('filter'))
+                                        <a href="{{ route('tanya.index') }}" style="color: #004780; text-decoration: underline; font-size: 0.9rem; display: block; margin-top: 8px;">Reset Filter</a>
                                     @endif
                                 </div>
                             @endforelse

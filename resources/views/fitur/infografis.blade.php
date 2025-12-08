@@ -120,22 +120,6 @@
             color: white;
         }
 
-        .infografis-category {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background-color: #dbeafe;
-            color: #1e40af;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 9999px;
-            margin-bottom: 0.75rem;
-        }
-
-        .eh .infografis-category {
-            background-color: #1e3a8a;
-            color: #93c5fd;
-        }
-
         .infografis-description {
             font-size: 0.875rem;
             color: #6b7280;
@@ -163,7 +147,7 @@
         }
 
         .download-btn:hover {
-            background-color: #004780;
+            background-color: #003366;
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
         }
@@ -248,132 +232,47 @@
                 <p>Informasi visual yang mudah dipahami tentang kesehatan mental</p>
             </div>
 
+            {{-- GRID INFOGRAFIS DENGAN LOOPING DATABASE --}}
             <div class="infografis-grid">
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://i.pinimg.com/originals/24/ce/f9/24cef9502f4ad8b23fe12c140cfe2f05.jpg'">
-                    <div style="position: relative;">
-                        <img src="https://i.pinimg.com/originals/24/ce/f9/24cef9502f4ad8b23fe12c140cfe2f05.jpg"
-                            alt="5 Cara Mengatasi Stress" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
+                @forelse ($infografis as $item)
+                    <div class="infografis-item"
+                        @click="modalOpen = true; modalImage = '{{ $item->gambar }}'">
+                        
+                        <div style="position: relative;">
+                            {{-- Gambar Infografis --}}
+                            <img src="{{ $item->gambar }}"
+                                alt="{{ $item->judul }}" class="infografis-image" loading="lazy">
+                            
+                            <div class="infografis-overlay">
+                                <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">Kesehatan Jasmani</h3>
-                        <p class="infografis-description">
-                            Sehat jasamni
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
 
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://i.pinimg.com/originals/c1/b8/99/c1b89984a3d1292526d983082e10a416.png'">
-                    <div style="position: relative;">
-                        <img src="https://i.pinimg.com/originals/c1/b8/99/c1b89984a3d1292526d983082e10a416.png"
-                            alt="Mengenal Gejala Depresi" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
-                        </div>
-                    </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">Kesehatan jiwa</h3>
-                        <p class="infografis-description">
-                            yoyoyo
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
+                        <div class="infografis-content">
+                            {{-- Judul --}}
+                            <h3 class="infografis-title">{{ $item->judul }}</h3>
+                            
+                            {{-- Caption / Deskripsi --}}
+                            @if($item->caption)
+                                <p class="infografis-description">
+                                    {{ Str::limit($item->caption, 100) }}
+                                </p>
+                            @endif
 
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://i.pinimg.com/736x/27/23/12/272312481927ea0cb98db4e843f7cb6d.jpg'">
-                    <div style="position: relative;">
-                        <img src="https://i.pinimg.com/736x/27/23/12/272312481927ea0cb98db4e843f7cb6d.jpg"
-                            alt="Pentingnya Self Care" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
+                            {{-- Tombol Download / Buka --}}
+                            {{-- Menggunakan target="_blank" karena ini link URL eksternal --}}
+                            <a href="{{ $item->gambar }}" target="_blank" class="download-btn" @click.stop>
+                                <i data-feather="download"></i>
+                                Download / Lihat
+                            </a>
                         </div>
                     </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">Kesehatan Mental</h3>
-                        <p class="infografis-description">
-                            PENTING BGT MENTAL
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
+                @empty
+                    {{-- Tampilan jika data kosong --}}
+                    <div style="text-align: center; width: 100%; grid-column: 1 / -1; padding: 40px;">
+                        <p class="text-gray-500">Belum ada infografis yang tersedia saat ini.</p>
                     </div>
-                </div>
-
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://cdn.antaranews.com/cache/infografis/1140x2100/2024/04/05/20240405-angkutan-kapal-lebaran-2024.jpg'">
-                    <div style="position: relative;">
-                        <img src="https://cdn.antaranews.com/cache/infografis/1140x2100/2024/04/05/20240405-angkutan-kapal-lebaran-2024.jpg"
-                            alt="Mindfulness untuk Pemula" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
-                        </div>
-                    </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">kesehatan rohani</h3>
-                        <p class="infografis-description">
-                            olahraga , lari, gym
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
-
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://marketplace.canva.com/EAFmCxCs164/2/0/1067w/canva-biru-dan-putih-scrapbook-manfaat-minum-susu-infografis-pin-pinterest-AM0imSXS6iE.jpg'">
-                    <div style="position: relative;">
-                        <img src="https://marketplace.canva.com/EAFmCxCs164/2/0/1067w/canva-biru-dan-putih-scrapbook-manfaat-minum-susu-infografis-pin-pinterest-AM0imSXS6iE.jpg"
-                            alt="Kesehatan Mental di Tempat Kerja" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
-                        </div>
-                    </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">Sehat badannya</h3>
-                        <p class="infografis-description">
-                            menjaga kesehatan badna.
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
-
-                <div class="infografis-item"
-                    @click="modalOpen = true; modalImage = 'https://i.pinimg.com/originals/e9/d3/ff/e9d3ff2e92866e2457138a82620d55ea.png'">
-                    <div style="position: relative;">
-                        <img src="https://i.pinimg.com/originals/e9/d3/ff/e9d3ff2e92866e2457138a82620d55ea.png"
-                            alt="Komunikasi Sehat dalam Hubungan" class="infografis-image">
-                        <div class="infografis-overlay">
-                            <span style="color: white; font-weight: 600;">Klik untuk memperbesar</span>
-                        </div>
-                    </div>
-                    <div class="infografis-content">
-                        <h3 class="infografis-title">asep</h3>
-                        <p class="infografis-description">
-                            yoi
-                        </p>
-                        <a href="#" class="download-btn" @click.stop>
-                            <i data-feather="download"></i>
-                            Download
-                        </a>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </main>
 

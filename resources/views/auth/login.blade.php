@@ -131,6 +131,7 @@
                         Belum punya akun?
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="mk">Daftar</a>
+                            <a href="{{ route('psikolog.register') }}" class="mk">Psikolog</a>
                         @else
                             <a href="{{ url('/') }}" class="mk">Kembali</a>
                         @endif

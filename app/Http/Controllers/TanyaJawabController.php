@@ -15,19 +15,31 @@ class TanyaJawabController extends Controller
      */
     public function index(Request $request)
     {
-        // Mulai Query
+        // 1. Mulai Query
         $query = TanyaJawab::with('user');
 
-        // Logika Pencarian
-        if ($request->has('search')) {
+        // 2. Logika Pencarian (Search)
+        if ($request->has('search') && $request->search != '') {
             $query->where('judul_pertanyaan', 'like', '%'.$request->search.'%');
         }
 
-        // Urutkan dan Paginate
+        // 3. Logika Filter Kategori (Combobox)
+        if ($request->has('filter') && $request->filter != '') {
+            if ($request->filter == 'sudah_dijawab') {
+                // Asumsi di database kolomnya 'status' dengan value 'Sudah Dijawab'
+                $query->where('status', 'Sudah Dijawab');
+            } elseif ($request->filter == 'belum_dijawab') {
+                $query->where('status', 'Belum Dijawab');
+            }
+            // Jika 'semua', tidak perlu where (ambil semua data)
+        }
+
+        // 4. Urutkan dan Paginate
+        // Logika: Vote terbanyak -> Terbaru
         $tanya = $query->orderBy('vote_count', 'desc')
-            ->latest()
+            ->latest() // Sama dengan orderBy('created_at', 'desc')
             ->paginate(10)
-            ->withQueryString(); // Agar parameter search tidak hilang saat klik pagination
+            ->withQueryString(); // Membawa parameter search & filter saat pindah halaman
 
         return view('fitur.tanya', compact('tanya'));
     }
@@ -106,7 +118,7 @@ class TanyaJawabController extends Controller
         $tanyaJawab = TanyaJawab::with(['user', 'balasan'])->findOrFail($id);
 
         // Tambah view count
-        $tanyaJawab->increment('vote_count');
+        // $tanyaJawab->increment('vote_count');
 
         return view('fitur.balasan-tanya', compact('tanyaJawab'));
     }
