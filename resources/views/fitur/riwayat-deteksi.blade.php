@@ -10,13 +10,22 @@
             min-height: 80vh;
         }
 
+        /* Wrapper baru agar button dan card sejajar */
+        .content-wrapper {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* Jarak antara tombol kembali dan card */
+        }
+
         .history-card {
             background-color: white;
             border-radius: 1.5rem;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             border: 1px solid #e5e7eb;
             width: 100%;
-            max-width: 700px;
+            /* max-width dipindah ke content-wrapper */
             overflow: hidden;
         }
 
@@ -128,52 +137,65 @@
 
 <div class="bb ze ki xn 2xl:ud-px-0 jb">
     <div class="riwayat-container">
-        <div class="history-card">
-            <div class="history-header">
-                <h2 class="text-xl font-bold m-0" style="font-family: 'Outfit', sans-serif;">
-                    Riwayat Deteksi
-                </h2>
+        
+        <div class="content-wrapper">
+            
+            <div>
+                <a href="{{ route('home') }}" 
+                   class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Kembali
+                </a>
             </div>
+            <div class="history-card">
+                <div class="history-header">
+                    <h2 class="text-xl font-bold m-0" style="font-family: 'Outfit', sans-serif;">
+                        Riwayat Deteksi
+                    </h2>
+                </div>
 
-            <ul class="history-list">
-                @forelse ($riwayat as $item)
-                    <li class="history-item">
-                        <div style="flex: 1;">
-                            <div class="history-meta">
-                                <i class="far fa-calendar-alt"></i>
-                                {{ $item->created_at->format('d M Y, H:i') }}
-                            </div>
-                            <div class="history-title">
-                                {{ $item->kategori->nama_kategori ?? 'Kategori Dihapus' }}
+                <ul class="history-list">
+                    @forelse ($riwayat as $item)
+                        <li class="history-item">
+                            <div style="flex: 1;">
+                                <div class="history-meta">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ $item->created_at->format('d M Y, H:i') }}
+                                </div>
+                                <div class="history-title">
+                                    {{ $item->kategori->nama_kategori ?? 'Kategori Dihapus' }}
+                                </div>
+                                <div>
+                                    <span class="badge-hasil">
+                                        {{ $item->interpretasi->teks_interpretasi ?? 'Hasil tidak tersedia' }}
+                                    </span>
+                                </div>
                             </div>
                             <div>
-                                <span class="badge-hasil">
-                                    {{ $item->interpretasi->teks_interpretasi ?? 'Hasil tidak tersedia' }}
-                                </span>
+                                <a href="{{ route('deteksi.hasil', $item->id) }}" class="link-detail">
+                                    Lihat Hasil <i class="fas fa-chevron-right"></i>
+                                </a>
                             </div>
-                        </div>
-                        <div>
-                            <a href="{{ route('deteksi.hasil', $item->id) }}" class="link-detail">
-                                Lihat Hasil <i class="fas fa-chevron-right"></i>
-                            </a>
-                        </div>
-                    </li>
-                @empty
-                    <li class="p-8 text-center text-gray-500 dark:text-gray-400">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-                            <i class="fas f a-clipboard-list" style="font-size: 3rem; color: #d1d5db;"></i>
-                            <p>Anda belum memiliki riwayat deteksi dini.</p>
-                        </div>
-                    </li>
-                @endforelse
-            </ul>
+                        </li>
+                    @empty
+                        <li class="p-8 text-center text-gray-500 dark:text-gray-400">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                                <i class="fas fa-clipboard-list" style="font-size: 3rem; color: #d1d5db;"></i>
+                                <p>Anda belum memiliki riwayat deteksi dini.</p>
+                            </div>
+                        </li>
+                    @endforelse
+                </ul>
 
-            @if($riwayat->hasPages())
-                <div class="p-4 border-t border-gray-100 dark:border-gray-700">
-                    {{ $riwayat->links() }}
-                </div>
-            @endif
+                @if($riwayat->hasPages())
+                    <div class="p-4 border-t border-gray-100 dark:border-gray-700">
+                        {{ $riwayat->links() }}
+                    </div>
+                @endif
+            </div>
+        </div> 
         </div>
-    </div>
 </div>
 @endsection

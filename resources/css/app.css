@@ -6,6 +6,7 @@
  TAMBAHKAN SEMUA KODE DI BAWAH INI
 ================================================================
 */
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 @import './style.css';
 @layer components {
     /* Kelas @apply Anda dari <style> dipindahkan ke sini */

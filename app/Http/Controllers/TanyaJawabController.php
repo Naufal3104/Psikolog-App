@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TanyaJawab;
 use App\Models\BalasanTanyaJawab;
+use App\Models\TanyaJawab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,12 +13,33 @@ class TanyaJawabController extends Controller
     /**
      * Tampilkan semua pertanyaan (fitur.tanya)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tanya = TanyaJawab::with('user') // Eager loading
-            ->orderBy('vote_count', 'desc')
-            ->latest() // Urutkan berdasarkan terbaru
-            ->paginate(10); // Gunakan pagination
+        // 1. Mulai Query
+        $query = TanyaJawab::with('user');
+
+        // 2. Logika Pencarian (Search)
+        if ($request->has('search') && $request->search != '') {
+            $query->where('judul_pertanyaan', 'like', '%'.$request->search.'%');
+        }
+
+        // 3. Logika Filter Kategori (Combobox)
+        if ($request->has('filter') && $request->filter != '') {
+            if ($request->filter == 'sudah_dijawab') {
+                // Asumsi di database kolomnya 'status' dengan value 'Sudah Dijawab'
+                $query->where('status', 'Sudah Dijawab');
+            } elseif ($request->filter == 'belum_dijawab') {
+                $query->where('status', 'Belum Dijawab');
+            }
+            // Jika 'semua', tidak perlu where (ambil semua data)
+        }
+
+        // 4. Urutkan dan Paginate
+        // Logika: Vote terbanyak -> Terbaru
+        $tanya = $query->orderBy('vote_count', 'desc')
+            ->latest() // Sama dengan orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString(); // Membawa parameter search & filter saat pindah halaman
 
         return view('fitur.tanya', compact('tanya'));
     }
@@ -97,7 +118,7 @@ class TanyaJawabController extends Controller
         $tanyaJawab = TanyaJawab::with(['user', 'balasan'])->findOrFail($id);
 
         // Tambah view count
-        $tanyaJawab->increment('vote_count');
+        // $tanyaJawab->increment('vote_count');
 
         return view('fitur.balasan-tanya', compact('tanyaJawab'));
     }
@@ -143,7 +164,7 @@ class TanyaJawabController extends Controller
     {
         // 1. Validasi input
         $request->validate([
-            'isi_balasan' => 'required|string|min:3', 
+            'isi_balasan' => 'required|string|min:3',
         ]);
 
         // 2. Pastikan pertanyaan utamanya ada
@@ -160,24 +181,25 @@ class TanyaJawabController extends Controller
         // [LOGIKA BARU] Cek Role Psikolog & Update Status
         // Jika user punya role 'psikolog' DAN status saat ini masih 'belum dijawab'
         if ($user->hasRole('psikolog') && $tanyaJawab->status == 'Belum Dijawab') {
-            
+
             // Update status pertanyaan jadi 'sudah dijawab'
             // Kita juga bisa set psikiater_id ke user yang membalas ini
             $tanyaJawab->update([
                 'status' => 'Sudah Dijawab',
-                'psikiater_id' => $user->id 
+                'psikiater_id' => $user->id,
             ]);
         }
 
         // 4. Kembalikan ke halaman 'show' dengan pesan sukses
         return redirect()->route('tanya.show', $tanyaJawab->id)
-                         ->with('success', 'Balasan Anda berhasil dikirim!');
+            ->with('success', 'Balasan Anda berhasil dikirim!');
     }
 
     public function upvote($id)
     {
         $tanya = TanyaJawab::findOrFail($id);
         $tanya->increment('vote_count');
+
         return back(); // Kembali ke halaman sebelumnya
     }
 
@@ -185,6 +207,7 @@ class TanyaJawabController extends Controller
     {
         $tanya = TanyaJawab::findOrFail($id);
         $tanya->decrement('vote_count');
+
         return back(); // Kembali ke halaman sebelumnya
     }
 }

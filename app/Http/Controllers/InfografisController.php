@@ -9,7 +9,11 @@ class InfografisController extends Controller
 {
     public function index()
     {
-        return response()->json(Infografis::all());
+        // Mengambil semua data infografis diurutkan dari yang terbaru
+        $infografis = Infografis::latest()->get();
+
+        // Arahkan ke file view Anda (sesuaikan nama foldernya, misal: fitur.infografis)
+        return view('fitur.infografis', compact('infografis'));
     }
 
     public function store(Request $request)

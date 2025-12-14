@@ -16,7 +16,7 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel-admin.*')">
-                        {{ __('Artikel') }}
+                        {{ __('Kelola Artikel') }}
                     </x-nav-link>
 
                     <!-- Deteksi Dini Dropdown -->
@@ -77,6 +77,13 @@
 
                     <x-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
                         {{ __('Riwayat Aktivitas') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin.video.index')" :active="request()->routeIs('activity-logs.*')">
+                        {{ __('Kelola Video') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.infografis.index')" :active="request()->routeIs('activity-logs.*')">
+                        {{ __('Kelola Infografis') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -141,7 +148,7 @@
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel.*')">
-                {{ __('Artikel') }}
+                {{ __('Kelola Artikel') }}
             </x-responsive-nav-link>
 
             <!-- Menu Deteksi Dini (Dipecah menjadi item list agar mudah diakses) -->
@@ -173,6 +180,10 @@
 
             <x-responsive-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
                 {{ __('Riwayat Aktivitas') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.video.index')" :active="request()->routeIs('activity-logs.*')">
+                {{ __('Kelola Video') }}
             </x-responsive-nav-link>
         </div>
 

@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'username',
         'email',
+        'username',
         'NIK',
         'alamat',
         'no_telp',
@@ -48,4 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(HasilDeteksi::class);
     }
+
+    public function jadwal()
+{
+    return $this->hasMany(JadwalPsikolog::class, 'user_id');
+}
 }

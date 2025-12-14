@@ -8,15 +8,23 @@
         .centered-content {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Ubah ke flex-start agar scroll aman jika konten panjang */
             min-height: calc(100vh - 150px);
             padding: 40px 0;
             width: 100%;
         }
 
-        .detection-card {
-            max-width: 450px;
+        /* Wrapper baru agar tombol kembali sejajar dengan card */
+        .content-wrapper {
             width: 95%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Jarak antara tombol dan card */
+        }
+
+        .detection-card {
+            width: 100%; /* Lebar mengikuti wrapper */
             background-color: white;
             border-radius: 24px;
             box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -4px rgba(0, 0, 0, 0.05);
@@ -113,44 +121,26 @@
             user-select: none;
         }
 
-        .btn-submit {
+        .submit-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-            padding: 1rem;
+            padding: 14px 28px;
+            border-radius: 12px;
             background-color: #004780;
             color: white;
+            font-weight: 600;
             border: none;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s;
+            font-size: 1rem;
             margin-top: 1rem;
         }
 
-        .btn-submit:hover {
+        .submit-button:hover {
             background-color: #003666;
         }
-
-        .btn-back {
-    width: 100%;
-    padding: 1rem;
-    background-color: #6b7280;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.125rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 0.75rem;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-}
-
-.btn-back:hover {
-    background-color: #4b5563;
-}
 
         .eh .detection-card {
             background-color: #1f2937 !important;
@@ -185,21 +175,11 @@
             color: #d1d5db;
         }
 
-        .eh .btn-submit {
-            background-color: #3b82f6;
+        .submit-button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.8;
         }
-
-        .eh .btn-submit:hover {
-            background-color: #2563eb;
-        }
-
-        .eh .btn-back {
-    background-color: #4b5563;
-}
-
-.eh .btn-back:hover {
-    background-color: #374151;
-}
     </style>
 @endpush
 
@@ -207,52 +187,70 @@
 
     <div class="bb ze ki xn 2xl:ud-px-0 jb">
         <section class="centered-content">
-            
-            {{-- Form akan mengirim data ke rute 'deteksi.submit' --}}
-            <form action="{{ route('deteksi.process') }}" method="POST" class="detection-card">
-                @csrf
-                {{-- Input tersembunyi untuk mengirim ID kategori, penting untuk proses di backend --}}
-                <input type="hidden" name="kategori_id" value="{{ $kategori->id }}">
 
-                <div class="card-header-detection">
-                    {{-- Judul kartu sekarang dinamis sesuai nama kategori --}}
-                    {{ $kategori->nama_kategori }}
+            {{-- Wrapper Pembungkus --}}
+            <div class="content-wrapper">
+
+                {{-- 1. TOMBOL KEMBALI --}}
+                <div>
+                    <a href="{{ route('deteksi.index') }}" 
+                       class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Kembali
+                    </a>
                 </div>
 
-                <div class="card-body-detection">
-                    <div class="form-group">
-                        {{-- <label for="nama" class="question-text">Nama</label> --}}
-                        <input type="hidden" id="nama" name="nama" class="input-text" 
-                        @if (auth()->check()) 
-                            value="{{ auth()->user()->name }}"
-                        @endif
-                            required>
+                {{-- 2. KARTU PERTANYAAN (FORM) --}}
+                <form action="{{ route('deteksi.process') }}" method="POST" class="detection-card" x-data="{ loading: false }"
+                    @submit="loading = true">
+                    @csrf
+                    <input type="hidden" name="kategori_id" value="{{ $kategori->id }}">
+
+                    <div class="card-header-detection">
+                        {{ $kategori->nama_kategori }}
                     </div>
-                    {{-- Lakukan perulangan untuk setiap pertanyaan yang ada di dalam $kategori --}}
-                    @foreach ($kategori->pertanyaan as $pertanyaan)
+
+                    <div class="card-body-detection">
                         <div class="form-group">
-                            <label class="question-text">
-                                {{-- $loop->iteration memberikan nomor urut 1, 2, 3, ... --}}
-                                {{ $loop->iteration }}. {{ $pertanyaan->teks_pertanyaan }}
-                            </label>
-
-                            {{-- Lakukan perulangan untuk setiap pilihan jawaban dari pertanyaan saat ini --}}
-                            @foreach ($pertanyaan->pilihanJawaban as $pilihan)
-                                <label for="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}" class="radio-option">
-                                    <input type="radio" id="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}"
-                                        name="jawaban[{{ $pertanyaan->id }}]" value="{{ $pilihan->id }}"
-                                        @if ($loop->first) required @endif>
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-label">{{ $pilihan->teks_jawaban }}</span>
-                                </label>
-                            @endforeach
+                            <input type="hidden" id="nama" name="nama" class="input-text"
+                                @if (auth()->check()) value="{{ auth()->user()->name }}" @endif required>
                         </div>
-                    @endforeach
 
-                    <button type="submit" class="btn-submit">Selesai & Lihat Hasil</button>
-                    <a href="{{ route('deteksi.index') }}" class="btn-back">Kembali</a>
-                </div>
-            </form>
+                        @foreach ($kategori->pertanyaan as $pertanyaan)
+                            <div class="form-group">
+                                <label class="question-text">
+                                    {{ $loop->iteration }}. {{ $pertanyaan->teks_pertanyaan }}
+                                </label>
+
+                                @foreach ($pertanyaan->pilihanJawaban as $pilihan)
+                                    <label for="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}" class="radio-option">
+                                        <input type="radio" id="q-{{ $pertanyaan->id }}-p-{{ $pilihan->id }}"
+                                            name="jawaban[{{ $pertanyaan->id }}]" value="{{ $pilihan->id }}"
+                                            @if ($loop->first) required @endif>
+                                        <span class="radio-custom"></span>
+                                        <span class="radio-label">{{ $pilihan->teks_jawaban }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        @endforeach
+
+                        <button type="submit" class="submit-button" :disabled="loading">
+                            {{-- Teks Normal --}}
+                            <span x-show="!loading">
+                                <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Kirim
+                            </span>
+
+                            {{-- Teks Loading --}}
+                            <span x-show="loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i> Mengirim...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </section>
     </div>
 
