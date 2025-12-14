@@ -50,10 +50,12 @@
 
                         {{-- Editor Konten --}}
                         {{-- PERBAIKAN: Dibungkus div agar ada margin-top --}}
-                        <div class="mt-4 border border-gray-200 dark:border-gray-700 rounded-md">
-                            <textarea id="editor" name="content" placeholder="Tulis isi pos di sini..." rows="20"
-                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                        </div>
+                       <div class="mt-4 border border-gray-200 dark:border-gray-700 rounded-md">
+    <textarea id="editor" name="content" placeholder="Tulis isi pos di sini..." rows="20" required
+        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500">{{ old('content') }}</textarea>
+    <x-input-error :messages="$errors->get('content')" class="mt-2" />
+</div>
+                        
                     </div>
 
                     {{-- Sidebar Kanan (Disederhanakan) --}}
@@ -70,37 +72,39 @@
                             </button>
                         </div>
 
-                        {{-- Panel Gambar Unggulan --}}
-                        <div
-                            class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Gambar Unggulan</h3>
+                       {{-- Panel Gambar Unggulan --}}
+<div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Gambar Unggulan</h3>
 
-                            <input type="file" id="featured_image" name="featured_image" class="hidden"
-                                accept="image/*">
+    {{-- Input file diberi atribut required --}}
+    <input type="file" id="featured_image" name="featured_image" class="hidden" accept="image/*" required>
 
-                            {{-- PERBAIKAN: Tombol diubah ke secondary button style --}}
-                            <button type="button" id="upload_button"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
-                                Unggah Gambar
-                            </button>
+    {{-- Tombol Upload --}}
+    <button type="button" id="upload_button"
+        class="w-full inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">
+        Unggah Gambar
+    </button>
 
-                            <div id="image_preview_container" class="hidden mt-4">
-                                <img id="image_preview" src="" alt="Image Preview"
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600">
-                                <button type="button" id="remove_image_button"
-                                    class="w-full text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 mt-2 text-center">
-                                    Hapus Gambar
-                                </button>
-                            </div>
-                        </div>
+    {{-- Menampilkan pesan error validasi gambar --}}
+    <x-input-error :messages="$errors->get('featured_image')" class="mt-2" />
 
-                        {{-- Panel Caption Gambar --}}
-                        <div
-                            class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-                            <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Caption Gambar</h3>
-                            <textarea name="image_caption" rows="3" placeholder="Tulis caption untuk gambar unggulan..."
-                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                        </div>
+    <div id="image_preview_container" class="hidden mt-4">
+        <img id="image_preview" src="" alt="Image Preview"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600">
+        <button type="button" id="remove_image_button"
+            class="w-full text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 mt-2 text-center">
+            Hapus Gambar
+        </button>
+    </div>
+</div>
+
+                       {{-- Panel Caption Gambar --}}
+<div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+    <h3 class="font-semibold text-gray-800 dark:text-gray-200 mb-3">Caption Gambar</h3>
+    <textarea name="image_caption" rows="3" placeholder="Tulis caption untuk gambar unggulan..." required
+        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500">{{ old('image_caption') }}</textarea>
+    <x-input-error :messages="$errors->get('image_caption')" class="mt-2" />
+</div>
 
                     </div>
                 </div>

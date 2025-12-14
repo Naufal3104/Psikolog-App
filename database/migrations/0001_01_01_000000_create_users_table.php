@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('NIK')->nullable();
             $table->string('alamat')->nullable();
-            $table->string('no_telp')->nullable();
+            $table->string('no_telp')->nullable()->unique();
             $table->string('foto_profil')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

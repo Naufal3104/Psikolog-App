@@ -1,4 +1,9 @@
-<section>
+<section
+    x-data="profileConfirm({
+        name: '{{ $user->name }}',
+        email: '{{ $user->email }}'
+    })"
+>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             {{ __('Profile Information') }}
@@ -13,52 +18,129 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form
+        method="post"
+        action="{{ route('profile.update') }}"
+        class="mt-6 space-y-6"
+        @submit.prevent="openConfirm"
+    >
         @csrf
         @method('patch')
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-text-input
+                id="name"
+                name="name"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="name"
+            />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <x-text-input
+                id="email"
+                name="email"
+                type="email"
+                class="mt-1 block w-full"
+                required
+                autocomplete="username"
+            />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
-                </div>
+                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                    {{ __('Your email address is unverified.') }}
+                    <button
+                        form="send-verification"
+                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900"
+                    >
+                        {{ __('Click here to re-send the verification email.') }}
+                    </button>
+                </p>
             @endif
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
-            @endif
+            <x-primary-button>
+                {{ __('Save') }}
+            </x-primary-button>
         </div>
     </form>
+
+    <!-- MODAL KONFIRMASI -->
+    <div
+        x-show="showModal"
+        x-transition
+        class="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+    >
+        <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Konfirmasi Perubahan
+            </h3>
+
+            <ul class="mt-4 text-sm text-gray-700 dark:text-gray-300 list-disc list-inside">
+                <template x-for="item in changes" :key="item">
+                    <li x-text="item"></li>
+                </template>
+            </ul>
+
+            <div class="mt-6 flex justify-end gap-3">
+                <button
+                    type="button"
+                    @click="showModal = false"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                    Batalkan
+                </button>
+
+                <button
+                    type="button"
+                    @click="submitForm"
+                    class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                >
+                    Ubah
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function profileConfirm(original) {
+            return {
+                showModal: false,
+                changes: [],
+                original,
+
+                openConfirm(e) {
+                    this.changes = [];
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+
+                    if (name !== this.original.name) {
+                        this.changes.push(`Nama: "${this.original.name}" → "${name}"`);
+                    }
+
+                    if (email !== this.original.email) {
+                        this.changes.push(`Email: "${this.original.email}" → "${email}"`);
+                    }
+
+                    if (this.changes.length === 0) {
+                        e.target.submit();
+                    } else {
+                        this.showModal = true;
+                    }
+                },
+
+                submitForm() {
+                    this.showModal = false;
+                    document.querySelector('form[method="post"][action*="profile.update"]').submit();
+                }
+            }
+        }
+    </script>
 </section>

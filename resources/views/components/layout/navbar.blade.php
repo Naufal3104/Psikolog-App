@@ -102,7 +102,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('artikel.index') }}" class="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-white/10 transition">
+                    <a href="{{ route('artikel-publik.index') }}" class="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-white/10 transition">
                         <img class="w-5 h-5" src="{{ asset('images/newspaper-svgrepo-com.svg') }}" alt="">
                         <span>Artikel</span>
                     </a>

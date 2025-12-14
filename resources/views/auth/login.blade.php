@@ -26,7 +26,7 @@
       darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
       $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))
   "
-  :class="{ 'b eh': darkMode === true }"
+  :class="{ 'b eh': darkMode === true, 'dark': darkMode === true }"
   x-cloak
 >
 
@@ -58,7 +58,7 @@
                             autofocus
                             autocomplete="username"
                             placeholder="example@gmail.com"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40  text-black placeholder-gray-400 pr-10"" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -75,7 +75,7 @@
             required
             autocomplete="current-password"
             placeholder="**************"
-            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
 
         <!-- Icon Mata -->
         <button type="button"

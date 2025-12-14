@@ -9,6 +9,7 @@ use Database\Seeders\RolePermissionSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\FiturSeeder;
 use Database\Seeders\ArtikelSeeder;
+use Database\Seeders\VideoSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,8 +22,8 @@ class DatabaseSeeder extends Seeder
         RolePermissionSeeder::class,
         UserSeeder::class,
         FiturSeeder::class,
-        ArtikelSeeder::class
+        ArtikelSeeder::class,
+        VideoSeeder::class,
     ]);
 }
-
 }
