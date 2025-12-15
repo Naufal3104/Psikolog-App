@@ -1,5 +1,97 @@
 @extends('layouts.main')
 @section('title', $artikel->judul)
+
+@push('styles')
+<style>
+    /* PERBAIKAN: Dark mode untuk background kotak artikel */
+    .dark .animate_top.rounded-md.shadow-solid-13,
+    .eh .animate_top.rounded-md.shadow-solid-13,
+    html.dark .animate_top.rounded-md.shadow-solid-13,
+    body.dark .animate_top.rounded-md.shadow-solid-13,
+    body.eh .animate_top.rounded-md.shadow-solid-13 {
+        background-color: #1f2937 !important;
+        border-color: #374151 !important;
+    }
+    
+    /* Responsif: Lebar kotak artikel di mobile */
+    @media (max-width: 768px) {
+        .animate_top.rounded-md.shadow-solid-13 {
+            padding: 1.5rem !important;
+            margin: 0 -1rem !important;
+            width: calc(100% + 2rem) !important;
+        }
+    }
+    
+    /* Dark mode untuk isi artikel - MULTIPLE SELECTORS */
+    .dark p.justify,
+    .eh p.justify,
+    html.dark p.justify,
+    body.dark p.justify,
+    body.eh p.justify {
+        color: #d1d5db !important;
+    }
+    
+    /* Dark mode untuk heading */
+    .dark h2.ek,
+    .eh h2.ek,
+    html.dark h2.ek,
+    body.dark h2.ek,
+    body.eh h2.ek {
+        color: #f3f4f6 !important;
+    }
+    
+    .dark h4.tj,
+    .eh h4.tj,
+    html.dark h4.tj,
+    body.dark h4.tj,
+    body.eh h4.tj {
+        color: #f3f4f6 !important;
+    }
+    
+    /* Dark mode untuk metadata list */
+    .dark ul.tc.uf.cg li,
+    .eh ul.tc.uf.cg li,
+    html.dark ul.tc.uf.cg li,
+    body.dark ul.tc.uf.cg li,
+    body.eh ul.tc.uf.cg li {
+        color: #d1d5db !important;
+    }
+    
+    .dark ul.tc.uf.cg li span.rc,
+    .eh ul.tc.uf.cg li span.rc,
+    html.dark ul.tc.uf.cg li span.rc,
+    body.dark ul.tc.uf.cg li span.rc,
+    body.eh ul.tc.uf.cg li span.rc {
+        color: #9ca3af !important;
+    }
+    
+    /* Dark mode untuk artikel terkait */
+    .dark h5.wj,
+    .eh h5.wj,
+    html.dark h5.wj,
+    body.dark h5.wj,
+    body.eh h5.wj {
+        color: #d1d5db !important;
+    }
+    
+    .dark h5.wj a,
+    .eh h5.wj a,
+    html.dark h5.wj a,
+    body.dark h5.wj a,
+    body.eh h5.wj a {
+        color: #d1d5db !important;
+    }
+    
+    .dark h5.wj a:hover,
+    .eh h5.wj a:hover,
+    html.dark h5.wj a:hover,
+    body.dark h5.wj a:hover,
+    body.eh h5.wj a:hover {
+        color: #60a5fa !important;
+    }
+</style>
+@endpush
+
 @section('content')
     <section class="ri qp gr hj rp hr" style="padding-top: 6rem !important;">
         <div class="bb ze ki xn 2xl:ud-px-0">
@@ -19,10 +111,10 @@
                         class="animate_top rounded-md shadow-solid-13 bg-white dark:bg-blacksection border border-stroke dark:border-strokedark p-7.5 md:p-10">
                         @if ($artikel->gambar == null)
                             <img src="../images/noimage.svg" alt="Gambar {{ $artikel->judul }}" class="rounded-md mb-6"
-                                style="object-fit: cover; width: 100%; height: auto;" />
+                                style="object-fit: cover; width: 100%; height: auto; max-height: 500px;" />
                         @else
                             <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="Gambar {{ $artikel->judul }}"
-                                class="rounded-md mb-6" style="object-fit: cover; width: 100%; height: auto;" />
+                                class="rounded-md mb-6" style="object-fit: cover; width: 100%; height: auto; max-height: 500px;" />
                         @endif
                         <h2 class="ek vj 2xl:ud-text-title-lg kk wm nb gb">{{ $artikel->judul }}</h2>
 
@@ -143,5 +235,4 @@
             </div>
         </div>
     </section>
-    <!-- ===== Blog Single End ===== -->
 @endsection
