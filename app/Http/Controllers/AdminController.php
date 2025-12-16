@@ -533,10 +533,14 @@ class AdminController extends Controller
     public function reject_psikolog($id)
     {
         $user = User::findOrFail($id);
-        // Hapus user atau ubah status ke rejected
-        $user->delete(); // Atau update status jadi 'rejected'
 
-        return back()->with('success', 'Permintaan ditolak.');
+        if ($user->psikologProfile) {
+            $user->psikologProfile->update(['status' => 'rejected']);
+
+            return back()->with('success', 'Psikolog berhasil ditolak.');
+        }
+
+        return back()->with('error', 'Profil tidak ditemukan.');
     }
 
     // --- TAMBAHAN EDIT PSIKOLOG ---

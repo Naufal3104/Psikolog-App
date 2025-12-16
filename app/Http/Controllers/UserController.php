@@ -27,38 +27,52 @@ class UserController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        // 1. Update Data Standar (Nama, Email)
-        $request->user()->fill($request->validated());
+        // 1. Ambil data tervalidasi
+        // Data NIP & Spesialisasi otomatis masuk ke sini jika user adalah psikolog (karena logic di Request tadi)
+        $validatedData = $request->validated();
 
-        // 2. Cek apakah Email berubah
+        // 2. Update data tabel users (name, email, nik, dll)
+        $request->user()->fill($validatedData);
+
+        // 3. Reset verifikasi email jika email berubah
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        // 3. Logika Upload Foto Profil (REVISI: menggunakan 'foto_profil')
+        // 4. Update Foto Profil
         if ($request->hasFile('foto_profil')) {
-
-            // Validasi input 'foto_profil'
+            // Validasi file gambar (bisa dipindah ke Request juga sebenarnya)
             $request->validate([
                 'foto_profil' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             ]);
 
-            // Hapus foto lama jika ada
-            // Perhatikan: Kita akses kolom '$request->user()->foto_profil'
             if ($request->user()->foto_profil && Storage::disk('public')->exists($request->user()->foto_profil)) {
                 Storage::disk('public')->delete($request->user()->foto_profil);
             }
 
-            // Simpan foto baru ke folder 'foto-profil' di storage public
-            // Input form juga bernama 'foto_profil'
             $path = $request->file('foto_profil')->store('foto-profil', 'public');
-
-            // Simpan path ke database (kolom foto_profil)
             $request->user()->foto_profil = $path;
         }
 
-        // 4. Simpan Perubahan
+        // 5. Simpan data User Utama
         $request->user()->save();
+
+        // 6. LOGIKA KHUSUS PSIKOLOG (UPDATE TABEL RELASI)
+        if ($request->user()->hasRole('psikolog')) {
+
+            // Menggunakan updateOrCreate agar:
+            // - Jika data belum ada -> Dibuat (Create)
+            // - Jika data sudah ada -> Diupdate (Update)
+
+            // Pastikan relasi 'psikologProfile' ada di Model User
+            $request->user()->psikologProfile()->updateOrCreate(
+                ['user_id' => $request->user()->id], // Kondisi pencarian (WHERE)
+                [
+                    'NIP' => $validatedData['NIP'],           // Data yang diupdate
+                    'spesialisasi' => $validatedData['spesialisasi'],
+                ]
+            );
+        }
 
         return Redirect::route('user.profile.edit')->with('status', 'profile-updated');
     }
