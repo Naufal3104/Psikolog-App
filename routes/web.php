@@ -19,7 +19,7 @@ Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psik
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Halaman Home
-    Route::get('/', fn () => view('index'))->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // Profil User
     Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');

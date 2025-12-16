@@ -82,7 +82,7 @@
         <nav class="px-6 pb-6 flex-1 overflow-y-auto">
             <ul class="space-y-4">
                 <li>
-                    <a href="{{ route('konsultasi.whatsapp') }}" class="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-white/10 transition">
+                    <a href="{{ route('konsultasi.index') }}" class="flex items-center gap-4 px-3 py-3 rounded-lg hover:bg-white/10 transition">
                         <img class="w-5 h-5" src="{{ asset('images/comment.svg') }}" alt="">
                         <span>Konsultasi Psikolog</span>
                     </a>
