@@ -50,7 +50,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="name">Nama Lengkap & Gelar</label>
                             <input id="name" type="text" name="name" value="{{ old('name') }}" required
                                 autofocus placeholder="Nama Lengkap"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
@@ -59,7 +59,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="email">Email</label>
                             <input id="email" type="email" name="email" value="{{ old('email') }}" required
                                 placeholder="email@contoh.com"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                     </div>
@@ -67,7 +67,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     <div class="wb">
                         <label class="rc kk wm vb" for="username">Username</label>
                         <input id="username" type="text" name="username" value="{{ old('username') }}" required
-                            placeholder="Username unik" class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                            placeholder="Username unik" class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         <x-input-error :messages="$errors->get('username')" class="mt-2" />
                     </div>
 
@@ -77,7 +77,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="NIK">NIK (KTP)</label>
                             <input id="NIK" type="number" name="NIK" value="{{ old('NIK') }}" required
                                 placeholder="16 digit NIK"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('NIK')" class="mt-2" />
                         </div>
 
@@ -86,7 +86,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="NIP">NIP</label>
                             <input id="NIP" type="number" name="NIP" value="{{ old('NIP') }}" required
                                 placeholder="Nomor Induk Profesi"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10"/>
                             <x-input-error :messages="$errors->get('NIP')" class="mt-2" />
                         </div>
                     </div>
@@ -97,7 +97,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="no_telp">No. WhatsApp</label>
                             <input id="no_telp" type="number" name="no_telp" value="{{ old('no_telp') }}" required
                                 placeholder="62812345678"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <p class="text-xs mt-1 text-gray-500">Gunakan format 628...</p>
                             <x-input-error :messages="$errors->get('no_telp')" class="mt-2" />
                         </div>
@@ -107,7 +107,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="spesialisasi">Spesialisasi</label>
                             <input id="spesialisasi" type="text" name="spesialisasi"
                                 value="{{ old('spesialisasi') }}" required placeholder="Spesialisasi"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('spesialisasi')" class="mt-2" />
                         </div>
                     </div>
@@ -117,7 +117,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <label class="rc kk wm vb" for="alamat">Alamat Lengkap</label>
                         <input type="text" id="alamat" name="alamat" required
                             placeholder="Alamat domisili saat ini"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40"
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10"
                             value="{{ old('alamat') }}" />
                         <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                     </div>
@@ -128,7 +128,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="password">Password</label>
                             <input id="password" type="password" name="password" required
                                 autocomplete="new-password" placeholder="Minimal 8 karakter"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 
@@ -137,7 +137,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                             <label class="rc kk wm vb" for="password_confirmation">Konfirmasi Password</label>
                             <input id="password_confirmation" type="password" name="password_confirmation" required
                                 autocomplete="new-password" placeholder="Ulangi password"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
                     </div>

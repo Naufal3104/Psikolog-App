@@ -20,10 +20,8 @@
     navigationOpen: false,
     scrollTop: false,
     sidebarOpen: false
-    termsAccepted: false
 }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" 
-:class="{ 'b eh': darkMode === true, 'dark': darkMode === true }" x-cloak>
+$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :class="{ 'b eh': darkMode === true, 'dark': darkMode === true }" x-cloak>
 
     <x-layout.navbar />
 
