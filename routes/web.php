@@ -11,6 +11,7 @@ use App\Http\Controllers\PsikologController;
 use App\Http\Controllers\TanyaJawabController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
+use App\Models\Artikel;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/psikolog/deteksi-pengguna', [PsikologController::class, 'index_deteksi'])
             ->name('psikolog.deteksi.index');
     });
-    Route::get('/artikel', [AdminController::class, 'index_artikel_publik'])->name('artikel-publik.index');
+    Route::get('/artikel', [ArtikelController::class, 'index_artikel_publik'])->name('artikel-publik.index');
     Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 
     // Deteksi Dini (Publik)

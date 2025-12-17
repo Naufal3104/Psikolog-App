@@ -122,7 +122,7 @@
                                 <img class="w-4 h-4" src="{{ asset('images/comment.svg') }}" alt="">
                                 Konsultasi Psikolog
                             </a>
-                            <a href="{{ route('artikel.index') }}"
+                            <a href="{{ route('artikel-publik.index') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3">
                                 <img class="w-4 h-4" src="{{ asset('images/newspaper-svgrepo-com.svg') }}"
                                     alt="">

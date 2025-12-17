@@ -366,12 +366,6 @@ class AdminController extends Controller
      * Menampilkan halaman daftar artikel (Publik).
      * Ini adalah fungsi index() lama dari ArtikelController.
      */
-    public function index_artikel_publik()
-    {
-        return view('fitur.artikel', [
-            'artikel' => Artikel::with('penulis')->latest()->get(),
-        ]);
-    }
 
     /**
      * Menampilkan form untuk membuat artikel baru.

@@ -21,6 +21,12 @@ class ArtikelController extends Controller
             'artikel' => Artikel::with('penulis')->latest()->get() 
         ]);
     }
+        public function index_artikel_publik()
+    {
+        return view('fitur.artikel', [
+            'artikel' => Artikel::with('penulis')->latest()->get(),
+        ]);
+    }
 
     public function create()
     {
