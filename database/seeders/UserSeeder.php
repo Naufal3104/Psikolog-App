@@ -25,6 +25,18 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin');
 
+        $admin2 = User::create([
+            'name' => 'Admin 2',
+            'username' => 'admin2',
+            'email' => 'admin2@gmail.com',
+            'password' => bcrypt('12345678'),
+            'NIK' => 12345679,  // NIK dibedakan
+            'alamat' => 'Jl. Admin No.2',
+            'no_telp' => '081234567891', // No Telp dibedakan
+            'email_verified_at' => now(),
+        ]);
+        $admin2->assignRole('admin');
+
         $user = User::create([
             'name' => 'User Pengguna',
             'username' => 'user',

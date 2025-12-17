@@ -20,8 +20,10 @@
     navigationOpen: false,
     scrollTop: false,
     sidebarOpen: false
+    termsAccepted: false
 }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode') ?? 'true');
-$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :class="{ 'b eh': darkMode === true }" x-cloak>
+$watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" 
+:class="{ 'b eh': darkMode === true, 'dark': darkMode === true }" x-cloak>
 
     <x-layout.navbar />
 
@@ -40,7 +42,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <label class="rc kk wm vb" for="name">Nama Lengkap</label>
                         <input id="name" type="text" name="name" value="{{ old('name') }}" required
                             autofocus autocomplete="name" placeholder="Nama sesuai KTP"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -51,7 +53,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <label class="rc kk wm vb" for="name">Username</label>
                         <input id="username" type="text" name="username" value="{{ old('username') }}" required
                             autofocus autocomplete="username" placeholder="Username"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('username')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -62,7 +64,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <label class="rc kk wm vb" for="NIK">NIK (Nomor Induk Kependudukan)</label>
                         <input id="NIK" type="text" name="NIK" value="{{ old('NIK') }}" required
                             placeholder="16 Digit NIK" maxlength="16" unique
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('NIK')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -71,9 +73,9 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     {{-- No Telepon --}}
                     <div class="wb mt-4">
                         <label class="rc kk wm vb" for="no_telp">Nomor WhatsApp / Telepon</label>
-                        <input id="no_telp" type="text" name="no_telp" value="{{ old('no_telp') }}" required
+                        <input id="no_telp" type="text" name="no_telp" value="{{ old('no_telp') }}" required maxlength="14"
                             placeholder="08xxxxxxxxxx"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('no_telp')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -84,7 +86,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <label class="rc kk wm vb" for="email">Email</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required
                             autocomplete="username" placeholder="example@gmail.com"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -94,8 +96,8 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     <div class="wb mt-4">
                         <label class="rc kk wm vb" for="alamat">Alamat Lengkap</label>
                         <input id="alamat" type="text" name="alamat" value="{{ old('alamat') }}" required
-                            placeholder="Jalan, RT/RW, Kelurahan, Kecamatan" maxlength="16"
-                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                            placeholder="Jalan, RT/RW, Kelurahan, Kecamatan" maxlength="1000"
+                            class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('alamat')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -107,7 +109,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <div class="relative">
                             <input id="password" type="password" name="password" required autocomplete="new-password"
                                 placeholder="Minimal 8 karakter"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <button type="button" onclick="togglePassword('password', 'eyeIcon1')"
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                                 <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -130,7 +132,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         <div class="relative">
                             <input id="password_confirmation" type="password" name="password_confirmation" required
                                 autocomplete="new-password" placeholder="Ulangi password"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black placeholder-gray-400 pr-10" />
+                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                             <button type="button" onclick="togglePassword('password_confirmation', 'eyeIcon2')"
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                                 <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
@@ -159,12 +161,41 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                         }
                     </script>
 
+                    <div class="block mt-4">
+    <label for="terms" class="inline-flex items-center">
+        <input 
+            id="terms" 
+            type="checkbox" 
+            name="terms" 
+            required 
+            x-model="termsAccepted"
+            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 cursor-pointer">
+        
+        <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">
+            Saya Setuju Dengan 
+            <a href="https://docs.google.com/document/d/1CjKmiNU6W4fiE05SbA4RZ5QM1M4qSFdPaNaLqqpJ8c4/edit?tab=t.yknkzr1wkgig" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline">
+               Syarat dan Ketentuan
+            </a>
+        </span>
+    </label>
+    @error('terms')
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
+
                     {{-- Actions --}}
                     <div class="flex items-center justify-between mt-6">
-                        <button type="submit" class="vd rj ek rc rg gh lk ml il _l gi hi">
-                            Daftar Sekarang
-                        </button>
-                    </div>
+    <button 
+        type="submit" 
+        :disabled="!termsAccepted"
+        :class="{ 'opacity-50 cursor-not-allowed': !termsAccepted }"
+        class="vd rj ek rc rg gh lk ml il _l gi hi transition-opacity duration-300">
+        Daftar Sekarang
+    </button>
+</div>
 
                     <p class="sj hk xj rj ob mt-6">
                         Sudah punya akun?

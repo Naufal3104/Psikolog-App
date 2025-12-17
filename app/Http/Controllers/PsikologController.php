@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artikel;
+use App\Models\HasilDeteksi;
 use App\Models\PsikologProfile;
 use App\Models\User;
-use App\Models\HasilDeteksi;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,39 +30,46 @@ class PsikologController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validasi Input
+        // 1. Validasi Input (Disamakan dengan ProfileUpdateRequest)
         $request->validate([
-            // Data Akun Dasar
+            // --- Data Akun Dasar ---
             'name' => ['required', 'string', 'max:255'],
-            // Tambahkan validasi username di sini
-            'username' => ['required', 'string', 'max:255', 'unique:'.User::class],
+            'username' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:'.User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
 
-            // Data Tambahan User
-            'NIK' => ['required', 'numeric', 'digits_between:10,20'],
-            'alamat' => ['required', 'string', 'max:500'],
-            'no_telp' => ['required', 'string', 'max:15'], // Ubah ke string agar aman untuk format +62
+            // --- Data Tambahan User ---
+            // NIK wajib 16 digit angka dan unik
+            'NIK' => ['required', 'numeric', 'digits:16', 'unique:'.User::class],
 
-            // Data Khusus Psikolog
-            'NIP' => ['required', 'numeric'],
+            // Alamat string biasa
+            'alamat' => ['required', 'string', 'max:500'],
+
+            // No Telp disamakan rulesnya: numeric & rentang digit 10-15
+            // Ditambah 'unique' karena di migration Anda set unique()
+            'no_telp' => ['required', 'numeric', 'digits_between:10,15', 'unique:'.User::class],
+
+            // --- Data Khusus Psikolog ---
+            // NIP harus unik di tabel psikolog_profiles
+            'NIP' => ['required', 'string', 'max:50', 'unique:psikolog_profiles,NIP'],
             'spesialisasi' => ['required', 'string', 'max:255'],
         ]);
 
         try {
             DB::transaction(function () use ($request) {
-                // 2. Buat User
+                // 2. Buat User Baru
                 $user = User::create([
                     'name' => $request->name,
-                    'username' => $request->username, // Ambil dari inputan user
+                    'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'NIK' => $request->NIK,
+                    'NIK' => $request->NIK,         // Sesuai migration (Huruf Besar)
                     'alamat' => $request->alamat,
                     'no_telp' => $request->no_telp,
                 ]);
 
-                // 3. Assign Role
+                // 3. Assign Role Psikolog
+                // Pastikan role 'psikolog' sudah ada di database (table roles)
                 $user->assignRole('psikolog');
 
                 // 4. Buat Profile Psikolog
@@ -72,15 +79,17 @@ class PsikologController extends Controller
                     'spesialisasi' => $request->spesialisasi,
                 ]);
 
+                // 5. Trigger Event Registered (untuk kirim email verifikasi dll)
                 event(new Registered($user));
-                Auth::login($user);
             });
 
-            return redirect(route('login', absolute: false));
+            // Redirect ke login dengan pesan sukses
+            return redirect(route('login', absolute: false))
+                ->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk verifikasi sebelum akun anda diaktifkan oleh admin.');
 
         } catch (\Exception $e) {
-            // Tampilkan pesan error spesifik untuk debugging (bisa dihapus saat production)
-            return back()->withInput()->withErrors(['error' => 'Gagal mendaftar: '.$e->getMessage()]);
+            // Tampilkan error jika transaksi gagal
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat mendaftar: '.$e->getMessage()]);
         }
     }
 
@@ -195,7 +204,7 @@ class PsikologController extends Controller
         // 2. Fitur Pencarian berdasarkan Nama User
         if ($request->has('search')) {
             $search = $request->search;
-            $query->whereHas('user', function($q) use ($search) {
+            $query->whereHas('user', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
             });
         }

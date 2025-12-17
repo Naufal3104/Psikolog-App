@@ -402,7 +402,7 @@
                                                 </em>
                                             </div>
                                             <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 6px;">
-                                                oleh {{ $item->user->name ?? 'Anonim' }}
+                                                oleh {{ $item->user->username ?? 'Anonim' }}
                                                 @if ($item->psikiater)
                                                     • dijawab oleh {{ $item->psikiater->name ?? '-' }}
                                                 @endif

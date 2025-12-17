@@ -61,7 +61,7 @@
         .form-group {
             margin-bottom: 1rem;
         }
-        
+
         .form-label {
             display: block;
             font-size: 0.875rem;
@@ -69,7 +69,7 @@
             color: #374151;
             margin-bottom: 0.5rem;
         }
-        
+
         .eh .form-label {
             color: #d1d5db;
         }
@@ -123,12 +123,14 @@
             border: 3px solid #e5e7eb;
             margin-bottom: 10px;
         }
+
         .upload-btn-wrapper {
             position: relative;
             overflow: hidden;
             display: inline-block;
             cursor: pointer;
         }
+
         .btn-upload {
             border: 1px solid #d1d5db;
             color: #374151;
@@ -139,6 +141,7 @@
             font-weight: 600;
             cursor: pointer;
         }
+
         .upload-btn-wrapper input[type=file] {
             font-size: 100px;
             position: absolute;
@@ -152,167 +155,238 @@
 
 @section('content')
 
-<x-layout.navbar />
+    <x-layout.navbar />
 
-<div class="centered-content">
+    <div class="centered-content">
 
-    <div class="profile-wrapper">
+        <div class="profile-wrapper">
 
-        {{-- 1. TOMBOL KEMBALI --}}
-        <div>
-            <a href="{{ url('/') }}" 
-               class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                Kembali
-            </a>
-        </div>
-
-        {{-- KARTU 1: INFORMASI PROFIL --}}
-        <div class="consultation-card">
-            <div class="card-header">
-                <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Informasi Profil</h2>
+            {{-- 1. TOMBOL KEMBALI --}}
+            <div>
+                <a href="{{ url('/') }}"
+                    class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Kembali
+                </a>
             </div>
-            <div style="padding: 32px 24px;">
-                <form method="post" action="{{ route('user.profile.update') }}" class="space-y-6" enctype="multipart/form-data">
-                    @csrf
-                    @method('patch')
 
-                    {{-- BAGIAN FOTO PROFIL (REVISI: foto_profil) --}}
-                    <div class="flex flex-col items-center mb-6">
-                        <div class="relative">
-                            {{-- Cek kolom foto_profil --}}
-                            @if ($user->foto_profil)
-                                <img src="{{ asset('storage/' . $user->foto_profil) }}" id="avatar-preview" class="avatar-preview" alt="Foto Profil">
-                            @else
-                                <img src="{{ asset('images/avatar.png') }}" id="avatar-preview" class="avatar-preview" alt="Default Avatar">
+            {{-- KARTU 1: INFORMASI PROFIL --}}
+            <div class="consultation-card">
+                <div class="card-header">
+                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Informasi Profil</h2>
+                </div>
+                <div style="padding: 32px 24px;">
+                    <form method="post" action="{{ route('user.profile.update') }}" class="space-y-6"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+
+                        {{-- BAGIAN FOTO PROFIL (REVISI: foto_profil) --}}
+                        <div class="flex flex-col items-center mb-6">
+                            <div class="relative">
+                                {{-- Cek kolom foto_profil --}}
+                                @if ($user->foto_profil)
+                                    <img src="{{ asset('storage/' . $user->foto_profil) }}" id="avatar-preview"
+                                        class="avatar-preview" alt="Foto Profil">
+                                @else
+                                    <img src="{{ asset('images/avatar.png') }}" id="avatar-preview" class="avatar-preview"
+                                        alt="Default Avatar">
+                                @endif
+                            </div>
+
+                            <div class="upload-btn-wrapper mt-2">
+                                <button type="button" class="btn-upload hover:bg-gray-50 transition">Ubah Foto</button>
+                                {{-- Input name diganti jadi foto_profil --}}
+                                <input type="file" name="foto_profil" id="foto_profil" accept="image/*"
+                                    onchange="previewImage(event)" />
+                            </div>
+                            {{-- Error message diganti jadi foto_profil --}}
+                            <x-input-error class="mt-2 text-center" :messages="$errors->get('foto_profil')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="form-label">Nama Lengkap</label>
+                            <input id="name" name="name" type="text" class="form-input"
+                                value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" />
+                            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input id="email" name="email" type="email" class="form-input"
+                                value="{{ old('email', $user->email) }}" required readonly autocomplete="username" />
+                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input id="username" name="username" type="text" class="form-input"
+                                value="{{ old('username', $user->username) }}" required autofocus autocomplete="username" />
+                            <x-input-error class="mt-2" :messages="$errors->get('username')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="NIK" class="form-label">NIK</label>
+                            <input id="NIK" name="NIK" type="text" class="form-input"
+                                value="{{ old('NIK', $user->NIK) }}" required autofocus autocomplete="NIK" />
+                            <x-input-error class="mt-2" :messages="$errors->get('NIK')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <input id="alamat" name="alamat" type="text" class="form-input"
+                                value="{{ old('alamat', $user->alamat) }}" required autofocus autocomplete="alamat" />
+                            <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="no_telp" class="form-label">No. Telepon</label>
+                            <input id="no_telp" name="no_telp" type="text" class="form-input"
+                                value="{{ old('no_telp', $user->no_telp) }}" required autofocus autocomplete="no_telp" />
+                            <x-input-error class="mt-2" :messages="$errors->get('no_telp')" />
+                        </div>
+
+                        {{-- BAGIAN KHUSUS PSIKOLOG --}}
+                        @if (Auth::user()->hasRole('psikolog'))
+                            <div
+                                class="mt-6 p-4 bg-blue-50 dark:bg-gray-800 rounded-lg border border-blue-100 dark:border-gray-700">
+                                <h3 class="text-md font-semibold text-blue-800 dark:text-blue-400 mb-4">Data Psikolog</h3>
+
+                                {{-- Input NIP --}}
+                                <div class="form-group">
+                                    <label for="NIP" class="form-label">NIP (Nomor Induk Psikolog)</label>
+                                    <input id="NIP" name="NIP" type="text" class="form-input"
+                                        {{-- Menggunakan optional chaining (?->) untuk antisipasi jika data profile belum ada --}} value="{{ old('NIP', $user->psikologProfile?->NIP) }}"
+                                        required autocomplete="NIP" />
+                                    <x-input-error class="mt-2" :messages="$errors->get('NIP')" />
+                                </div>
+
+                                {{-- Input Spesialisasi --}}
+                                <div class="form-group">
+                                    <label for="spesialisasi" class="form-label">Spesialisasi</label>
+                                    <input id="spesialisasi" name="spesialisasi" type="text" class="form-input"
+                                        value="{{ old('spesialisasi', $user->psikologProfile?->spesialisasi) }}"
+                                        placeholder="Contoh: Psikolog Klinis Dewasa" required
+                                        autocomplete="spesialisasi" />
+                                    <x-input-error class="mt-2" :messages="$errors->get('spesialisasi')" />
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="flex items-center gap-4">
+                            <button type="submit" class="btn-primary-custom">Simpan Perubahan</button>
+                            @if (session('status') === 'profile-updated')
+                                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                                    class="text-sm text-green-600">
+                                    {{ __('Tersimpan.') }}
+                                </p>
                             @endif
                         </div>
-                        
-                        <div class="upload-btn-wrapper mt-2">
-                            <button type="button" class="btn-upload hover:bg-gray-50 transition">Ubah Foto</button>
-                            {{-- Input name diganti jadi foto_profil --}}
-                            <input type="file" name="foto_profil" id="foto_profil" accept="image/*" onchange="previewImage(event)" />
-                        </div>
-                        {{-- Error message diganti jadi foto_profil --}}
-                        <x-input-error class="mt-2 text-center" :messages="$errors->get('foto_profil')" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name" class="form-label">Nama Lengkap</label>
-                        <input id="name" name="name" type="text" class="form-input" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" />
-                        <x-input-error class="mt-2" :messages="$errors->get('name')" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input id="email" name="email" type="email" class="form-input" value="{{ old('email', $user->email) }}" required autocomplete="username" />
-                        <x-input-error class="mt-2" :messages="$errors->get('email')" />
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <button type="submit" class="btn-primary-custom">Simpan Perubahan</button>
-                        @if (session('status') === 'profile-updated')
-                            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-green-600">
-                                {{ __('Tersimpan.') }}
-                            </p>
-                        @endif
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        {{-- KARTU 2: GANTI PASSWORD --}}
-        <div class="consultation-card">
-            <div class="card-header" style="background-color: #0d9488 !important;"> 
-                <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Ganti Password</h2>
-            </div>
-            <div style="padding: 32px 24px;">
-                <form method="post" action="{{ route('password.update') }}" class="space-y-6">
-                    @csrf
-                    @method('put')
-
-                    <div class="form-group">
-                        <label for="current_password" class="form-label">Password Saat Ini</label>
-                        <input id="current_password" name="current_password" type="password" class="form-input" autocomplete="current-password" />
-                        <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password Baru</label>
-                        <input id="password" name="password" type="password" class="form-input" autocomplete="new-password" />
-                        <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
-                        <input id="password_confirmation" name="password_confirmation" type="password" class="form-input" autocomplete="new-password" />
-                        <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <button type="submit" class="btn-primary-custom" style="background-color: #0d9488 !important;">Update Password</button>
-                        @if (session('status') === 'password-updated')
-                            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-green-600">
-                                {{ __('Tersimpan.') }}
-                            </p>
-                        @endif
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        {{-- KARTU 3: HAPUS AKUN --}}
-        <div class="consultation-card" style="border-color: #fee2e2;">
-            <div class="card-header" style="background-color: #dc2626 !important;">
-                <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Hapus Akun</h2>
-            </div>
-            <div style="padding: 32px 24px;">
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    {{ __('Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Sebelum menghapus akun, harap unduh data atau informasi apa pun yang ingin Anda simpan.') }}
-                </p>
-
-                <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')" class="w-full justify-center">
-                    {{ __('Hapus Akun Saya') }}
-                </x-danger-button>
-
-                <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-                    <form method="post" action="{{ route('user.profile.destroy') }}" class="p-6">
+            {{-- KARTU 2: GANTI PASSWORD --}}
+            <div class="consultation-card">
+                <div class="card-header" style="background-color: #0d9488 !important;">
+                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Ganti Password</h2>
+                </div>
+                <div style="padding: 32px 24px;">
+                    <form method="post" action="{{ route('password.update') }}" class="space-y-6">
                         @csrf
-                        @method('delete')
+                        @method('put')
 
-                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            {{ __('Apakah Anda yakin ingin menghapus akun Anda?') }}
-                        </h2>
-
-                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            {{ __('Silakan masukkan password Anda untuk mengonfirmasi bahwa Anda ingin menghapus akun Anda secara permanen.') }}
-                        </p>
-
-                        <div class="mt-6">
-                            <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-                            <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4" placeholder="{{ __('Password') }}" />
-                            <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                        <div class="form-group">
+                            <label for="current_password" class="form-label">Password Saat Ini</label>
+                            <input id="current_password" name="current_password" type="password" class="form-input"
+                                autocomplete="current-password" />
+                            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                         </div>
 
-                        <div class="mt-6 flex justify-end">
-                            <x-secondary-button x-on:click="$dispatch('close')">
-                                {{ __('Batal') }}
-                            </x-secondary-button>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password Baru</label>
+                            <input id="password" name="password" type="password" class="form-input"
+                                autocomplete="new-password" />
+                            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+                        </div>
 
-                            <x-danger-button class="ms-3">
-                                {{ __('Hapus Akun') }}
-                            </x-danger-button>
+                        <div class="form-group">
+                            <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                            <input id="password_confirmation" name="password_confirmation" type="password"
+                                class="form-input" autocomplete="new-password" />
+                            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <button type="submit" class="btn-primary-custom"
+                                style="background-color: #0d9488 !important;">Update Password</button>
+                            @if (session('status') === 'password-updated')
+                                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                                    class="text-sm text-green-600">
+                                    {{ __('Tersimpan.') }}
+                                </p>
+                            @endif
                         </div>
                     </form>
-                </x-modal>
+                </div>
             </div>
+
+            {{-- KARTU 3: HAPUS AKUN --}}
+            <div class="consultation-card" style="border-color: #fee2e2;">
+                <div class="card-header" style="background-color: #dc2626 !important;">
+                    <h2 style="margin: 0; font-size: 1.25rem; font-weight: bold;">Hapus Akun</h2>
+                </div>
+                <div style="padding: 32px 24px;">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                        {{ __('Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Sebelum menghapus akun, harap unduh data atau informasi apa pun yang ingin Anda simpan.') }}
+                    </p>
+
+                    <x-danger-button x-data=""
+                        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+                        class="w-full justify-center">
+                        {{ __('Hapus Akun Saya') }}
+                    </x-danger-button>
+
+                    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                        <form method="post" action="{{ route('user.profile.destroy') }}" class="p-6">
+                            @csrf
+                            @method('delete')
+
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                {{ __('Apakah Anda yakin ingin menghapus akun Anda?') }}
+                            </h2>
+
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                {{ __('Silakan masukkan password Anda untuk mengonfirmasi bahwa Anda ingin menghapus akun Anda secara permanen.') }}
+                            </p>
+
+                            <div class="mt-6">
+                                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                                <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4"
+                                    placeholder="{{ __('Password') }}" />
+                                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <x-secondary-button x-on:click="$dispatch('close')">
+                                    {{ __('Batal') }}
+                                </x-secondary-button>
+
+                                <x-danger-button class="ms-3">
+                                    {{ __('Hapus Akun') }}
+                                </x-danger-button>
+                            </div>
+                        </form>
+                    </x-modal>
+                </div>
+            </div>
+
         </div>
 
     </div>
-
-</div>
 @endsection
 
 @push('scripts')

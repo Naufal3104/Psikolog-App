@@ -18,8 +18,10 @@ Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('p
 Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psikolog.register.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Halaman Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
+    // Profil User
     Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/user/profile', [UserController::class, 'update'])->name('user.profile.update');
     Route::delete('/user/profile', [UserController::class, 'destroy'])->name('user.profile.destroy');
@@ -49,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
     Route::get('/deteksi/hasil/{id}', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
 
-    // Tanya Psikolog, Video, Infografis, Konsultasi
+    // Tanya Psikolog
     Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
     Route::get('/tanya/buat', [TanyaJawabController::class, 'create'])->name('tanya.create');
     Route::post('/tanya', [TanyaJawabController::class, 'store'])->name('tanya.store');
@@ -59,8 +61,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
     Route::post('/tanya/{id}/upvote', [TanyaJawabController::class, 'upvote'])->name('tanya.upvote');
     Route::post('/tanya/{id}/downvote', [TanyaJawabController::class, 'downvote'])->name('tanya.downvote');
-
-    // video video
+    
+    // Video, Infografis, Konsultasi
     Route::resource('video', VideoController::class);
     Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
     Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');

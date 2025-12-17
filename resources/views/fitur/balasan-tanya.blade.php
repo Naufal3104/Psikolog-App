@@ -342,7 +342,7 @@
                         <ul class="tc uf cg 2xl:ud-gap-15 fb">
                             <li>
                                 <span class="rc kk wm">Penanya: </span>
-                                {{ $tanyaJawab->user->name ?? 'Anonim' }}
+                                {{ $tanyaJawab->user->username ?? 'Anonim' }}
                             </li>
                             <li>
                                 <span class="rc kk wm">Tanggal: </span>
@@ -420,7 +420,7 @@
                                     </div>
                                     <div class="comment-content" style="width: 100%;">
                                         <div class="author-name">
-                                            <span>{{ $balasan->user->name ?? 'Anonim' }}</span>
+                                            <span>{{ $balasan->user->username ?? 'Anonim' }}</span>
 
                                             @if ($balasan->user_id == $tanyaJawab->user_id)
                                                 <span class="author-tag tag-penanya">Penanya</span>
