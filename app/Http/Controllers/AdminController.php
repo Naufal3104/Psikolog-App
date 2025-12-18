@@ -848,7 +848,7 @@ class AdminController extends Controller
 
         $jadwal->update($request->all());
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     /**
@@ -859,6 +859,6 @@ class AdminController extends Controller
         $jadwal = JadwalPsikolog::findOrFail($id);
         $jadwal->delete();
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }
