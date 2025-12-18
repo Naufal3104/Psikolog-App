@@ -854,7 +854,7 @@ class AdminController extends Controller
 
         $jadwal->update($request->all());
 
-        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     /**
