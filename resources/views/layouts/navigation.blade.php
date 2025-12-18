@@ -47,7 +47,7 @@
         </x-responsive-nav-link>
 
         <x-responsive-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
-            {{ __('Verifikasi Psikolog') }}
+            {{ __('Kelola Akun Psikolog') }}
         </x-responsive-nav-link>
         
         <x-responsive-nav-link :href="route('admin.video.index')" :active="request()->routeIs('admin.video.*')">

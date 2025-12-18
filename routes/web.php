@@ -109,7 +109,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/verifikasi-psikolog/{id}/edit', [AdminController::class, 'edit_psikolog'])->name('verifikasi.edit');
         Route::put('/verifikasi-psikolog/{id}', [AdminController::class, 'update_psikolog'])->name('verifikasi.update');
 
-        Route::get('/admin/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs.index');
+        Route::get('/activity-logs', [AdminController::class, 'activityLogs'])->name('activity-logs.index');
 
         // === Laravel Breeze ===
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
