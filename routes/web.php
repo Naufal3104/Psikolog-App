@@ -61,7 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tanya/{id}/balas', [TanyaJawabController::class, 'storeBalasan'])->name('tanya.balas.store');
     Route::post('/tanya/{id}/upvote', [TanyaJawabController::class, 'upvote'])->name('tanya.upvote');
     Route::post('/tanya/{id}/downvote', [TanyaJawabController::class, 'downvote'])->name('tanya.downvote');
-    
+
     // Video, Infografis, Konsultasi
     Route::resource('video', VideoController::class);
     Route::get('/infografis', [InfografisController::class, 'index'])->name('infografis.index');
@@ -132,5 +132,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('/update/{id}', [AdminController::class, 'infografisUpdate'])->name('update');
             Route::delete('/destroy/{id}', [AdminController::class, 'infografisDestroy'])->name('destroy');
         });
+
+        Route::get('/jadwal', [AdminController::class, 'jadwalIndex'])->name('jadwal.index');
+        Route::get('/jadwal/create', [AdminController::class, 'jadwalCreate'])->name('jadwal.create');
+        Route::post('/jadwal', [AdminController::class, 'jadwalStore'])->name('jadwal.store');
+        Route::get('/jadwal/{id}/edit', [AdminController::class, 'jadwalEdit'])->name('jadwal.edit');
+        Route::put('/jadwal/{id}', [AdminController::class, 'jadwalUpdate'])->name('jadwal.update');
+        Route::delete('/jadwal/{id}', [AdminController::class, 'jadwalDestroy'])->name('jadwal.destroy');
     });
 });

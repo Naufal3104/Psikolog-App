@@ -58,6 +58,10 @@
              {{ __('Kelola Infografis') }}
         </x-responsive-nav-link>
 
+        <x-responsive-nav-link :href="route('jadwal.index')" :active="request()->routeIs('jadwal.*')">
+             {{ __('Kelola Jadwal Konsultasi') }}
+        </x-responsive-nav-link>
+
         <x-responsive-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
             {{ __('Riwayat Aktivitas') }}
         </x-responsive-nav-link>

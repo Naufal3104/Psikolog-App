@@ -11,6 +11,7 @@ use App\Models\KategoriDeteksi;
 use App\Models\Pertanyaan;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\JadwalPsikolog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -762,5 +763,108 @@ class AdminController extends Controller
         $item->delete();
 
         return redirect()->route('admin.infografis.index')->with('success', 'Infografis berhasil dihapus.');
+    }
+
+    public function jadwalIndex(Request $request)
+    {
+        $search = $request->input('search');
+
+        $jadwal = JadwalPsikolog::with('user')
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhere('hari', 'like', "%{$search}%");
+            })
+            // Urutkan berdasarkan hari (opsional, bisa disesuaikan)
+            ->orderBy('id', 'desc') 
+            ->paginate(10);
+
+        return view('admin.kelola-jadwal', compact('jadwal'));
+    }
+
+    /**
+     * Menampilkan form tambah jadwal.
+     */
+    public function jadwalCreate()
+    {
+        // Ambil user yang berperan sebagai psikolog (sesuaikan logic jika ada role khusus)
+        // Contoh: User::where('role', 'psikolog')->get();
+        // Di sini saya ambil semua user sebagai contoh umum.
+        $users = User::role('psikolog')->get(); 
+        
+        return view('admin.form-jadwal', compact('users'));
+    }
+
+    /**
+     * Menyimpan jadwal baru ke database.
+     */
+    public function jadwalStore(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'hari'    => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+        ]);
+
+        // Cek apakah psikolog sudah punya jadwal di hari yang sama (opsional, untuk mencegah duplikasi)
+        $exists = JadwalPsikolog::where('user_id', $request->user_id)
+                    ->where('hari', $request->hari)
+                    ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['hari' => 'Psikolog ini sudah memiliki jadwal di hari tersebut.']);
+        }
+
+        JadwalPsikolog::create($request->all());
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');
+    }
+
+    /**
+     * Menampilkan form edit jadwal.
+     */
+    public function jadwalEdit($id)
+    {
+        $jadwal = JadwalPsikolog::findOrFail($id);
+        $users = User::role('psikolog')->get(); // Sesuaikan dengan filter role psikolog jika ada
+
+        return view('admin.form-jadwal', compact('jadwal', 'users'));
+    }
+
+    /**
+     * Memperbarui jadwal di database.
+     */
+    public function jadwalUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'hari'    => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+        ]);
+
+        $jadwal = JadwalPsikolog::findOrFail($id);
+        
+        // Cek duplikasi jika mengubah hari/user (kecuali punya diri sendiri)
+        $exists = JadwalPsikolog::where('user_id', $request->user_id)
+                    ->where('hari', $request->hari)
+                    ->where('id', '!=', $id)
+                    ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['hari' => 'Psikolog ini sudah memiliki jadwal di hari tersebut.']);
+        }
+
+        $jadwal->update($request->all());
+
+        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
+    }
+
+    /**
+     * Menghapus jadwal.
+     */
+    public function jadwalDestroy($id)
+    {
+        $jadwal = JadwalPsikolog::findOrFail($id);
+        $jadwal->delete();
+
+        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }
