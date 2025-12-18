@@ -47,7 +47,7 @@
         </x-responsive-nav-link>
 
         <x-responsive-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
-            {{ __('Verifikasi Psikolog') }}
+            {{ __('Kelola Akun Psikolog') }}
         </x-responsive-nav-link>
         
         <x-responsive-nav-link :href="route('admin.video.index')" :active="request()->routeIs('admin.video.*')">
@@ -56,6 +56,10 @@
 
         <x-responsive-nav-link :href="route('admin.infografis.index')" :active="request()->routeIs('admin.infografis.*')">
              {{ __('Kelola Infografis') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('jadwal.index')" :active="request()->routeIs('jadwal.*')">
+             {{ __('Kelola Jadwal Konsultasi') }}
         </x-responsive-nav-link>
 
         <x-responsive-nav-link :href="route('activity-logs.index')" :active="request()->routeIs('activity-logs.*')">
