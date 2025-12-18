@@ -71,7 +71,7 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     {{-- No Telepon --}}
                     <div class="wb mt-4">
                         <label class="rc kk wm vb" for="no_telp">Nomor WhatsApp / Telepon</label>
-                        <input id="no_telp" type="text" name="no_telp" value="{{ old('no_telp') }}" required maxlength="14"
+                        <input id="no_telp" type="text" name="no_telp" value="{{ old('no_telp') }}" required maxlength="14" required minlength="13"
                             placeholder="08xxxxxxxxxx"
                             class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
                         @error('no_telp')

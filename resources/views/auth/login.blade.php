@@ -141,14 +141,22 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     </div>
 
                     <p class="sj hk xj rj ob mt-6">
-                        Belum punya akun?
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="mk">Daftar</a>
-                            <a href="{{ route('psikolog.register') }}" class="mk">Psikolog</a>
-                        @else
-                            <a href="{{ url('/') }}" class="mk">Kembali</a>
-                        @endif
-                    </p>
+    Belum punya akun?
+    @if (Route::has('register'))
+        {{-- Mengecek apakah ada parameter ?role=psikolog di URL --}}
+        @if(request()->query('role') === 'psikolog')
+            <a href="{{ route('psikolog.register') }}" class="mk font-bold text-blue-600">
+                Daftar Kembali sebagai Psikolog
+            </a>
+        @else
+            <a href="{{ route('register') }}" class="mk">Daftar</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <a href="{{ route('psikolog.register') }}" class="mk">Psikolog</a>
+        @endif
+    @else
+        <a href="{{ url('/') }}" class="mk">Kembali</a>
+    @endif
+</p>
                 </form>
             </div>
         </section>

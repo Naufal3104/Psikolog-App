@@ -95,16 +95,14 @@
 @section('content')
     <section class="ri qp gr hj rp hr" style="padding-top: 6rem !important;">
         <div class="bb ze ki xn 2xl:ud-px-0">
-            <div>
-                <a href="{{ route('artikel-publik.index') }}"
-                    class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Kembali
-                </a>
-            </div>
+            <div class="relative z-50"> <a href="{{ route('artikel-publik.index') }}" 
+        class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium cursor-pointer">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Kembali
+    </a>
+</div>
             <div class="tc sf yo zf kq">
                 <div class="ro">
                     <div

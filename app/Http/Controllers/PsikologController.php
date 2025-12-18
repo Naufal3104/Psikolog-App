@@ -84,8 +84,9 @@ class PsikologController extends Controller
             });
 
             // Redirect ke login dengan pesan sukses
-            return redirect(route('login', absolute: false))
-                ->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk verifikasi sebelum akun anda diaktifkan oleh admin.');
+            // Redirect ke login dengan parameter di URL agar link "Daftar" bisa berubah otomatis
+return redirect()->route('login', ['role' => 'psikolog'])
+    ->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk verifikasi sebelum akun anda diaktifkan oleh admin.');
 
         } catch (\Exception $e) {
             // Tampilkan error jika transaksi gagal

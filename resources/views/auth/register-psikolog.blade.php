@@ -123,24 +123,65 @@ $watch('darkMode', v => localStorage.setItem('darkMode', JSON.stringify(v)))" :c
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                        {{-- Password --}}
-                        <div class="wb">
-                            <label class="rc kk wm vb" for="password">Password</label>
-                            <input id="password" type="password" name="password" required
-                                autocomplete="new-password" placeholder="Minimal 8 karakter"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        </div>
+    {{-- Password --}}
+    <div class="wb">
+        <label class="rc kk wm vb" for="password">Password</label>
+        <div class="relative">
+            <input id="password" type="password" name="password" required
+                autocomplete="new-password" placeholder="Minimal 8 karakter"
+                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
+            
+            <button type="button" onclick="togglePassword('password', 'eyeIcon1')"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <svg id="eyeIcon1" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </button>
+        </div>
+        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
 
-                        {{-- Confirm Password --}}
-                        <div class="wb">
-                            <label class="rc kk wm vb" for="password_confirmation">Konfirmasi Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" required
-                                autocomplete="new-password" placeholder="Ulangi password"
-                                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                        </div>
-                    </div>
+    {{-- Confirm Password --}}
+    <div class="wb">
+        <label class="rc kk wm vb" for="password_confirmation">Konfirmasi Password</label>
+        <div class="relative">
+            <input id="password_confirmation" type="password" name="password_confirmation" required
+                autocomplete="new-password" placeholder="Ulangi password"
+                class="vd hh rg zk _g ch hm dm fm pl/50 xi mi sm xm pm wm dn/40 text-black dark:text-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 pr-10" />
+            
+            <button type="button" onclick="togglePassword('password_confirmation', 'eyeIcon2')"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <svg id="eyeIcon2" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </button>
+        </div>
+        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+    </div>
+</div>
+
+{{-- Script Toggle Password (Letakkan di bagian bawah file atau sebelum @endsection) --}}
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.setAttribute("stroke", "#004780"); // Beri warna saat aktif (sesuai tema biru Anda)
+        } else {
+            input.type = "password";
+            icon.setAttribute("stroke", "currentColor");
+        }
+    }
+</script>
 
                     {{-- Terms (opsional) --}}
                     <div class="block mt-4">

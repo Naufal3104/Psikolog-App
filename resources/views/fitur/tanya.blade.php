@@ -319,7 +319,7 @@
 
                 {{-- 1. TOMBOL KEMBALI --}}
                 <div>
-                    <a href="{{ url('/') }}" 
+                    <a href="{{ route('dashboard.index') }}" 
                        class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-[#004780] dark:hover:text-white transition-colors font-medium">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

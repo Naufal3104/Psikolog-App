@@ -159,53 +159,63 @@
             </div>
         </section>
         <section class="ji gp uq">
-            <div x-data="{
-                sectionTitle: 'Artikel Kesehatan',
-                sectionTitleText: 'Baca informasi terbaru seputar kesehatan mental, edukasi, dan perkembangan layanan kami.'
-            }">
-                <div class="animate_top bb ze rj ki xn vq">
-                    <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
-                    <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
-                </div>
-            </div>
+    <div x-data="{
+        sectionTitle: 'Artikel Kesehatan',
+        sectionTitleText: 'Baca informasi terbaru seputar kesehatan mental, edukasi, dan perkembangan layanan kami.'
+    }">
+        <div class="animate_top bb ze rj ki xn vq">
+            <h2 x-text="sectionTitle" class="fk vj pr kk wm on/5 gq/2 bb _b"></h2>
+            <p class="bb on/5 wo/5 hq" x-text="sectionTitleText"></p>
+        </div>
+    </div>
 
-            <div class="bb ye ki xn vq jb jo">
-                <div class="wc qf pn xo zf iq">
-                    @forelse ($artikel as $item)
-                    <div class="animate_top sg vk rm xm">
-                        <div class="c rc i z-1 pg">
-                            @if ($item->gambar == null)
-                                <img class="w-full" src="{{ asset('images/noimage.svg') }}" alt="Blog" />
+    <div class="bb ye ki xn vq jb jo">
+        <div class="wc qf pn xo zf iq">
+            @forelse ($artikel as $item)
+            <div class="animate_top sg vk rm xm">
+                <div class="c i vd pf pg" style="padding-top: 56.25%;">
+                    
+                    @if ($item->gambar == null)
+                        <img class="h r s vd yc object-cover" src="{{ asset('images/noimage.svg') }}" alt="No Image" />
+                    @else
+                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
+                            class="h r s vd yc" style="object-fit: cover;" />
+                    @endif
+
+                    <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
+                        <a href="{{ route('artikel.show', $item->id) }}"
+                            class="vc ek rg lk gh sl ml il gi hi">Baca Selengkapnya</a>
+                    </div>
+                </div>
+
+                <div class="yh">
+                    <div class="tc uf wf ag jq">
+                        <div class="tc wf ag">
+                            @if (optional($item->penulis)->foto_profil)
+                                <img src="{{ asset('storage/' . $item->penulis->foto_profil) }}"
+                                    alt="Foto {{ $item->penulis->name }}"
+                                    class="w-6 h-6 rounded-full object-cover" />
                             @else
-                                <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar {{ $item->judul }}"
-                                    class="w-full" style="object-fit: cover;" />
+                                <img src="{{ asset('images/icon-man.svg') }}" alt="User" class="w-6" />
                             @endif
-                            <div class="im h r s df vd yc wg tc wf xf al hh/20 nl il z-10">
-                                <a href="{{ route('artikel.show', $item->id) }}"
-                                    class="vc ek rg lk gh sl ml il gi hi">Baca Selengkapnya</a>
-                            </div>
+                            <p>{{ optional($item->penulis)->name ?? 'Penulis' }}</p>
                         </div>
-                        <div class="yh">
-                            <div class="tc uf wf ag jq">
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-man.svg') }}" alt="User" />
-                                    <p>{{ optional($item->penulis)->name ?? 'Penulis' }}</p>
-                                </div>
-                                <div class="tc wf ag">
-                                    <img src="{{ asset('images/icon-calender.svg') }}" alt="Calendar" />
-                                    <p>{{ $item->created_at->format('d M Y') }}</p>
-                                </div>
-                            </div>
-                            <h4 class="ek tj ml il kk wm xl eq lb">
-                                <a href="{{ route('artikel.show', $item->id) }}">{{ $item->judul }}</a>
-                            </h4>
+                        <div class="tc wf ag">
+                            <img src="{{ asset('images/icon-calender.svg') }}" alt="Calendar" />
+                            <p>{{ $item->created_at->format('d M Y') }}</p>
                         </div>
                     </div>
-                    @empty
-                    @endforelse
+                    <h4 class="ek tj ml il kk wm xl eq lb">
+                        <a href="{{ route('artikel.show', $item->id) }}">{{ $item->judul }}</a>
+                    </h4>
                 </div>
             </div>
-        </section>
+            @empty
+                <p class="text-center col-span-full">Belum ada artikel.</p>
+            @endforelse
+        </div>
+    </div>
+</section>
         </main>
 
     <x-layout.footer />
