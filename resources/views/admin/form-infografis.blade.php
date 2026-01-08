@@ -22,15 +22,22 @@
                     </div>
 
                     {{-- Input URL Gambar --}}
-                    <div class="mb-4">
-                        <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Link Gambar (URL)</label>
-                        <input type="url" name="gambar" value="{{ old('gambar', $infografis->gambar ?? '') }}" 
-                            placeholder="https://contoh.com/infografis.jpg"
-                            class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                        <p class="text-xs text-gray-500 mt-1">Pastikan URL gambar dapat diakses publik.</p>
-                        @error('gambar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-
+<div class="mb-4">
+    <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Link Gambar (URL Google Drive)</label>
+    
+    {{-- Input field --}}
+    <input type="url" name="gambar" value="{{ old('gambar', $infografis->gambar ?? '') }}" 
+        placeholder="https://drive.google.com/file/d/...../view"
+        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+        
+    {{-- Helper text --}}
+    <p class="text-xs text-gray-500 mt-1">
+        Cukup Copy-Paste link lengkap dari Google Drive (Pastikan akses sudah "Anyone with the link"). <br>
+        Sistem akan otomatis mengubahnya agar gambar bisa tampil.
+    </p>
+    
+    @error('gambar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+</div>
                     {{-- Input Caption --}}
                     <div class="mb-6">
                         <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Caption / Deskripsi Singkat</label>
