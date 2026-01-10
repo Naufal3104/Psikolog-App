@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Models\Artikel;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+
 
 require __DIR__.'/auth.php';
 Route::get('/register-psikolog', [PsikologController::class, 'create'])->name('psikolog.register');
@@ -46,12 +48,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Deteksi Dini (Publik)
     Route::get('/deteksi', [DeteksiController::class, 'index'])->name('deteksi.index');
-    Route::get('/deteksi/hasil', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
-    Route::get('/deteksi/riwayat', [DeteksiController::class, 'riwayat'])->name('deteksi.riwayat');
-    Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
+    
+    // 1. Route statis & POST harus DI ATAS
     Route::post('/deteksi/process', [DeteksiController::class, 'process'])->name('deteksi.process');
+    Route::get('/deteksi/riwayat', [DeteksiController::class, 'riwayat'])->name('deteksi.riwayat');
+    
+    // 2. Route detail hasil (pake ID angka)
     Route::get('/deteksi/hasil/{id}', [DeteksiController::class, 'hasil'])->name('deteksi.hasil');
+    
+    // HAPUS atau KOMENTARI baris ini jika tidak dipakai (karena duplikat/bingung tanpa ID)
+    // Route::get('/deteksi/hasil', [DeteksiController::class, 'hasil'])->name('deteksi.hasil'); 
 
+    // 3. Route wildcard {kategori} (string) harus PALING BAWAH
+    // Agar "riwayat" atau "hasil" tidak dianggap sebagai nama kategori
+    Route::get('/deteksi/{kategori}', [DeteksiController::class, 'show'])->name('deteksi.show');
     // Tanya Psikolog
     Route::get('/tanya', [TanyaJawabController::class, 'index'])->name('tanya.index');
     Route::get('/tanya/buat', [TanyaJawabController::class, 'create'])->name('tanya.create');
@@ -69,7 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
     // === GRUP ADMIN ===
     Route::middleware(['role:admin'])->prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
         // === KELOLA ARTIKEL ===
         Route::get('/artikel', [AdminController::class, 'index_artikel'])->name('artikel.index');

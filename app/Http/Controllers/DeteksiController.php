@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class DeteksiController extends Controller
 {
     public function index()
@@ -85,22 +86,36 @@ class DeteksiController extends Controller
 
         // 5. Redirect ke Halaman Hasil (UPDATED)
         // Menggunakan ID dari $hasilDeteksi yang baru saja dibuat di dalam transaksi
-        return redirect()->route('deteksi.hasil', $hasilDeteksi->id);
+        if ($hasilDeteksi) {
+            return redirect()->route('deteksi.hasil', $hasilDeteksi->id);
+        }
+
+        return redirect()->back()->with('error', 'Gagal menyimpan hasil deteksi.');
     }
 
     public function hasil($id)
     {
-        // 1. Ambil data HasilDeteksi berdasarkan ID
-        // Gunakan 'with' untuk Eager Loading relasi 'interpretasi' agar lebih efisien
-        $hasilDeteksi = HasilDeteksi::with('interpretasi')->findOrFail($id);
+        // PERUBAHAN DISINI:
+        // Tambahkan relasi 'jawabanUser', 'pertanyaan', 'pilihanJawaban', 'kategori', dan 'user'
+        // agar data di halaman laporan/cetak muncul semua.
+        $hasilDeteksi = HasilDeteksi::with([
+            'interpretasi', 
+            'kategori', 
+            'user', 
+            'jawabanUser.pertanyaan', 
+            'jawabanUser.pilihanJawaban'
+        ])->findOrFail($id);
 
-        // 2. (Opsional) Validasi Keamanan: Pastikan yang melihat adalah pemilik data
-        if ($hasilDeteksi->user_id !== Auth::id() && !Auth::user()->hasRole('psikolog')) {
+        // Validasi akses (tetap sama)
+        // Pastikan Anda sudah install Spatie Permission jika pakai hasRole, 
+        // jika belum, hapus bagian '&& !Auth::user()->hasRole...'
+        if ($hasilDeteksi->user_id !== Auth::id() && Auth::user()->role !== 'psikolog') {
             abort(403, 'Anda tidak memiliki akses ke hasil ini.');
         }
 
-        // 3. Kirim data ke view
-        return view('fitur.hasil-deteksi', compact('hasilDeteksi'));
+        // Kirim ke view yang baru kita buat (deteksi.show)
+        // Sebelumnya Anda mengarah ke 'fitur.hasil-deteksi', pastikan namanya sesuai
+        return view('fitur.hasil-deteksi', compact('hasilDeteksi')); 
     }
 
     public function riwayat()
