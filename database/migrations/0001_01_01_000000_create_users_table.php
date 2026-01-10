@@ -46,6 +46,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('NIP');
             $table->string('spesialisasi');
+             // TAMBAHKAN BARIS INI:
+            $table->string('hari_jaga')->nullable(); 
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });

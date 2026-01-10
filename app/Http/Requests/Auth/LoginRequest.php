@@ -49,7 +49,7 @@ class LoginRequest extends FormRequest
             ]);
         }
         $user = Auth::user();
-        if ($user->hasRole('psikolog')) {
+        if ($user->role === 'psikolog' || ($user->roles && $user->roles->contains('name', 'psikolog'))) {
             if ($user->psikologProfile && $user->psikologProfile->status !== 'approved') {
                 Auth::logout();
                 throw ValidationException::withMessages([
