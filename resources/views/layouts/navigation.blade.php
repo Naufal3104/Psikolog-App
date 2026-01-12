@@ -49,6 +49,11 @@
         <x-responsive-nav-link :href="route('verifikasi.index')" :active="request()->routeIs('verifikasi.*')">
             {{ __('Kelola Akun Psikolog') }}
         </x-responsive-nav-link>
+
+        {{-- MENU BARU DITAMBAHKAN DI SINI --}}
+        <x-responsive-nav-link :href="route('kinerja.index')" :active="request()->routeIs('kinerja.*')">
+            {{ __('Kinerja Psikolog') }}
+        </x-responsive-nav-link>
         
         <x-responsive-nav-link :href="route('admin.video.index')" :active="request()->routeIs('admin.video.*')">
              {{ __('Kelola Video') }}

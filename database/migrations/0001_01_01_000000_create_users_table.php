@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -41,26 +38,25 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
+        // TABEL PSIKOLOG PROFILE DITANGANI DISINI
         Schema::create('psikolog_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('NIP');
+           $table->string('NIP')->nullable();
             $table->string('spesialisasi');
-             // TAMBAHKAN BARIS INI:
             $table->string('hari_jaga')->nullable(); 
+            // KOLOM BARU UNTUK FITUR KINERJA:
+            $table->integer('clicks')->default(0); 
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('psikolog_profiles'); // Hapus ini dulu karena ada foreign key ke users
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('psikolog_profiles');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

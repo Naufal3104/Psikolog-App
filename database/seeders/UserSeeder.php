@@ -57,58 +57,48 @@ class UserSeeder extends Seeder
         $user->assignRole('user');
 
 
-        // ==========================================
-        // 3. Buat Psikolog Shift SABTU
-        // ==========================================
         $psikologSabtu = User::create([
             'name' => 'Dr. Andi (Sabtu)',
             'username' => 'andi_psikolog',
             'email' => 'andi@gmail.com',
             'password' => bcrypt('12345678'),
-            'NIK' => '11223344',
             'alamat' => 'Jl. Psikolog A No.2',
             'no_telp' => '6281234567891', 
-            'email_verified_at' => now(),
         ]);
         $psikologSabtu->assignRole('psikolog');
 
+        // CREATE PROFILE & DATA KLIK
         PsikologProfile::create([
             'user_id' => $psikologSabtu->id,
-            'NIP' => 1001, 
             'spesialisasi' => 'Psikolog Klinis Dewasa',
-            'hari_jaga' => 'Saturday', 
+            'clicks' => 45, // Angka awal (dummy) yang tersimpan di database
         ]);
 
-        // PERBAIKAN UTAMA: Tambahkan ke tabel jadwal_psikolog dengan hari Bahasa Indonesia
         JadwalPsikolog::create([
             'user_id' => $psikologSabtu->id,
             'hari' => 'Sabtu', 
         ]);
 
-
         // ==========================================
-        // 4. Buat Psikolog Shift MINGGU
+        // Buat Psikolog Shift MINGGU
         // ==========================================
         $psikologMinggu = User::create([
             'name' => 'Dr. Budi (Minggu)',
             'username' => 'budi_psikolog',
             'email' => 'budi@gmail.com',
             'password' => bcrypt('12345678'),
-            'NIK' => '55667788',
             'alamat' => 'Jl. Psikolog B No.4',
             'no_telp' => '6281234567892',
-            'email_verified_at' => now(),
         ]);
         $psikologMinggu->assignRole('psikolog');
 
+        // CREATE PROFILE & DATA KLIK
         PsikologProfile::create([
             'user_id' => $psikologMinggu->id,
-            'NIP' => 1002,
             'spesialisasi' => 'Psikolog Anak & Remaja',
-            'hari_jaga' => 'Sunday',
+            'clicks' => 12, // Angka awal (dummy) yang tersimpan di database
         ]);
 
-        // PERBAIKAN UTAMA: Tambahkan ke tabel jadwal_psikolog dengan hari Bahasa Indonesia
         JadwalPsikolog::create([
             'user_id' => $psikologMinggu->id,
             'hari' => 'Minggu',

@@ -51,7 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function jadwal()
-{
-    return $this->hasMany(JadwalPsikolog::class, 'user_id');
-}
+
+    {
+        return $this->hasMany(JadwalPsikolog::class, 'user_id');
+    }
 }

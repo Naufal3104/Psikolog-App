@@ -14,6 +14,9 @@ use App\Http\Controllers\VideoController;
 use App\Models\Artikel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KinerjaPsikologController;
+
+
 
 
 require __DIR__.'/auth.php';
@@ -23,6 +26,7 @@ Route::post('/psikolog-store', [PsikologController::class, 'store'])->name('psik
 Route::middleware(['auth', 'verified'])->group(function () {
     // Halaman Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/kinerja-psikolog', [KinerjaPsikologController::class, 'index'])->name('kinerja.index');
 
     // Profil User
     Route::get('/user/profile', [UserController::class, 'edit'])->name('user.profile.edit');

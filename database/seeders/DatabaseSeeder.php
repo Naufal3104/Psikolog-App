@@ -10,6 +10,9 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\FiturSeeder;
 use Database\Seeders\ArtikelSeeder;
 use Database\Seeders\VideoSeeder;
+use Database\Seeders\DeteksiSeeder;
+use Database\Seeders\InfografisSeeder;
+use Database\Seeders\IsiDataKinerjaSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +27,9 @@ class DatabaseSeeder extends Seeder
         FiturSeeder::class,
         ArtikelSeeder::class,
         VideoSeeder::class,
+        DeteksiSeeder::class,
+        InfografisSeeder::class,
+        IsiDataKinerjaSeeder::class,    
     ]);
 }
 }

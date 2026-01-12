@@ -9,15 +9,16 @@ class PsikologProfile extends Model
 {
     use HasFactory;
 
+    protected $table = 'psikolog_profiles';
+
     protected $fillable = [
         'user_id',
-        'NIP',
+        'NIP',          // Sesuai migrasi Anda
         'spesialisasi',
         'hari_jaga',
+        'clicks',       // WAJIB ADA untuk fitur kinerja
         'status',
     ];
-
-    protected $table = 'psikolog_profiles';
 
     public function user()
     {

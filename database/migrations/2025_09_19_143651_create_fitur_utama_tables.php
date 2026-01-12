@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Tabel konsultasi
-
-        // Tabel artikel
+        // 1. Tabel Artikel
         Schema::create('artikel', function (Blueprint $table) {
             $table->string('id', 144)->primary();
             $table->string('judul');
@@ -27,7 +22,7 @@ return new class extends Migration
             $table->foreign('penulis_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // Tabel tanya_jawab
+        // 2. Tabel Tanya Jawab
         Schema::create('tanya_jawab', function (Blueprint $table) {
             $table->string('id', 144)->primary();
             $table->bigInteger('user_id')->unsigned();
@@ -39,6 +34,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
+        // 3. Tabel Balasan Tanya Jawab
         Schema::create('balasan_tanya_jawab', function (Blueprint $table) {
             $table->id();
             $table->string('tanya_jawab_id');
@@ -49,7 +45,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Tabel video
+        // 4. Tabel Video
         Schema::create('video', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
@@ -61,6 +57,7 @@ return new class extends Migration
             $table->foreign('penulis_id')->references('id')->on('users')->onDelete('cascade');
         });
 
+        // 5. Kategori Deteksi
         Schema::create('kategori_deteksi', function (Blueprint $table) {
             $table->string('id', 144)->primary();
             $table->string('nama_kategori');
@@ -68,6 +65,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 6. Interpretasi Skor
         Schema::create('interpretasi_skor', function (Blueprint $table) {
             $table->id();
             $table->string('kategori_deteksi_id', 144);
@@ -79,6 +77,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 7. Pertanyaan
         Schema::create('pertanyaan', function (Blueprint $table) {
             $table->id();
             $table->string('kategori_deteksi_id', 144);
@@ -89,6 +88,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 8. Pilihan Jawaban
         Schema::create('pilihan_jawaban', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pertanyaan_id')->constrained('pertanyaan')->onDelete('cascade');
@@ -97,6 +97,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 9. Hasil Deteksi
         Schema::create('hasil_deteksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
@@ -107,6 +108,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 10. Jawaban User
         Schema::create('jawaban_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hasil_deteksi_id')->constrained('hasil_deteksi')->onDelete('cascade');
@@ -115,14 +117,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // 11. Infografis
         Schema::create('infografis', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->text('gambar'); // Akan menyimpan path/nama file gambar
-            $table->text('caption')->nullable(); // Opsional, bisa kosong
+            $table->text('gambar'); 
+            $table->text('caption')->nullable();
             $table->timestamps();
         });
 
+        // 12. Jadwal Psikolog
         Schema::create('jadwal_psikolog', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
@@ -131,22 +135,20 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        // Urutan drop dibalik agar tidak error foreign key
+        Schema::dropIfExists('jadwal_psikolog');
         Schema::dropIfExists('infografis');
-        Schema::dropIfExists('video');
-        Schema::dropIfExists('tanya_jawab');
-        Schema::dropIfExists('artikel');
-        Schema::dropIfExists('interpretasi_skor');
         Schema::dropIfExists('jawaban_user');
         Schema::dropIfExists('hasil_deteksi');
         Schema::dropIfExists('pilihan_jawaban');
         Schema::dropIfExists('pertanyaan');
+        Schema::dropIfExists('interpretasi_skor');
         Schema::dropIfExists('kategori_deteksi');
-        Schema::dropIfExists('infografis');
-        Schema::dropIfExists('jadwal_psikolog');
+        Schema::dropIfExists('video');
+        Schema::dropIfExists('balasan_tanya_jawab');
+        Schema::dropIfExists('tanya_jawab');
+        Schema::dropIfExists('artikel');
     }
 };
